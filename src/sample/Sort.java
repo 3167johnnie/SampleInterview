@@ -14,7 +14,7 @@ public class Sort {
 		new	Employee ("Sham",32,750000),
 		new	Employee ("John",28,450000));
 	
-	
+	//coment
 	emp.stream().sorted(x1,x2) -> x1.getName().compare
 
 	}
