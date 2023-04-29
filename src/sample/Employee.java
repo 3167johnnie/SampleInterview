@@ -41,7 +41,7 @@ public class Employee {
 	{
 		
 
-		this.name
+		this.name.charAt(salary);
 	}
 
 }
