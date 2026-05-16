@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.objectFactory" value="spring" />
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.ognl.allowStaticMethodAccess" value="true"/>
+	<constant name="struts.multipart.maxSize" value="16777216"/>
+	<include file="struts-interceptor.xml" />
+	<package name="sbi" extends="sbi-interceptor">
+		<default-action-ref name="home" />
+
+		<global-results>
+			<result name="home" type="redirect">/</result>
+			<result name="originator" type="redirect">home</result>
+			<result name="under-maintainance" type="redirect">under-maintainance</result>
+			<result name="exception">/app/common/exception.jsp?mode=debug</result>
+			<result name="404">/app/common/error404.jsp</result>
+			<!-- <result name="error-action">/app/common/error404.jsp</result> -->
+			<result name="applicationTrack" type="redirect">
+				<param name="location">application-status</param>
+				<param name="appReferencetIdEncrypted">${appReferencetIdEncrypted}</param>
+				<param name="responseMessage">${responseMessage}</param>
+			</result>
+			<result name="applicationTrackNew" type="redirect">
+				<param name="location">application-status</param>
+				<param name="appReferencetIdEncrypted">${appReferencetIdEncrypted}</param>
+				<param name="responseMessage">${responseMessage}</param>
+			</result>
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping exception="java.lang.Exception" result="exception" />
+		</global-exception-mappings>
+		<action name="uploadimage" method="upload" class="fileUploadAction">
+			<interceptor-ref name="fileUpload">
+				<param name="maximumSize">3145728</param>
+				<param name="allowedTypes">
+					image/pjpeg,image/jpeg,image/jpg,image/png,image/gif,application/pdf
+				</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref>
+		</action>
+	</package>
+	<include file="struts-generic-actions.xml"/>
+	<include file="struts-common-loan.xml"/>
+	<include file="struts-application-track-actions.xml"/>
+	<include file="struts-home-loan-actions.xml"/>
+	<include file="struts-home-topup-loan-actions.xml"/>
+	<include file="struts-auto-loan-actions.xml"/>
+	<include file="struts-education-loan-actions.xml"/>
+	<include file="struts-personal-loan-actions.xml"/>	
+	<include file="struts-vidya-lakshmi-loan-actions.xml"/>
+	<include file="struts-cron-action.xml"/>
+	<include file="struts-sbi-campaign.xml"/>
+	<include file="struts-common-loan-web-service.xml"/>
+	<include file="struts-agri-loan-actions.xml"/>
+	<include file="struts-credit-card-actions.xml"></include>
+	<include file="struts-flipkart-microsite.xml"/>
+	<include file="struts-customer-feedback-action.xml"/>
+	<include file="struts-instant-loan-action.xml"/>
+	<include file="struts-campaign-callback.xml"/>
+	<include file="struts-cve.xml"/>
+</struts>
+
