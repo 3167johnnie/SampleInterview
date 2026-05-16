@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- Home Loan action -->
+
+<struts>
+	<package name="home-loan-actions" extends="sbi">
+		<action name="inithomeloan" method="initHomeLoan" class="homeLoanAction">
+			<result name="success" type="json">
+				<param name="root">json</param>
+			</result>
+		</action>
+		
+		<action name="home-loan" method="homeLoan" class="homeLoanAction">
+			<!-- <interceptor-ref name="token"></interceptor-ref> --> 
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref>
+			<result name="homePageOld">/app/loan/homeloan/homePage.jsp</result>
+			<result name="firstPageOld">/app/loan/homeloan/homeFirstPage.jsp</result>
+			<result name="secondPageOld">/app/loan/homeloan/homeSecondPageScript.jsp</result>
+			<result name="secondPageChangeOld">/app/loan/homeloan/homeSecondPage.jsp</result>
+			<result name="thirdPageOld">/app/loan/homeloan/homeThirdPage.jsp</result>
+			<result name="thankYouPageOld">/app/common/loanThankYou.jsp</result>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+			<result name="repaymentScheduledOld">/app/common/repaymentScheduled.jsp</result>
+			<result name="coapplicantdataOld">/app/loan/homeloan/homeCoapplicantData.jsp</result>
+			<result name="secondPageWithHeaderOld">/app/loan/homeloan/homeSecondPageWithHeader.jsp</result>
+			<result name="dropOffOld">/app/loan/homeloan/homeDropOff.jsp</result>
+			<result name="downLoadPDF" type="stream">
+			  <param name="contentType">application/pdf</param>
+			  <param name="allowCaching">false</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename=Home-Loan.pdf</param> 
+				<param name="bufferSize">1024</param> 
+			</result>
+			<result name="cbsOtpPageOld">/app/common/commonCbsOtp.jsp</result>
+			
+			<!-- UI NEW  -->
+			<result name="homePage">/appNew/loan/homeloan/HomeLoan.jsp</result>
+			<result name="firstPage">/appNew/loan/homeloan/HomeFirstPage.jsp</result>
+			<result name="secondPage">/appNew/loan/homeloan/HomeFirstPage.jsp</result>
+			<result name="secondPageChange">/appNew/loan/homeloan/HomeFirstPage.jsp</result>
+			<result name="thirdPage">/appNew/loan/homeloan/HomeFirstPage.jsp</result>
+			<result name="thankYouPage">/appNew/loan/homeloan/HomeFirstPage.jsp</result>
+			<result name="repaymentScheduled">/appNew/common/RepaymentScheduled.jsp</result>
+			<result name="secondPageWithHeader">/appNew/loan/homeloan/HomeSecondPageWithHeader.jsp</result>
+			<result name="dropOff">/appNew/loan/homeloan/HomeDropOff.jsp</result>
+			<result name="cbsOtpPage">/appNew/common/CommonCbsOtp.jsp</result>
+			<result name="repaymentScheduled">/appNew/common/RepaymentScheduled.jsp</result>
+		</action>
+
+		<action name="home-loan-dsr" method="homeLoanDSR" class="homeLoanAction">
+			<!-- <interceptor-ref name="token"></interceptor-ref> --> 
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref> 
+			<result name="homePageOld">/app/dsr/homeloan/dsrHomeLoan.jsp</result>
+			<result name="firstPageOld">/app/dsr/homeloan/dsrFirstPage.jsp</result>
+			<result name="secondPageOld">/app/dsr/homeloan/dsrSecondPageScript.jsp</result>
+			<result name="secondPageChangeOld">/app/dsr/homeloan/dsrSecondPage.jsp</result>
+			<!-- <result name="thirdPageOld">/app/dsr/homeloan/dsrThirdPage.jsp</result> -->
+			<result name="thirdPageOld">/app/loan/homeloan/homeThirdPage.jsp</result>
+			<result name="thankYouPageOld">/app/common/dsrThankYou.jsp</result>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+			<result name="secondPageWithHeaderOld">/app/dsr/homeloan/dsrSecondPageWithHeader.jsp</result>
+			<result name="callsLogDetailsOld">/app/common/callLogDetails.jsp</result>
+			<result name="repaymentScheduledOld">/app/common/repaymentScheduled.jsp</result>
+			<result name="downLoadPDF" type="stream">
+			  <param name="contentType">application/pdf</param>
+			  	<param name="allowCaching">false</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename=Home-Loan.pdf</param> 
+				<param name="bufferSize">1024</param> 
+			</result>
+			<result name="cbsVerifySmsOtpPageOld">/app/common/commonCbsVarifySmsOtp.jsp</result>
+		</action>
+		<action name="getAllProject" method="getAllProject" class="homeLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+	</package>
+</struts>	
