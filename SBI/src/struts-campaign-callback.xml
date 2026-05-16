@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+ 
+ <!-- Campaign Callback Action -->
+ <struts>
+ 	<package name="campaign-callback-actions" extends="sbi">
+ 		<action name="home-loan-callback" method="homeLoanCallback" class="campaignCallbackAction">
+	 		<result name="success">/appNew/common/CampaignHome.jsp</result>
+	 		<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+ 		</action>
+ 		
+ 		<action name="car-loan-callback" method="carLoanCallback" class="campaignCallbackAction">
+ 			<result name="success">/appNew/common/CampaignHome.jsp</result>
+	 		<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+ 		</action>
+ 		
+ 		<action name="global-ed-callback" method="globalEdCallback" class="campaignCallbackAction">
+ 			<result name="success">/appNew/common/CampaignHome.jsp</result>
+	 		<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+ 		</action>
+ 		
+ 		<!-- Added by Pratima for AGRI Loan -->
+ 		<action name="agri-loan-callback" method="agriCallback" class="campaignCallbackAction">
+ 			<result name="success">/appNew/common/CampaignHome.jsp</result>
+	 		<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+ 		</action>
+ 	</package>
+ </struts>
