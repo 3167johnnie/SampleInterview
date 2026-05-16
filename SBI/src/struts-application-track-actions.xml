@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+ 
+ <!-- application track Actions -->
+
+ <struts>
+ 	<package name="application-track-actions" extends="sbi">
+		<action name="application-status" method="applicationStatus" class="applicationStatusAction">
+			<!-- <interceptor-ref name="token"></interceptor-ref> --> 
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref>
+			<result name="successOld">/app/status/applicationStatus.jsp</result>
+			<result name="applicationDetailsOld">/app/status/applicationStatusDetails.jsp</result>
+			<result name="applicationDetailsWithHeaderOld">/app/status/applicationStatusDetailsWithHeader.jsp</result>
+			
+			<result name="applicationTrackError">/appNew/common/Home.jsp</result>
+			<!-- <result name="success">/appNew/status/ApplicationStatus.jsp</result> -->
+			<result name="applicationDetails">/appNew/status/ApplicationStatusDetails.jsp</result>
+			<result name="applicationDetailsWithHeader">/appNew/status/ApplicationStatusDetails.jsp</result>
+			
+			<result name="success">/appNew/common/Home.jsp</result>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+			<result name="error" type="redirect">/</result>
+		</action>
+		<action name="getapplicationtrack" method="getApplicationTrack" class="applicationStatusAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+	</package>
+</struts>	
