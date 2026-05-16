@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="sbi" default="compile" basedir=".">
+
+    <property name="war-file" value="sbi.war"/>
+    <property name="src-dir" value="src" />
+    <property name="build-dir" value="build/classes" />
+    <property name="webxml-file" value="WebContent/WEB-INF/web.xml" />
+	<property name="web-dir" value="WebContent" />
+
+	<path id="compileSrc">
+	    <fileset dir="WebContent/WEB-INF/lib">
+	        <include name="*.jar" />
+	    </fileset>
+	</path>
+    <target name="compile" depends="">
+    	<mkdir dir="build/classes"/>
+    	
+		<copy includeemptydirs="false" todir="${build-dir}">
+    		<fileset dir="${src-dir}">
+    			<exclude name="**/*.java"/>
+    			<exclude name="log4j2.xml"/>
+			</fileset>
+		</copy>
+    	
+        <javac srcdir="${src-dir}" destdir="${build-dir}" includeantruntime="false" classpathref="compileSrc" />
+    </target>
+	
+    <target name="war" depends="compile">
+        <war warfile="${war-file}" webxml="${webxml-file}">
+            <classes dir="${build-dir}"/>
+        	<fileset dir="${web-dir}">
+			    <include name="app/"/>
+			    <include name="appNew/"/>
+        		<include name="META-INF/"/>
+			    <include name="WEB-INF/"/>
+			</fileset>
+        </war>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build-dir}"/>
+        <delete file="${war-file}"/>
+    </target>
+
+</project>
