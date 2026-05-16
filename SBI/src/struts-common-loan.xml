@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+ 
+ <!-- Home Loan action -->
+ 
+ <struts>
+ 	<package name="common-loan-actions" extends="sbi">
+ 	
+ 		<!-- <action name="initloan" method="initLoan" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+		</action> -->
+		<action name="changelanguage" method="changeLanguage" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+		</action>
+		<action name="home-faq" method="homeFaq" class="commonLoanAction">
+      		<result name="successOld">/app/common/homeFAQ.jsp</result>
+      		<result name="success">/appNew/common/HomeFAQ.jsp</result>
+      	</action>
+		
+		<action name="contact-us" method="contactUs" class="commonLoanAction">
+      		<result name="successOld">/app/common/contactUs.jsp</result>
+      		<result name="success">/appNew/common/ContactUs.jsp</result>
+      	</action>
+      	
+      	<action name="under-maintainance" method="underMaintainance" class="commonLoanAction">
+      		<result name="successOld">/app/common/home.jsp</result>
+      		<result name="success">/appNew/common/Home.jsp</result>
+      	</action>
+      	
+      	<action name="home" method="home" class="commonLoanAction">
+      		<result name="successOld">/app/common/home.jsp</result>
+      		<result name="success">/appNew/common/Home.jsp</result>
+      		<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+      	</action>
+		
+		<action name="residancetypeonchange" method="residanceTypeOnChange" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+		<action name="citybystateid" method="cityByStateId" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		
+		<action name="getCitiesForHomeLoan" method="getCitiesForHomeLoan" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		
+		<action name="getDistrictByStateId" method="getDistrictByStateId" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		<action name="pinCodeByCityId" method="pinCodeByCityId" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		
+		<action name="pinCodeByDistrictId" method="pinCodeByDistrictId" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		<action name="disticByStateid" method="disticByStateid" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		
+		<action name="branchByStateId" method="branchByStateId" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		<action name="branchByDistrictId" method="branchByDistrictId" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		
+		<action name="branchByCityId" method="branchByCityId" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		
+		<!-- <action name="localityByStateId" method="localityByStateId" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action> -->
+		
+		<action name="localityordistrictbystateandcityid" method="localityOrDistrictByStateandCityId" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		<action name="getallbank" method="getAllBank" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		
+		<action name="loanPurposeByParentId" method="loanPurposeByParentId" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		
+		<action name="getAllEmployer" method="getAllEmployer" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		
+		<action name="getAllBranchName" method="getAllBranchName" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		
+		<action name="getAllEmployerForPL" method="getAllEmployerForPL" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		<action name="getAllEmployerForXpressCreditIT" method="getAllEmployerForXpressCreditIT" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		
+		<action name="getAllBuilder" method="getAllBuilder" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		
+		<action name="getPreownedCarDealer" method="getPreownedCarDealer" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		
+		<!-- <action name="uiFieldByParentId" method="uiFieldByParentId" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action> -->
+		
+		<action name="getRequestConfigByLoanType" method="getRequestConfigByLoanType" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		
+		<action name="getTypeOfSalaryPackage" method="getTypeOfSalaryPackage" class="commonLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+
+		<action name="encrypt" method="getEncrypt" class="commonLoanAction">
+      		<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+      	</action>
+      	
+		<action name="decrypt" method="getDecrypt" class="commonLoanAction">
+      		<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+      	</action>
+      	
+		<action name="sms-consent" method="getSmsCallBackUrlResponse" class="commonLoanAction">
+      	
+      	</action>
+      	 <!-- 	<action name="flexi-pay-emis" method="getFlexiPayEmis" class="commonLoanAction">
+      		<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+      	</action> -->
+      	
+      	<action name="campaign-lead" method="quickUploadLead" class="uploadLead">
+      		<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+       		<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+      	</action>
+      	<action name="infronics-Lead" method="infronicsLead" class="infronicsLead">
+      		<result name="success">/app/common/home.jsp</result>
+      	</action>
+      	<action name="ivrs-otp" method="getIvrsOtpCallBackUrlResponse" class="commonLoanAction">
+      		<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+      	
+      <!-- 	<action name="crm-serviceCall" method="crmLeadSave" class="commonLoanAction">
+      		
+      	</action>
+      	 -->
+      	<action name="mingle-lead" method="processMingleLead" class="mingleLead">
+      		<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+       		<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+      	</action>
+      	<action name="home-about-us" method="homeAboutUs" class="commonLoanAction">
+      		<result name="success">/appNew/common/HomeAboutUs.jsp</result>
+      	</action>
+      	<action name="ivrs-otp" method="getIvrsOtpCallBackUrlResponse" class="commonLoanAction">
+      		<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+		<action name="logout" method="logout" class="commonLoanAction">
+      		<result name="success">/app/common/jsonResponsePage.jsp</result>
+      	</action>
+      	<action name="update-constants" method="updateConstants" class="commonLoanAction">
+      		<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+      	</action>
+      	<action name="getString" method="getSaltKey" class="commonLoanAction">
+      		<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+      	</action>
+      	<action name="quick-lead" method="lmsQuickUploadLead" class="uploadLead">
+      		<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+       		<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+      	</action>
+	</package>
+</struts>
