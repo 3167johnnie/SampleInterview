@@ -8,7 +8,7 @@
 				<div class="modal-body">
 					<button type="button" class="close clo" data-bs-dismiss="modal" aria-bs-label="Close"><span aria-hidden="true">
 					<img src="<s:property value="%{@com.mintstreet.common.util.Constants@BANK_IMAGE_FOLDER_NEWUI}"/>/closedark.png"/></span></button> 
-					<div id = "v" class="f-otp-pop-content ">
+					<div id = "consentHomeLoanDiv" class="f-otp-pop-content ">
 						<s:property escapeHtml="false" value="%{beanList.consentHomeLoan}" />
 					</div>
 				</div>
