@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+ 
+ <!-- struts-common-loan-web-services -->
+ 
+ <struts>
+ 	<package name="struts-common-loan-web-services" extends="sbi">
+ 	
+		<action name="initiateProcess" method="getInititateProcess" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="sendOTP" method="sendOTP" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="reSendOTP" method="resendOTP" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="verifyOTP" method="verifyOTP" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="getLoanQuote" method="getLoanQuote" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="getSliderQuote" method="getChangeLoanQuote" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="applyApplication" method="applyApplication" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="finalFormSubmit" method="finalFormSubmit" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<!-- <action name="downloadPdf" method="downloadPdf" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+			<result name="downloadPDF" type="stream">
+       	 		<param name="contentType">application/pdf</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename=Home-Loan.pdf</param> 
+				<param name="bufferSize">1024</param> 
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action> -->
+		<action name="downloadPdf" method="downloadPdf" class="commonLoanWebServiceAction">
+			<result name="downLoadPDF" type="stream">
+			  <param name="contentType">application/pdf</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename=Auto-Loan.pdf</param> 
+				<param name="bufferSize">1024</param> 
+			</result>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+		</action>
+		<action name="submitAppTrack" method="submitAppTrack" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="call-rule-engine" method="callRuleEngine" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+		</action>
+		<action name="call-pdf-engine" method="callPDFEngine" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+		</action>
+		<action name="call-nsdl-engine" method="callNSDLEngine" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+		</action>
+		<action name="getCallbackMasters" method="getCallbackMasters" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="call-intial-token" method="callInitialToken" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+		</action>
+		<action name="getMasters" method="callMasters" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="getModel" method="getModelByMakeId" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="getVariant" method="getVariantByModelId" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="getCity" method="getCities" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="getDistrict" method="getDistricts" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="getBranches" method="getBranches" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="getAllStates" method="getAllStates" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="getEmployerList" method="getAllEmployerList" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="finalAppointment" method="finalAppointment" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="getCallBack" method="getCallBack" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="reSendOTPCallBack" method="reSendOTPCallBack" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="callBackVerifyOTP" method="callBackVerifyOTP" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="getAppRefStatus" method="getAppRefStatus" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="getDocuments" method="getDocuments" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<!-- <action name="getCBSCall" method="getCBSCall" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action> -->
+		<action name="getCBSCall" method="getCBSCall" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="resendOTPCBS" method="resendOTPCBS" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="verifyOTPCBS" method="verifyOTPCBS" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="setDeviceInfo" method="setDeviceInfo" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="encrypt" method="getEncrypt" class="commonLoanWebServiceAction">
+      		<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+      	</action>
+      	
+		<action name="decrypt" method="getDecrypt" class="commonLoanWebServiceAction">
+      		<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+      	</action>
+      	<action name="getInstituteList" method="getAllInstituteList" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="docUpload" method="getDocUpload" class="commonLoanWebServiceAction">
+			<interceptor-ref name="fileUpload">
+				<param name="maximumSize">3145728</param>
+				<param name="allowedTypes">
+					image/pjpeg,image/jpeg,image/jpg,image/png,image/gif,application/pdf
+				</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref>
+		</action>
+		<action name="quoteEmailData" method="deepLinking" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="getAllProjects" method="getAllProjects" class="commonLoanWebServiceAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+		</action>
+		<action name="getEncryptedBasedOnHashing" method="getEncryptedBasedOnHashing" class="commonLoanWebServiceAction">
+      		<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+      	</action>
+      	<action name="getAgriLosRequestHash" method="getAgriLosRequestHash" class="commonLoanWebServiceAction">
+      		<result name="success" type="json">
+       	 		<param name="root">json</param>
+       	 	</result>
+       	 	<interceptor-ref name="defaultStack"></interceptor-ref>
+       	 	<interceptor-ref name="json">
+				<param name="enableSMD">true</param>
+			</interceptor-ref>
+      	</action>
+	</package>
+</struts>
