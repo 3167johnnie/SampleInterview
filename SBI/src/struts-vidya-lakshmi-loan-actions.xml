@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+ 
+ <!-- vidya lakshmi loan action -->
+ 
+ <struts>
+ 	<package name="vidya-lakshmi-loan-actions" extends="sbi">
+		<action name="upload-vidya-lakshmi-loan" method="uploadVidyaLakshmiLoanApplication" class="vidyaLakshmiLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+      	
+      	<action name="download-vidya-lakshmi-loan" method="downloadVidyaLakshmiLoanApplicationStatus" class="vidyaLakshmiLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>  
+      	
+      	<action name="vlp-file-list" method="getFileList" class="vlpGetFileListScheduler">
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+      	</action>
+      	
+      	<action name="vlp-get-file" method="getFileFromVLP" class="vlpGetFile">
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+      	</action>
+      	
+      	<action name="vlp-process-file" method="uploadVLP" class="vlpProcessFile">
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+      	</action> 
+      	
+      	<action name="vlp-status-upload" method="fileStatusUploadToVLP" class="vlpStatusUpload">
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+      	</action> 
+      	
+      	<action name="vlp-status-report" method="getVlpFileStatus" class="vlpStatusReport">
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+      	</action> 
+      	  
+	</package>
+</struts>	
