@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+ 
+ <!-- Education Loan action -->
+ 
+ <struts>
+ 	<package name="education-loan-actions" extends="sbi">
+ 		<action name="initeducationloan" method="initEducationLoan" class="educationLoanAction">
+			<result name="success" type="json">
+				<param name="root">json</param>
+			</result>
+		</action>
+		<!-- <action name="education-loan" method="educationLoan" class="educationLoanAction">
+			<interceptor-ref name="token"></interceptor-ref> 
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref>
+			<result name="homePageOld">/app/loan/educationloan/educationLoan.jsp</result>
+			<result name="firstPageOld">/app/loan/educationloan/educationFirstPage.jsp</result>
+			<result name="secondPageOld">/app/loan/educationloan/educationSecondPageScript.jsp</result>
+			<result name="secondPageChangeOld">/app/loan/educationloan/educationSecondPage.jsp</result>
+			<result name="thirdPageOld">/app/loan/educationloan/educationThirdPage.jsp</result>
+			<result name="thankYouPageOld">/app/common/loanThankYou.jsp</result>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+			<result name="repaymentScheduledOld">/app/common/repaymentScheduled.jsp</result>
+			<result name="secondPageWithHeaderOld">/app/loan/educationloan/educationSecondPageWithHeader.jsp</result>
+			<result name="downLoadPDF" type="stream">
+			  <param name="contentType">application/pdf</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename=Education-Loan.pdf</param> 
+				<param name="bufferSize">1024</param> 
+			</result>
+		</action> -->
+		<action name="edvantage-loan" method="educationGlobalEdvantage" class="educationLoanAction">
+			<!-- <interceptor-ref name="token"></interceptor-ref> --> 
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref>
+			<result name="homePageOld">/app/loan/educationloan/educationLoan.jsp</result>
+			<result name="firstPageOld">/app/loan/educationloan/educationFirstPage.jsp</result>
+			<result name="secondPageOld">/app/loan/educationloan/educationSecondPageScript.jsp</result>
+			<result name="secondPageChangeOld">/app/loan/educationloan/educationSecondPage.jsp</result>
+			<result name="thirdPageOld">/app/loan/educationloan/educationThirdPage.jsp</result>
+			<result name="thankYouPageOld">/app/common/loanThankYou.jsp</result>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+			<result name="repaymentScheduledOld">/app/common/repaymentScheduled.jsp</result>
+			<result name="secondPageWithHeaderOld">/app/loan/educationloan/educationSecondPageWithHeader.jsp</result>
+			<result name="downLoadPDF" type="stream">
+			  <param name="contentType">application/pdf</param>
+			  	<param name="allowCaching">false</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename=Education-Loan.pdf</param> 
+				<param name="bufferSize">1024</param> 
+			</result>
+			<result name="cbsOtpPageOld">/app/common/commonCbsOtp.jsp</result>
+			
+			<!-- NEW UI -->
+			<result name="homePage">/appNew/loan/educationloan/EducationLoan.jsp</result>
+			<result name="firstPage">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="secondPage">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="secondPageChange">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="thirdPage">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="thankYouPage">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<!-- <result name="jsonResponsePage">/appNew/common/jsonResponsePage.jsp</result> -->
+			<result name="repaymentScheduled">/appNew/common/RepaymentScheduled.jsp</result>
+			<result name="secondPageWithHeader">/appNew/loan/educationloan/EducationSecondPageWithHeader.jsp</result>
+			<result name="cbsOtpPage">/appNew/common/CommonCbsOtp.jsp</result>
+		</action>
+		<action name="scholar-loan" method="educationScholarLoan" class="educationLoanAction">
+			<!-- <interceptor-ref name="token"></interceptor-ref> --> 
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref>
+			<result name="homePageOld">/app/loan/educationloan/educationLoan.jsp</result>
+			<result name="firstPageOld">/app/loan/educationloan/educationFirstPage.jsp</result>
+			<result name="secondPageOld">/app/loan/educationloan/educationSecondPageScript.jsp</result>
+			<result name="secondPageChangeOld">/app/loan/educationloan/educationSecondPage.jsp</result>
+			<result name="thirdPageOld">/app/loan/educationloan/educationThirdPage.jsp</result>
+			<result name="thankYouPageOld">/app/common/loanThankYou.jsp</result>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+			<result name="repaymentScheduledOld">/app/common/repaymentScheduled.jsp</result>
+			<result name="secondPageWithHeaderOld">/app/loan/educationloan/educationSecondPageWithHeader.jsp</result>
+			<result name="downLoadPDF" type="stream">
+			  <param name="contentType">application/pdf</param>
+			  	<param name="allowCaching">false</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename=Education-Loan.pdf</param> 
+				<param name="bufferSize">1024</param> 
+			</result>
+			<result name="cbsOtpPageOld">/app/common/commonCbsOtp.jsp</result>
+			
+			<!-- UI NEW  -->
+			<result name="homePage">/appNew/loan/educationloan/EducationLoan.jsp</result>
+			<result name="firstPage">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="secondPage">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="secondPageChange">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="thirdPage">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="thankYouPage">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<!-- <result name="jsonResponsePage">/appNew/common/jsonResponsePage.jsp</result> -->
+			<result name="repaymentScheduled">/appNew/common/RepaymentScheduled.jsp</result>
+			<result name="secondPageWithHeader">/appNew/loan/educationloan/EducationSecondPageWithHeader.jsp</result>
+			<result name="cbsOtpPage">/appNew/common/CommonCbsOtp.jsp</result>
+		</action>
+		<action name="education-loan-dsr" method="educationLoanDSR" class="educationLoanAction">
+			<!-- <interceptor-ref name="token"></interceptor-ref> --> 
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref>
+			<result name="homePageOld">/app/dsr/educationloan/dsrEducationLoan.jsp</result>
+			<!-- <result name="firstPageOld">/app/dsr/educationloan/dsrFirstPage.jsp</result> -->
+			<result name="firstPageOld">/app/dsr/educationloan/dsrFirstPage.jsp</result>
+			<result name="secondPageOld">/app/dsr/educationloan/dsrSecondPageScript.jsp</result>
+			<result name="secondPageChangeOld">/app/dsr/educationloan/dsrSecondPage.jsp</result>
+			<result name="thirdPageOld">/app/loan/educationloan/educationThirdPage.jsp</result>
+			<result name="thankYouPageOld">/app/common/dsrThankYou.jsp</result>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+			<result name="secondPageWithHeaderOld">/app/dsr/education/dsrSecondPageWithHeader.jsp</result>
+			<result name="callsLogDetailsOld">/app/common/callLogDetails.jsp</result>
+			<result name="repaymentScheduledOld">/app/common/repaymentScheduled.jsp</result>
+			<result name="downLoadPDF" type="stream">
+			  <param name="contentType">application/pdf</param>
+			  	<param name="allowCaching">false</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename=Education-Loan.pdf</param> 
+				<param name="bufferSize">1024</param> 
+			</result>
+			<result name="cbsVerifyButtonPageOld">/app/common/commonCbsVarifySmsOtp.jsp</result>
+		</action>
+		
+		<action name="education-takeover-loan" method="educationTakeOver" class="educationLoanAction">
+			<!-- <interceptor-ref name="token"></interceptor-ref> --> 
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref>
+			<result name="homePageOld">/app/loan/educationloan/educationLoan.jsp</result>
+			<result name="firstPageOld">/app/loan/educationloan/educationFirstPage.jsp</result>
+			<result name="secondPageOld">/app/loan/educationloan/educationSecondPageScript.jsp</result>
+			<result name="secondPageChangeOld">/app/loan/educationloan/educationSecondPage.jsp</result>
+			<result name="thirdPageOld">/app/loan/educationloan/educationThirdPage.jsp</result>
+			<result name="thankYouPageOld">/app/common/loanThankYou.jsp</result>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+			<result name="repaymentScheduledOld">/app/common/repaymentScheduled.jsp</result>
+			<result name="secondPageWithHeaderOld">/app/loan/educationloan/educationSecondPageWithHeader.jsp</result>
+			<result name="downLoadPDF" type="stream">
+			  <param name="contentType">application/pdf</param>
+			  	<param name="allowCaching">false</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename=Education-Loan.pdf</param> 
+				<param name="bufferSize">1024</param> 
+			</result>
+			<result name="cbsOtpPageOld">/app/common/commonCbsOtp.jsp</result>
+			
+			<!-- NEW UI -->
+			<result name="homePage">/appNew/loan/educationloan/EducationLoan.jsp</result>
+			<result name="firstPage">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="secondPage">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="secondPageChange">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="thirdPage">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="thankYouPage">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="repaymentScheduled">/appNew/common/RepaymentScheduled.jsp</result>
+			<result name="secondPageWithHeader">/appNew/loan/educationloan/EducationSecondPageWithHeader.jsp</result>
+			<result name="cbsOtpPage">/appNew/common/CommonCbsOtp.jsp</result>		
+		</action>
+		<!-- <action name="bidyalakhmi-loan" method="educationBidhyaLakhmi" class="educationLoanAction">
+			<interceptor-ref name="token"></interceptor-ref> 
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref>
+			<result name="homePageOld">/app/loan/educationloan/educationLoan.jsp</result>
+			<result name="firstPageOld">/app/loan/educationloan/educationFirstPage.jsp</result>
+			<result name="secondPageOld">/app/loan/educationloan/educationSecondPageScript.jsp</result>
+			<result name="secondPageChangeOld">/app/loan/educationloan/educationSecondPage.jsp</result>
+			<result name="thirdPageOld">/app/loan/educationloan/educationThirdPage.jsp</result>
+			<result name="thankYouPageOld">/app/common/loanThankYou.jsp</result>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+			<result name="repaymentScheduledOld">/app/common/repaymentScheduled.jsp</result>
+			<result name="secondPageWithHeaderOld">/app/loan/educationloan/educationSecondPageWithHeader.jsp</result>
+			<result name="downLoadPDF" type="stream">
+			  <param name="contentType">application/pdf</param>
+			  	<param name="allowCaching">false</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename=Education-Loan.pdf</param> 
+				<param name="bufferSize">1024</param> 
+			</result>
+			<result name="cbsOtpPageOld">/app/common/commonCbsOtp.jsp</result>
+			
+			UI NEW 
+			<result name="homePage">/appNew/loan/educationloan/EducationLoan.jsp</result>
+			<result name="firstPage">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="secondPage">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="secondPageChange">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="thirdPage">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="thankYouPage">/appNew/loan/educationloan/EducationFirstPage.jsp</result>
+			<result name="jsonResponsePage">/appNew/common/jsonResponsePage.jsp</result>
+			<result name="repaymentScheduled">/appNew/common/RepaymentScheduled.jsp</result>
+			<result name="secondPageWithHeader">/appNew/loan/educationloan/EducationSecondPageWithHeader.jsp</result>
+			<result name="cbsOtpPage">/appNew/common/CommonCbsOtp.jsp</result>
+		</action> -->
+		<action name="instituteByCourseType" method="instituteByCourseType" class="educationLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+      	
+      	<action name="instituteCategoryType" method="instituteCategoryType" class="educationLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+      	
+      	<action name="getAllCourseName" method="getAllCourseName" class="educationLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		
+		<action name="getAllInstituteName" method="getAllInstituteName" class="educationLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		
+		<action name="getAllUniversity" method="getAllUniversity" class="educationLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+		
+	</package>
+</struts>	
