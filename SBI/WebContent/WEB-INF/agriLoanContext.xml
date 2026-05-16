@@ -1,0 +1,56 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-3.0.xsd"
+default-lazy-init="true">
+
+	<bean id="agriLoanAction" class="com.mintstreet.loan.agriloan.action.AgriLoanAction" scope="prototype"></bean>
+	<bean id="applicationFormAgriLoanCallsDao" class="com.mintstreet.loan.agriloan.dao.ApplicationFormAgriLoanCallsDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="applicationFormAgriLoanDao" class="com.mintstreet.loan.agriloan.dao.ApplicationFormAgriLoanDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="applicationFormAgriLoanQuoteDao" class="com.mintstreet.loan.agriloan.dao.ApplicationFormAgriLoanQuoteDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterAgriMakeDao" class="com.mintstreet.loan.agriloan.dao.MasterAgriMakeDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterAgriModelDao" class="com.mintstreet.loan.agriloan.dao.MasterAgriModelDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterAgriVariantDao" class="com.mintstreet.loan.agriloan.dao.MasterAgriVariantDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterAgriIntermediaryDao" class="com.mintstreet.loan.agriloan.dao.MasterAgriIntermediaryDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterAgriProductDao" class="com.mintstreet.loan.agriloan.dao.MasterAgriProductDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="agriLoanService" class="com.mintstreet.loan.agriloan.service.AgriLoanService">
+		<property name="applicationFormAgriLoanCallsDao" ref="applicationFormAgriLoanCallsDao" />
+		<property name="applicationFormAgriLoanDao" ref="applicationFormAgriLoanDao" />
+		<property name="applicationFormAgriLoanQuoteDao" ref="applicationFormAgriLoanQuoteDao" />
+		<property name="masterAgriMakeDao" ref="masterAgriMakeDao" />
+		<property name="masterAgriModelDao" ref="masterAgriModelDao" />
+		<property name="masterAgriVariantDao" ref="masterAgriVariantDao" />
+		<property name="masterAgriIntermediaryDao" ref="masterAgriIntermediaryDao" />
+		<property name="masterAgriProductDao" ref="masterAgriProductDao" />
+		<property name="masterCBSResponseDao"  ref="masterCBSResponseDao"/>
+	</bean>
+	<bean id="agriLoanHelper" class="com.mintstreet.loan.agriloan.util.AgriLoanHelper"></bean>
+	<bean id="agriProcessManagerImpl" class="com.mintstreet.loan.agriloan.bo.impl.AgriProcessManagerImpl"></bean>
+	<bean id="agriUtil" class="com.mintstreet.loan.agriloan.util.AgriUtil"></bean>
+	<bean id="agriEngine" class="com.mintstreet.common.engine.AgriEngine"></bean>
+
+</beans>
