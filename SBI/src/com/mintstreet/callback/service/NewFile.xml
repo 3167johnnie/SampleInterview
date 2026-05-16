@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<soapenv:Body>
+		<register_OCAS_INSERT_CCDBResponse
+			xmlns="http://sbiccwebservice.servion.com/">
+			<register_OCAS_INSERT_CCDBReturn
+				xmlns:ns1="http://sbiccwebservice.servion.com">1</register_OCAS_INSERT_CCDBReturn>
+		</register_OCAS_INSERT_CCDBResponse>
+	</soapenv:Body>
+</soapenv:Envelope>
