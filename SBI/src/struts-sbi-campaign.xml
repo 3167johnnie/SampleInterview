@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- SBI Campaign action -->
+
+<struts>
+	<package name="sbi-campaign-actions" extends="sbi">
+		<action name="campaign-home" method="setCampaignDetails" class="campaignAction">
+			<result name="success" type="json">
+				<param name="root">json</param>
+			</result>
+		</action>
+		<action name="sbi-tata" method="setCampaignPage" class="campaignAction">
+			<result name="success">/app/common/sbiCampaign.jsp</result>
+		</action>
+		<action name="confirm-Otp" method="confirmOtp" class="campaignAction">
+			<result name="success" type="json">
+				<param name="root">json</param>
+			</result>
+		</action>
+		<action name="resend-Otp" method="resendOtp" class="campaignAction">
+			<result name="success" type="json">
+				<param name="root">json</param>
+			</result>
+		</action>
+		<action name="downloadSbiTataPdf" method="getDownloadPdf" class="campaignAction">
+      		<result name="downLoadTataPDF" type="stream">
+			  <param name="contentType">application/octet-stream</param>
+				<param name="inputName">inputStream</param>
+				<param name="allowCaching">false</param>
+				<param name="contentDisposition">attachment;filename=${fileName}</param> 
+				<param name="bufferSize">4096</param> 
+			</result>
+      	</action>	
+	</package>
+</struts>	
