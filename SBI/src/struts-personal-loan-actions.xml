@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+ 
+ <!-- Personal Loan action -->
+ 
+ <struts>
+ 	<package name="personal-loan-actions" extends="sbi">
+ 		<action name="initpersonalloan" method="initPersonalLoan" class="personalLoanAction">
+			<result name="success" type="json">
+				<param name="root">json</param>
+			</result>
+		</action>
+		
+		<action name="personal-loan" method="personalLoan" class="personalLoanAction">
+			<!-- <interceptor-ref name="token"></interceptor-ref> --> 
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref>
+			<result name="homePageOld">/app/loan/personal/personalLoan.jsp</result>
+			<result name="firstPageOld">/app/loan/personal/personalFirstPage.jsp</result>
+			<result name="otpPageEliteOld">/app/loan/personal/includes/otpPageElite.jsp</result>
+			<result name="secondPageOld">/app/loan/personal/personalSecondPageScript.jsp</result>
+			<result name="secondPageChangeOld">/app/loan/personal/personalSecondPage.jsp</result>
+			<result name="thirdPageOld">/app/loan/personal/personalThirdPage.jsp</result>
+			<result name="thankYouPageOld">/app/common/loanThankYou.jsp</result>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+			<result name="repaymentScheduledOld">/app/common/repaymentScheduled.jsp</result>
+			<!-- <result name="coapplicantDataOld">/app/loan/personal/personalCoapplicant.jsp</result> -->
+			<result name="secondPageWithHeaderOld">/app/loan/personal/personalSecondPageWithHeader.jsp</result>
+			<result name="downLoadPDF" type="stream">
+			  <param name="contentType">application/pdf</param>
+			  	<param name="allowCaching">false</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename=Personal-Loan.pdf</param> 
+				<param name="bufferSize">1024</param> 
+			</result>
+			<result name="cbsOtpPageOld">/app/common/commonCbsOtp.jsp</result>
+			
+			<!-- UI NEW  -->
+			<result name="homePage">/appNew/loan/personal/PersonalLoan.jsp</result>
+			<result name="firstPage">/appNew/loan/personal/PersonalFirstPage.jsp</result>
+			<result name="secondPage">/appNew/loan/personal/PersonalFirstPage.jsp</result>
+			<result name="secondPageChange">/appNew/loan/personal/PersonalFirstPage.jsp</result>
+			<result name="thirdPage">/appNew/loan/personal/PersonalFirstPage.jsp</result>
+			<result name="thankYouPage">/appNew/loan/personal/PersonalFirstPage.jsp</result>
+			<result name="repaymentScheduled">/appNew/common/RepaymentScheduled.jsp</result>
+			<result name="secondPageWithHeader">/appNew/loan/personal/PersonalSecondPageWithHeader.jsp</result>
+			<result name="cbsOtpPage">/appNew/common/CommonCbsOtp.jsp</result>
+			<result name="otpPageElite">/appNew/loan/personal/includes/OtpPageElite.jsp</result>
+		</action>
+		
+		
+		<!-- GOLD LOAN--> 
+		<action name="gold-loan" method="goldLoan" class="personalLoanAction">
+			<!-- <interceptor-ref name="token"></interceptor-ref> --> 
+				<!-- UI NEW  -->
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+			<result name="downLoadPDF" type="stream">
+			  <param name="contentType">application/pdf</param>
+			  	<param name="allowCaching">false</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename=Personal-Loan.pdf</param> 
+				<param name="bufferSize">1024</param> 
+			</result>
+			<result name="homePage">/appNew/loan/personal/Gold.jsp</result>
+			<result name="firstPage">/appNew/loan/personal/GoldFirstPage.jsp</result>
+			<result name="secondPage">/appNew/loan/personal/GoldFirstPage.jsp</result>
+			<!-- <result name="secondPageChange">/appNew/loan/personal/GoldFirstPage.jsp</result>
+			<result name="thirdPage">/appNew/loan/personal/GoldFirstPage.jsp</result> -->
+			<result name="thankYouPage">/appNew/loan/personal/GoldFirstPage.jsp</result>
+			<!-- <result name="repaymentScheduled">/appNew/common/RepaymentScheduled.jsp</result>
+			<result name="secondPageWithHeader">/appNew/loan/personal/PersonalSecondPageWithHeader.jsp</result> -->
+			<result name="cbsOtpPage">/appNew/common/CommonCbsOtp.jsp</result>
+			<result name="otpPageElite">/appNew/loan/personal/includes/OtpPageElite.jsp</result>
+		</action>
+		
+		<action name="personal-loan-dsr" method="personalLoanDSR" class="personalLoanAction">
+			<!-- <interceptor-ref name="token"></interceptor-ref> --> 
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref>
+			<result name="homePageOld">/app/dsr/personal/dsrPersonalLoan.jsp</result>
+			<result name="firstPageOld">/app/dsr/personal/dsrFirstPage.jsp</result>
+			<result name="otpPageEliteOld">/app/loan/personal/includes/otpPageElite.jsp</result>
+			<result name="secondPageOld">/app/dsr/personal/dsrSecondPageScript.jsp</result>
+			<result name="secondPageChangeOld">/app/dsr/personal/dsrSecondPage.jsp</result>
+			<result name="thirdPageOld">/app/loan/personal/personalThirdPage.jsp</result>
+			<result name="thankYouPageOld">/app/common/dsrThankYou.jsp</result>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+			<result name="secondPageWithHeaderOld">/app/loan/personal/personalSecondPageWithHeader.jsp</result>
+			<result name="callsLogDetailsOld">/app/common/callLogDetails.jsp</result>
+			<result name="repaymentScheduledOld">/app/common/repaymentScheduled.jsp</result>
+			<result name="downLoadPDF" type="stream">
+			  <param name="contentType">application/pdf</param>
+			  	<param name="allowCaching">false</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename=Personal-Loan.pdf</param> 
+				<param name="bufferSize">1024</param> 
+			</result>
+			<result name="cbsVerifyButtonPageOld">/app/common/commonCbsVarifySmsOtp.jsp</result>
+		</action>
+		
+		<action name="pension-loan" method="pensionLoan" class="personalLoanAction">			
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref> 
+			<result name="homePageOld">/app/loan/personal/personalLoan.jsp</result>
+			<result name="firstPageOld">/app/loan/personal/personalFirstPage.jsp</result>
+			<result name="secondPageOld">/app/loan/personal/personalSecondPageScript.jsp</result>
+			<result name="secondPageChangeOld">/app/loan/personal/personalSecondPage.jsp</result>
+			<result name="thirdPageOld">/app/loan/personal/personalThirdPage.jsp</result>
+			<result name="thankYouPageOld">/app/common/loanThankYou.jsp</result>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+			<result name="repaymentScheduledOld">/app/common/repaymentScheduled.jsp</result>
+			<result name="coapplicantDataOld">/app/loan/personal/personalCoapplicant.jsp</result>
+			<result name="secondPageWithHeaderOld">/app/loan/personal/personalSecondPageWithHeader.jsp</result>
+			<result name="downLoadPDF" type="stream">
+			  <param name="contentType">application/pdf</param>
+			  	<param name="allowCaching">false</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename=Personal-Loan.pdf</param> 
+				<param name="bufferSize">1024</param> 
+			</result>
+			<result name="cbsOtpPageOld">/app/common/commonCbsOtp.jsp</result>
+			
+			<!-- UI NEW  -->
+			<result name="homePage">/appNew/loan/personal/PersonalLoan.jsp</result>
+			<result name="firstPage">/appNew/loan/personal/PersonalFirstPage.jsp</result>
+			<result name="secondPage">/appNew/loan/personal/PersonalFirstPage.jsp</result>
+			<result name="secondPageChange">/appNew/loan/personal/PersonalFirstPage.jsp</result>
+			<result name="thirdPage">/appNew/loan/personal/PersonalFirstPage.jsp</result>
+			<result name="thankYouPage">/appNew/loan/personal/PersonalFirstPage.jsp</result>
+			<result name="repaymentScheduled">/appNew/common/RepaymentScheduled.jsp</result>
+			<result name="secondPageWithHeader">/appNew/loan/personal/PersonalSecondPageWithHeader.jsp</result>
+			<result name="cbsOtpPage">/appNew/common/CommonCbsOtp.jsp</result>
+		</action>
+		
+		<!-- <action name="cve" method="cveLoan" class="personalLoanAction">
+			
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+			<result name="downLoadPDF" type="stream">
+			  <param name="contentType">application/pdf</param>
+			  	<param name="allowCaching">false</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename=Personal-Loan.pdf</param> 
+				<param name="bufferSize">1024</param> 
+			</result>
+			<result name="homePage">/appNew/loan/personal/PersonalLoan.jsp</result>
+			<result name="firstPage">/appNew/loan/personal/PersonalFirstPage.jsp</result>
+			<result name="secondPage">/appNew/loan/personal/PersonalFirstPage.jsp</result>
+			<result name="secondPageChange">/appNew/loan/personal/PersonalFirstPage.jsp</result>
+			<result name="thirdPage">/appNew/loan/personal/PersonalFirstPage.jsp</result>
+			<result name="thankYouPage">/appNew/loan/personal/PersonalFirstPage.jsp</result>
+			<result name="repaymentScheduled">/appNew/common/RepaymentScheduled.jsp</result>
+			<result name="secondPageWithHeader">/appNew/loan/personal/PersonalSecondPageWithHeader.jsp</result>
+			<result name="cbsOtpPage">/appNew/common/CommonCbsOtp.jsp</result>
+			<result name="otpPageElite">/appNew/loan/personal/includes/OtpPageElite.jsp</result>
+			
+			<result name="homePageOld">/app/loan/personal/personalLoan.jsp</result>
+			<result name="firstPageOld">/app/loan/personal/personalFirstPage.jsp</result>
+			<result name="otpPageEliteOld">/app/loan/personal/includes/otpPageElite.jsp</result>
+			<result name="secondPageOld">/app/loan/personal/personalSecondPageScript.jsp</result>
+			<result name="secondPageChangeOld">/app/loan/personal/personalSecondPage.jsp</result>
+			<result name="thirdPageOld">/app/loan/personal/personalThirdPage.jsp</result>
+			<result name="thankYouPageOld">/app/common/loanThankYou.jsp</result>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+			<result name="consentRevoke">/appNew/common/CommonCbsCveNonConsentRevoke.jsp</result>
+			
+		</action>-->
+		
+		<action name="getInstituteCategoryByName" method="getInstituteCategoryByName" class="personalLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+
+		<action name="getInstituteCategoryByName" method="getInstituteCategoryByName" class="personalLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+
+      	<action name="getEmployerByName" method="getEmployerByName" class="personalLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+      	<action name="occupationByEmployementTypeID" method="occupationByEmployementTypeID" class="personalLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+      	
+	</package>
+</struts>
