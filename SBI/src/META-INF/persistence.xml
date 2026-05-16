@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" 
+	xmlns="http://java.sun.com/xml/ns/persistence" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+	<persistence-unit name="punit">
+		<mapping-file>META-INF/ormdef.xml</mapping-file>
+			<class>com.mintstreet.common.entity.MasterCarDealer</class>
+			<class>com.mintstreet.common.entity.MasterState</class>
+			<class>com.mintstreet.common.entity.MasterCity</class>
+			<class>com.mintstreet.common.entity.MasterLoanPurpose</class>
+			<class>com.mintstreet.common.entity.MasterLoanType</class>
+			<class>com.mintstreet.common.entity.MasterEmploymentType</class>
+			<class>com.mintstreet.common.entity.MasterEmployeeOccupationType</class>
+			<class>com.mintstreet.common.entity.MasterCoApplicant</class>
+			<class>com.mintstreet.common.entity.MasterCountry</class>
+			<!-- <class>com.mintstreet.common.entity.ValidateFormConfig</class> -->
+			<class>com.mintstreet.common.entity.ValidateRequestConfig</class>
+			<class>com.mintstreet.common.entity.MasterContent</class>
+			<class>com.mintstreet.common.entity.Template</class>
+			<class>com.mintstreet.common.entity.MasterBranch</class>
+			<class>com.mintstreet.common.entity.MasterBank</class>
+			<class>com.mintstreet.common.entity.MasterDistrict</class>
+			<class>com.mintstreet.common.entity.MasterLocality</class>
+			<class>com.mintstreet.common.entity.MasterEmployer</class>
+			<class>com.mintstreet.common.entity.MasterBuilder</class>
+			<class>com.mintstreet.common.entity.MasterDocumentType</class>
+			<class>com.mintstreet.common.entity.ApplicationFormLead</class>
+			<class>com.mintstreet.common.entity.MasterResidenceType</class>
+			<class>com.mintstreet.common.entity.MasterCertificate</class>
+			<class>com.mintstreet.common.entity.MasterGraduation</class>
+			<class>com.mintstreet.common.entity.MasterInstitute</class>
+			<class>com.mintstreet.common.entity.MasterRelationshipWithBank</class>
+			<class>com.mintstreet.common.entity.MasterLoanCategory</class>
+			<class>com.mintstreet.common.entity.MasterIndustryType</class>
+			<class>com.mintstreet.common.entity.MasterGender</class>
+			<class>com.mintstreet.common.entity.MasterSalesTeam</class>
+			<class>com.mintstreet.common.entity.MasterUniversity</class>
+			<class>com.mintstreet.common.entity.MasterProfession</class>
+			<class>com.mintstreet.common.entity.MasterDealer</class>
+			<class>com.mintstreet.common.entity.BankLmsUser</class>
+			<class>com.mintstreet.common.entity.MasterCorpSalaryPackage</class>
+			<class>com.mintstreet.common.entity.ApplicationFormLeadCall</class>
+			<class>com.mintstreet.common.entity.MasterLabelTooltip</class>
+			<class>com.mintstreet.common.entity.IntermediaryRel</class>
+			<class>com.mintstreet.common.entity.MasterLmsIntermediary</class>
+			<class>com.mintstreet.common.entity.MasterQualification</class>
+			<class>com.mintstreet.common.entity.BankLmsUserRole</class>
+			<class>com.mintstreet.common.entity.LoanStatus</class>
+			<class>com.mintstreet.common.entity.SecurityChecks</class>
+			<class>com.mintstreet.common.entity.MasterCBSCall</class>
+			<class>com.mintstreet.common.entity.MasterCBSResponse</class>
+			
+			<class>com.mintstreet.common.entity.BiometricRequest</class>
+			<class>com.mintstreet.common.entity.BiometricResponse</class>
+			<class>com.mintstreet.common.entity.CbsProductMapping</class>
+			<class>com.mintstreet.campaign.entity.TrackMainCampaign</class>
+			<class>com.mintstreet.campaign.entity.TrackCampaign</class>
+			<class>com.mintstreet.campaign.entity.TrackCampaignPlacementSource</class>
+			<class>com.mintstreet.campaign.entity.TrackVisit</class>
+			<class>com.mintstreet.campaign.entity.MarTech</class>
+			
+			<class>com.mintstreet.loan.homeloan.entity.ApplicationFormHomeLoan</class>
+			<class>com.mintstreet.loan.homeloan.entity.ApplicationFormHomeLoanQuote</class>
+			<class>com.mintstreet.loan.homeloan.entity.ApplicationFormHomeLoanCalls</class>	
+			<class>com.mintstreet.loan.homeloan.entity.MasterProject</class>
+
+			<class>com.mintstreet.loan.autoloan.entity.MasterCarType</class>
+			<class>com.mintstreet.loan.autoloan.entity.MasterCarCompany</class>
+			<class>com.mintstreet.loan.autoloan.entity.MasterCarModel</class>
+			<class>com.mintstreet.loan.autoloan.entity.MasterCarVariant</class>
+			<class>com.mintstreet.loan.autoloan.entity.ApplicationFormAutoLoan</class>
+			<class>com.mintstreet.loan.autoloan.entity.ApplicationFormAutoLoanQuote</class>
+			<class>com.mintstreet.loan.autoloan.entity.ApplicationFormAutoLoanCalls</class>
+			
+			<class>com.mintstreet.loan.educationloan.entity.ApplicationFormEducationLoanQuote</class>
+			<class>com.mintstreet.loan.educationloan.entity.ApplicationFormEducationLoan</class>
+			<class>com.mintstreet.loan.educationloan.entity.ApplicationFormEducationLoanCalls</class>
+			<class>com.mintstreet.loan.educationloan.entity.MasterCourseType</class>
+
+			<class>com.mintstreet.loan.personal.entity.ApplicationFormPersonalLoanQuote</class>
+			<class>com.mintstreet.loan.personal.entity.ApplicationFormPersonalLoan</class>
+			<class>com.mintstreet.loan.personal.entity.ApplicationFormPersonalLoanCalls</class>
+
+			<class>com.mintstreet.loan.product.entity.AlProduct</class>
+			<class>com.mintstreet.loan.product.entity.HlProduct</class>
+			<class>com.mintstreet.loan.product.entity.MasterElProduct</class>
+			<class>com.mintstreet.loan.product.entity.MasterPlProduct</class>
+
+			<class>com.mintstreet.common.entity.BureauLinkRequestResponse</class>
+			<!-- <class>com.mintstreet.common.entity.MasterCbilRequestResponse</class> -->
+			<!-- <class>com.mintstreet.integration.vlp.education.entity.VlpFileListDetails</class>
+			<class>com.mintstreet.integration.vlp.education.entity.VLPFileExportInfo</class>
+			<class>com.mintstreet.integration.vlp.education.entity.VLPLogInfo</class> -->
+
+			<class>com.mintstreet.loan.agriloan.entity.ApplicationFormAgriLoanCalls</class>
+			<class>com.mintstreet.loan.agriloan.entity.ApplicationFormAgriLoan</class>
+			<class>com.mintstreet.loan.agriloan.entity.ApplicationFormAgriLoanQuote</class>
+			<class>com.mintstreet.loan.agriloan.entity.MasterAgriMake</class>
+			<class>com.mintstreet.loan.agriloan.entity.MasterAgriModel</class>
+			<class>com.mintstreet.loan.agriloan.entity.MasterAgriVariant</class>
+			<class>com.mintstreet.loan.agriloan.entity.MasterAgriIntermediary</class>
+			
+
+			<!-- <class>com.mintstreet.webservice.entity.MobileDeviceInformation</class>
+			<class>com.mintstreet.webservice.entity.MobileSocialMedia</class> -->
+			
+			<class>com.mintstreet.loan.card.entity.MasterCardType</class>
+			<class>com.mintstreet.loan.card.entity.MasterCardIncome</class>
+			<class>com.mintstreet.loan.card.entity.MasterNatureBusiness</class>
+			<class>com.mintstreet.loan.card.entity.ApplicationFormCreditCard</class>
+			<class>com.mintstreet.loan.card.entity.MasterCardPromoCode</class>
+			<class>com.mintstreet.loan.card.entity.ApplicationFormCreditCardCalls</class>
+			<class>com.mintstreet.loan.card.entity.ApplicationFormCreditCardQuote</class>
+			<class>com.mintstreet.loan.card.entity.MasterCardLoyalityChannel</class>
+			<class>com.mintstreet.common.entity.SbiCampaignMaster</class>
+			<class>com.mintstreet.common.entity.SbiCampProject</class>
+			<class>com.mintstreet.common.entity.MicroLeadEntity</class>
+			<class>com.mintstreet.common.entity.CRMNextLog</class>
+			<class>com.mintstreet.common.entity.CRMFetchLeadStatus</class>
+			<class>com.mintstreet.common.entity.LastAppRefNumber</class>
+			<class>com.mintstreet.common.entity.CustomerFeedback</class>
+			<class>com.mintstreet.loan.card.entity.MasterCardEmployerName</class>
+			<!-- <class>com.mintstreet.common.entity.MasterCorpSalaryPackageRank</class> -->
+			<!-- <class>com.mintstreet.loan.homeloan.entity.PaymentProcessingFee</class> -->
+			<!-- <class>com.mintstreet.loan.homeloan.entity.SalesTeamLead</class> -->
+			<class>com.mintstreet.loan.agriloan.entity.MasterAgriProduct</class>
+			<class>com.mintstreet.common.entity.CallBackLeadPushLog</class>
+			<class>com.mintstreet.webservice.entity.MobileAPIToken</class>
+			<class>com.mintstreet.common.entity.RequestACallBack</class>
+			<class>com.mintstreet.integration.pan.entity.ApiPanLog</class>
+		    <class>com.mintstreet.loan.cveloan.entity.ApplicationFormCveLoan</class>
+            <class>com.mintstreet.loan.cveloan.entity.ApplicationFormCaseCve</class>
+            <class>com.mintstreet.common.entity.BureauLinkRequestConfig</class>
+            <class>com.mintstreet.common.entity.Consent</class>
+            <class>com.mintstreet.loan.cveloan.entity.MasterCveProduct</class>
+            <class>com.mintstreet.integration.edms.entity.EdmsLog</class>
+            <class>com.mintstreet.integration.edms.entity.EdmsDocument</class>
+		<exclude-unlisted-classes/>
+	</persistence-unit>
+</persistence>
