@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <!-- Logging Properties -->
+    <Properties>
+        <Property name="LOG_PATTERN">%d %-5p (%F:%L) - %m%n</Property>
+         <Property name="LOG_PATH">/ocas/application_logs</Property>
+    </Properties>
+    <Appenders>
+   
+        <RollingFile name="FA" fileName="${LOG_PATH}/DEBUG.log"
+            filePattern="${LOG_PATH}/$${date:yyyy-MM}/DEBUG.%d{yyyy-MM-dd}.log.gz"
+			append="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+
+        <RollingFile name="FA1" fileName="${LOG_PATH}/DEBUGMOBILE.log"
+            filePattern="${LOG_PATH}/$${date:yyyy-MM}/DEBUGMOBILE.%d{yyyy-MM-dd}.log.gz"
+			append="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>          
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+
+    </Appenders>
+    <Loggers>
+	    <Root level="INFO">
+            <AppenderRef ref="FA"/>
+        </Root>
+		<Logger name="applicationLogger" additivity="false" level="info">
+            <AppenderRef ref="FA" />
+        </Logger>
+        <Logger name="mobileApiLogger" additivity="false" level="info">
+            <AppenderRef ref="FA1" />
+        </Logger>
+    </Loggers>
+</Configuration>
