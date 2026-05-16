@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+ "http://struts.apache.org/dtds/struts-2.0.dtd">
+ 
+ <!-- Car Loan Action Actions -->
+ 
+ <struts>
+ 	<package name="auto-loan-actions" extends="sbi">
+ 		<action name="initautoloan" method="initAutoLoan" class="autoLoanAction">
+			<result name="success" type="json">
+				<param name="root">json</param>
+			</result>
+		</action>
+		
+		<action name="auto-loan" method="autoLoan" class="autoLoanAction">
+			<!-- <interceptor-ref name="token"></interceptor-ref> --> 
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref>
+			<result name="homePageOld">/app/loan/autoloan/autoLoan.jsp</result>
+			<result name="firstPageOld">/app/loan/autoloan/autoFirstPage.jsp</result>
+			<result name="secondPageOld">/app/loan/autoloan/autoSecondPageScript.jsp</result>
+			<result name="secondPageChangeOld">/app/loan/autoloan/autoSecondPage.jsp</result>
+			<result name="thirdPageOld">/app/loan/autoloan/autoThirdPage.jsp</result>
+			<result name="thankYouPageOld">/app/common/loanThankYou.jsp</result>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+			<result name="viewDetailsOld">/app/loan/autoloan/viewDetails.jsp</result>
+			<result name="repaymentScheduledOld">/app/common/repaymentScheduled.jsp</result>
+			<result name="coapplicantDataOld">/app/loan/autoloan/autoLoanCoapplicant.jsp</result>
+			<result name="secondPageWithHeaderOld">/app/loan/autoloan/autoSecondPageWithHeader.jsp</result>
+			<result name="downLoadPDF" type="stream">
+			  <param name="contentType">application/pdf</param>
+			  	<param name="allowCaching">false</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename=Auto-Loan.pdf</param> 
+				<param name="bufferSize">1024</param> 
+			</result>
+			<result name="cbsOtpPageOld">/app/common/commonCbsOtp.jsp</result>
+			
+			<!-- UI NEW  -->
+			<result name="homePage">/appNew/loan/autoloan/AutoLoan.jsp</result>
+			<result name="firstPage">/appNew/loan/autoloan/AutoFirstPage.jsp</result>
+			<result name="secondPage">/appNew/loan/autoloan/AutoFirstPage.jsp</result>
+			<result name="secondPageChange">/appNew/loan/autoloan/AutoFirstPage.jsp</result>
+			<result name="thirdPage">/appNew/loan/autoloan/AutoFirstPage.jsp</result>
+			<result name="thankYouPage">/appNew/loan/autoloan/AutoFirstPage.jsp</result>
+			<result name="repaymentScheduled">/appNew/common/RepaymentScheduled.jsp</result>
+			<result name="coapplicantdata">/appNew/loan/autoloan/AutoCoapplicantData.jsp</result>
+			<result name="secondPageWithHeader">/appNew/loan/autoloan/AutoSecondPageWithHeader.jsp</result>
+			<result name="cbsOtpPage">/appNew/common/CommonCbsOtp.jsp</result>
+		</action>
+		
+		<action name="auto-loan-dsr" method="autoLoanDSR" class="autoLoanAction">
+			<!-- <interceptor-ref name="token"></interceptor-ref> -->
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="defaultFileUploadStack"></interceptor-ref>
+			<result name="homePageOld">/app/dsr/autoloan/dsrAutoLoan.jsp</result>
+			<result name="firstPageOld">/app/dsr/autoloan/dsrFirstPage.jsp</result>
+			<result name="secondPageOld">/app/dsr/autoloan/dsrSecondPageScript.jsp</result>
+			<result name="secondPageChangeOld">/app/dsr/autoloan/dsrSecondPage.jsp</result>
+			<!-- <result name="thirdPageOld">/app/dsr/autoloan/dsrThirdPage.jsp</result> -->
+			<result name="thirdPageOld">/app/loan/autoloan/autoThirdPage.jsp</result>
+			<result name="thankYouPageOld">/app/common/dsrThankYou.jsp</result>
+			<result name="jsonResponsePage">/app/common/jsonResponsePage.jsp</result>
+			<result name="secondPageWithHeaderOld">/app/loan/autoloan/autoSecondPageWithHeader.jsp</result>
+			<result name="callsLogDetailsOld">/app/common/callLogDetails.jsp</result>
+			<result name="repaymentScheduledOld">/app/common/repaymentScheduled.jsp</result>
+			<!-- <result name="biometricCaptureOld">/app/common/biometricCapture.jsp</result> -->
+			<result name="downLoadPDF" type="stream">
+			  <param name="contentType">application/pdf</param>
+			 	<param name="allowCaching">false</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename=Auto-Loan.pdf</param> 
+				<param name="bufferSize">1024</param> 
+			</result>
+			<result name="cbsVerifySmsOtpPageOld">/app/common/commonCbsVarifySmsOtp.jsp</result>
+		</action>
+
+		<action name="bikeCompanyByBikeTypeId" method="bikeCompanyByBikeTypeId" class="autoLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+      	
+		<action name="bikeModelByCompanyId" method="bikeModelByCompanyId" class="autoLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+      	
+      	<action name="bikeVariantByBikeModuleId" method="bikeVariantByBikeModuleId" class="autoLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+      	
+		<action name="carVariantByCarModuleId" method="carVariantByCarModuleId" class="autoLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+      	
+      	<action name="carModelByCompanyId" method="carModelByCompanyId" class="autoLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+      	
+      	<action name="exshowRoomPriceByCarVariantId" method="exshowRoomPriceByCarVariantId" class="autoLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+
+		<action name="getDealerByCompanyId" method="getDealerByCompanyId" class="autoLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+		</action>
+      	<action name="occupationByEmployementTypeID" method="occupationByEmployementTypeID" class="autoLoanAction">
+			<result name="success" type="json">
+       	 		<param name="root">json</param>
+       		</result>
+      	</action>
+		
+	</package>
+</struts>	
