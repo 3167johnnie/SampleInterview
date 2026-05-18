@@ -1,0 +1,70 @@
+
+/* REQUIRED for core functionality */
+
+.responsive-tabs__heading { display: none;}
+.responsive-tabs__list__item { display: inline; cursor:pointer; color:#909090; font-size:18px;}
+
+
+@media (max-width: 767px) {
+	.responsive-tabs__list { display: none;}
+	.responsive-tabs__heading { display: block; cursor: pointer; }
+	.responsive-tabs__panel--closed-accordion-only { display: none;}
+}
+
+@media (min-width: 768px) {
+.responsive-tabs__panel--closed-accordion-only { display: block !important;}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+.responsive-tabs__list__item {float: left;padding: 15px 7px!important;}
+.responsive-tabs__list__item {color: #909090;cursor: pointer;display: inline;font-size: 14px;}
+
+}
+/* END - Required for core functionality */
+/* OPTIONAL - Basic Skin */
+
+.responsive-tabs-wrapper { clear: both;zoom: 1; }
+.responsive-tabs-wrapper:before,
+.responsive-tabs-wrapper:after {content: "";display: table;} 
+.responsive-tabs-wrapper:after {clear: both;}
+.responsive-tabs__heading:focus,
+.responsive-tabs__list__item:focus { outline: 1px solid #ccc;  }
+.responsive-tabs__heading--active:focus,
+.responsive-tabs__list__item--active:focus { outline: none !important;}
+.responsive-tabs__list { font-size: 1.2em; /*margin: 2em 0 0 0;*/ padding: 0;
+/*padding-bottom:11px;*/ line-height: 1em; background:#f2f2f2; width:100%; float:left;border-top-right-radius: 5px;border-top-left-radius: 5px;}
+.responsive-tabs__list__item { /*background: #eee;*/ padding: 15px 20px;   /*margin-right: 1em; border-top-left-radius: 5px; border-top-right-radius: 5px;border: 1px solid #ddd;*/  float:left;}
+.responsive-tabs__list__item:hover {background: #f2f2f2;border-top-right-radius: 5px; border-top-left-radius: 5px; }
+.responsive-tabs__list__item--active, 
+.responsive-tabs__list__item--active:hover {  background: #fff; border-bottom-color: #fff; padding-top:25px; margin-top:-10px;border-top-left-radius: 5px; border-top-right-radius: 5px; color:#333333;}
+/*.responsive-tabs__panel { margin-bottom: 50px;}*/
+
+@media (max-width: 767px) {
+	.responsive-tabs__heading{padding: 0.5em;border-bottom: 10px solid #eaeaea;position: relative; clear:both;  margin: 0; font-size:16px; font-family:roboto-regular;}
+	.responsive-tabs__heading.responsive-tabs__heading--active{border-bottom:0px;}
+	
+	#tablist1-panel1,#tablist1-panel2{border-bottom: 20px solid #eaeaea;}
+	.responsive-tabs__heading span{ display: inline-block;height: 29px;margin-right: 10px;vertical-align: middle;width: 29px;}
+    .app-status-icon{  background: rgba(0, 0, 0, 0) url("../images/sprite-img.png") no-repeat scroll -243px -192px;}
+    .responsive-tabs__heading--active span.app-status-icon{  background: rgba(0, 0, 0, 0) url("../images/sprite-img.png") no-repeat scroll -211px -192px;}
+	.responsive-tabs__heading:hover span.app-status-icon{  background:#00adef url("../images/sprite-img.png") no-repeat scroll -211px -192px;}
+   
+    .sch-doc-icon{  background: rgba(0, 0, 0, 0) url("../images/sprite-img.png") no-repeat scroll -243px -251px;}
+    .responsive-tabs__heading--active span.sch-doc-icon{  background: rgba(0, 0, 0, 0) url("../images/sprite-img.png") no-repeat scroll -211px -251px;}
+    .responsive-tabs__heading:hover span.sch-doc-icon{  background:#00adef url("../images/sprite-img.png") no-repeat scroll -211px -251px;}
+    
+    .up-doc-icon{  background: rgba(0, 0, 0, 0) url("../images/sprite-img.png") no-repeat scroll -248px -312px;}
+    .responsive-tabs__heading--active span.up-doc-icon{  background: rgba(0, 0, 0, 0) url("../images/sprite-img.png") no-repeat scroll -209px -312px;}
+    .responsive-tabs__heading:hover span.up-doc-icon{  background:#00adef url("../images/sprite-img.png") no-repeat scroll -209px -312px;}
+    
+	.responsive-tabs__heading:after{content:"";display: block;position: absolute;right: 20px;top: 40%;background:url(../images/sprite-img.png) no-repeat -389px -299px; width:9px; height:9px;}
+	
+	 .responsive-tabs__heading:hover
+	 { background: #00adef none repeat scroll 0 0;color: #ffffff !important;}  
+	
+	.responsive-tabs__heading--active { background: #00adef none repeat scroll 0 0;
+    color: #ffffff !important;}
+	.responsive-tabs__heading--active:after{background:url(../images/sprite-img.png) no-repeat -376px -303px; width:9px; height:1px;/* border-bottom: 10px solid #000;border-top:0; */}
+}
+
+/* END - Optional - Basic Skin */
