@@ -88,6 +88,7 @@
     <bean id="loanPurposeDao" class="com.mintstreet.common.dao.LoanPurposeDao" >
 	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
+    
     <bean id="loanCategoryDao" class="com.mintstreet.common.dao.LoanCategoryDao" >
 	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
@@ -275,7 +276,9 @@
 	<bean id="sbiCampaignDao" class="com.mintstreet.common.dao.SbiCampaignDao">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
-	
+	<bean id="privacyNoticeDao" class="com.mintstreet.consent.dao.PrivacyNoticeDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
 	<bean id="lastAppRefDao" class="com.mintstreet.common.dao.LastAppRefDao">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
@@ -319,6 +322,22 @@
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 	
+	<bean id="ccmsConfigDao" class="com.mintstreet.consent.dao.CcmsConfigDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+
+	<bean id="consentPurposeDao" class="com.mintstreet.consent.dao.ConsentPurposeDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    
+    <bean id="consentReadDao" class="com.mintstreet.consent.dao.ConsentReadDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+
+	<bean id="consentWriteDao" class="com.mintstreet.consent.dao.ConsentWriteDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+
 	<bean id="commonService" class="com.mintstreet.common.service.CommonService">
 		<property name="masterGenderDao" ref="masterGenderDao" />
 		<property name="stateDao" ref="stateDao" />
@@ -380,6 +399,7 @@
 		<property name="sbiCampaignDao"  ref="sbiCampaignDao"/>
 		<!-- <property name="flipkartMicroDao"  ref="flipkartMicroDao"/>
 		<property name="mingleDao"  ref="mingleDao"/> -->
+		<property name="privacyNoticeDao"  ref="privacyNoticeDao"/>
 		<property name="crmNextLogDao"  ref="crmNextLogDao"/>
 		<property name="crmFetchLeadStatusDao"  ref="crmFetchLeadStatusDao"/>
 		<property name="lastAppRefDao"  ref="lastAppRefDao"/>
@@ -394,6 +414,8 @@
 		<property name="applicationFormCveLoanDao" ref="applicationFormCveLoanDao"/>
 	    <property name="applicationFormCaseCveDao" ref="applicationFormCaseCveDao"/>
 	    <property name="consentDao"  ref="consentDao"/>
+	    <property name="ccmsConfigDao"  ref="ccmsConfigDao"/>
+	      
 	</bean>
 	
 	<bean id="campaignService" class="com.mintstreet.campaign.service.CampaignService">
@@ -434,6 +456,7 @@
 	<!-- <bean id="flipkartAction" class="com.mintstreet.common.action.FlipkartMicroAction" scope="prototype"></bean>
 	<bean id="mingleLead" class="com.mintstreet.mingleLead.action.MingleLeadAction" scope="prototype"></bean> -->
 	<bean id="uploadLead" class="com.mintstreet.uploadLead.action.UploadLead" scope="prototype"></bean>
+	<bean id="privacyNoticeAction" class="com.mintstreet.consent.action.PrivacyNoticeAction" scope="prototype"></bean>
 	<bean id="infronicsLead" class="com.mintstreet.uploadLead.action.InfronicsLead" scope="prototype"></bean>
 	<bean id="campaignCallbackAction" class="com.mintstreet.loan.campaign.action.CampaignCallbackAction" scope="prototype"></bean>
     <bean id="cveLoanAction" class="com.mintstreet.loan.cveloan.action.CveLoanAction" scope="prototype"></bean>
@@ -538,6 +561,13 @@
 		<property name="edmsLogDao" ref="edmsLogDao" />
 	</bean>
 	
+	<bean id="consentService" class="com.mintstreet.consent.service.ConsentService">
+		<property name="consentPurposeDao" ref="consentPurposeDao" />
+		<property name="consentWriteDao" ref="consentWriteDao" />
+		<property name="consentReadDao" ref="consentReadDao" />
+		
+	</bean>
+	
 	<!-- Action beans -->
 	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 	  <property name="corePoolSize" value="200" />
@@ -629,7 +659,8 @@
 	
 	<bean id="callBack" class="com.mintstreet.callback.service.CallBackService"></bean>	
 	<bean id="uploadBean" class="com.mintstreet.uploadLead.entity.UploadBean"></bean>
-	
+	<bean id="privacyRequest" class="com.mintstreet.consent.bo.PrivacyRequest"></bean>
+	<!-- <bean id="privacyRequestResponse" class="com.mintstreet.consent.entity.PrivacyRequestResponse"></bean> -->
 	<!-- <bean id="mingleBean" class="com.mintstreet.mingleLead.entity.MingleBean"></bean> -->
 	<bean id="crmNextLogBean" class="com.mintstreet.common.entity.CRMNextLog"></bean>
 	<bean id="crmFetchLeadStatusBean" class="com.mintstreet.common.entity.CRMFetchLeadStatus"></bean>
@@ -645,9 +676,17 @@
 	<bean id="refGenerateUtilCC" class="com.mintstreet.common.util.RefGenerateUtilCC"></bean>
 	<bean id="requestACallBack" class="com.mintstreet.common.entity.RequestACallBack"></bean>
 	<!-- <bean id="unzipUtility" class="com.mintstreet.integration.vlp.education.util.UnzipUtility"></bean> -->
+
  	<bean id="edmsLog" class="com.mintstreet.integration.edms.entity.EdmsLog"></bean>
 	<bean id="edmsDocument" class="com.mintstreet.integration.edms.entity.EdmsDocument"></bean>
 		
+	<bean id="consentUtil" class="com.mintstreet.common.util.ConsentUtil"></bean>
+	<bean id="ccmsUtil" class="com.mintstreet.common.util.CcmsUtil"></bean>
+	<bean id="ccmsConfig" class="com.mintstreet.consent.entity.CCMSConfig"></bean>
+	<bean id="consentPurposeLog" class="com.mintstreet.consent.entity.ConsentPurposeLog"></bean>
+	<bean id="consentWriteLog" class="com.mintstreet.consent.entity.ConsentWriteLog"></bean>
+	<bean id="consentReadLog" class="com.mintstreet.consent.entity.ConsentReadLog"></bean>
+	
 	<import resource="webServiceContext.xml"></import>
 	<import resource="agriLoanContext.xml"></import>
 	<import resource="creditCardContext.xml"></import>
