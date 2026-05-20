@@ -73,6 +73,12 @@ public class CommonLoanAction extends BaseAction {
 
 	protected ArrayList<UploadBean> quickLead;
 	
+	//protected PrivacyRequest privacyRequest;
+	
+	
+	
+	//protected PrivacyRequest privacyLead;
+	 
 	//protected  MingleBean sbiMingleLead;
 	
 	private String isXpressCreditIT;
@@ -820,8 +826,16 @@ public class CommonLoanAction extends BaseAction {
 	public void setQuickLead(ArrayList<UploadBean> quickLead) {
 		this.quickLead = quickLead;
 	}
+    
+	
 
-
+	/*public PrivacyRequest getPrivacyRequest() {
+		return privacyRequest;
+	}
+	public void setPrivacyRequest(PrivacyRequest privacyRequest) {
+		this.privacyRequest = privacyRequest;
+	}*/
+	
 	public String getIsXpressCreditIT() {
 		return isXpressCreditIT;
 	}
@@ -868,7 +882,6 @@ public class CommonLoanAction extends BaseAction {
 	public void setPensionPayingLocation(Integer pensionPayingLocation) {
 		this.pensionPayingLocation = pensionPayingLocation;
 	}
-
 	
 	public Integer getIsEdvantage() {
 		return isEdvantage;
@@ -880,8 +893,15 @@ public class CommonLoanAction extends BaseAction {
 	public Integer getIsBidyaLakhmi() {
 		return isBidyaLakhmi;
 	}
+	
 	public void setIsBidyaLakhmi(Integer isBidyaLakhmi) {
 		this.isBidyaLakhmi = isBidyaLakhmi;
 	}
-
+//	public PrivacyRequest getPrivacyLead() {
+//		return privacyLead;
+//	}
+//	public void setPrivacyLead(PrivacyRequest privacyLead) {
+//		this.privacyLead = privacyLead;
+//	}
+	
 }
