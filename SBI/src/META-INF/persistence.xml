@@ -136,6 +136,11 @@
             <class>com.mintstreet.loan.cveloan.entity.MasterCveProduct</class>
             <class>com.mintstreet.integration.edms.entity.EdmsLog</class>
             <class>com.mintstreet.integration.edms.entity.EdmsDocument</class>
+            <class>com.mintstreet.consent.entity.CCMSConfig</class>
+            <class>com.mintstreet.consent.entity.PrivacyRequestResponse</class>
+            <class>com.mintstreet.consent.entity.ConsentPurposeLog</class>
+            <class>com.mintstreet.consent.entity.ConsentWriteLog</class>
+            <class>com.mintstreet.consent.entity.ConsentReadLog</class>
 		<exclude-unlisted-classes/>
 	</persistence-unit>
 </persistence>
