@@ -1,0 +1,700 @@
+<beans xmlns="http://www.springframework.org/schema/beans"	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd" default-lazy-init="true">
+
+	<context:component-scan base-package="com.mintstreet" />
+	<context:property-placeholder location="file:${catalina.home}/ocas_configuration/config.properties,file:${catalina.home}/ocas_configuration/Constants.properties" />
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+	
+	<!--- JPA transaction manager -->
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="punit" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="database" value="${jdbc.database}" />
+				<property name="showSql" value="${jdbc.show_sql}" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close" >
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="initialSize" value="${jdbc.initialSize}" />
+		<property name="maxActive" value="${jdbc.maxActive}" />
+		<property name="maxIdle" value="${jdbc.maxIdle}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis}" />
+		<property name="removeAbandoned" value="${jdbc.removeAbandoned}" />
+		<property name="removeAbandonedTimeout" value="${jdbc.removeAbandonedTimeout}" />
+		<property name="abandonWhenPercentageFull" value="${jdbc.abandonWhenPercentageFull}" />
+		<property name="testOnBorrow" value="${jdbc.testOnBorrow}" />
+		<property name="validationQuery" value="${jdbc.validationQuery}" />
+		<property name="validationInterval" value="${jdbc.validationInterval}" />
+		<property name="jmxEnabled" value="${jdbc.jmxEnabled}" />
+	</bean>
+	
+	<!-- Utility Beans -->
+	<bean id="sendMail" class="com.mintstreet.common.util.SendMail"/>
+    <bean id="bureaulink" class="com.mintstreet.common.util.Bureaulink"/>
+	<!-- DAO beans -->
+	<bean id="masterQualificationDao" class="com.mintstreet.common.dao.MasterQualificationDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterCardIncomeDao" class="com.mintstreet.loan.card.dao.MasterCardIncomeDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="masterNatureBusinessDao" class="com.mintstreet.loan.card.dao.MasterNatureBusinessDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="masterCarDealerDao" class="com.mintstreet.common.dao.MasterCarDealerDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    
+    <bean id="hlProductDao" class="com.mintstreet.loan.product.dao.HlProductDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+	<bean id="alProductDao" class="com.mintstreet.loan.product.dao.AlProductDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    <bean id="elProductDao" class="com.mintstreet.loan.product.dao.ElProductDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    <bean id="plProductDao" class="com.mintstreet.loan.product.dao.PlProductDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    <bean id="aglProductDao" class="com.mintstreet.loan.agriloan.dao.MasterAgriProductDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+	 <bean id="masterBuilderDao" class="com.mintstreet.common.dao.MasterBuilderDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+     <bean id="masterEmployerDao" class="com.mintstreet.common.dao.MasterEmployerDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    <bean id="stateDao" class="com.mintstreet.common.dao.MasterStateDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    <bean id="cityDao" class="com.mintstreet.common.dao.MasterCityDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    <bean id="loanPurposeDao" class="com.mintstreet.common.dao.LoanPurposeDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    
+    <bean id="loanCategoryDao" class="com.mintstreet.common.dao.LoanCategoryDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    <bean id="loanTypeDao" class="com.mintstreet.common.dao.LoanTypeDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    <bean id="employmentTypeDao" class="com.mintstreet.common.dao.EmploymentTypeDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    <bean id="employeeOccupationTypeDao" class="com.mintstreet.common.dao.EmployeeOccupationTypeDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+     <bean id="masterCoApplicantDao" class="com.mintstreet.common.dao.MasterCoApplicantDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+     <bean id="countryDao" class="com.mintstreet.common.dao.CountryDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    <bean id="applicationFormHomeLoanDao" class="com.mintstreet.loan.homeloan.dao.ApplicationFormHomeLoanDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="applicationFormHomeLoanQuoteDao" class="com.mintstreet.loan.homeloan.dao.ApplicationFormHomeLoanQuoteDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="bankDao" class="com.mintstreet.common.dao.MasterBankDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="localityDao" class="com.mintstreet.common.dao.MasterLocalityDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterDistrictDao" class="com.mintstreet.common.dao.MasterDistrictDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterBranchDao" class="com.mintstreet.common.dao.MasterBranchDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="customerFeedbackDao" class="com.mintstreet.common.dao.CustomerFeedbackDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<!-- <bean id="validateFormConfigDao" class="com.mintstreet.common.dao.ValidateFormConfigDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean> -->
+	<!-- <bean id="validateFormListDao" class="com.mintstreet.common.dao.ValidateFormListDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean> -->
+	<!-- <bean id="validateRequestListDao" class="com.mintstreet.common.dao.ValidateRequestListDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean> -->
+	<bean id="validateRequestConfigDao" class="com.mintstreet.common.dao.ValidateRequestConfigDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<!-- <bean id="sourceLeadDao" class="com.mintstreet.common.dao.SourceLeadDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean> -->
+	<bean id="homeLoanHelper" class="com.mintstreet.loan.homeloan.util.HomeLoanHelper">
+	</bean>
+	<bean id="autoLoanHelper" class="com.mintstreet.loan.autoloan.util.AutoLoanHelper">
+	</bean>
+	<bean id="educationLoanHelper" class="com.mintstreet.loan.educationloan.util.EducationLoanHelper">
+	</bean>
+	<bean id="personalLoanHelper" class="com.mintstreet.loan.personal.util.PersonalLoanHelper">
+	</bean>
+	<bean id="templateDao" class="com.mintstreet.common.dao.TemplateDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterIndustryTypeDao" class="com.mintstreet.common.dao.MasterIndustryTypeDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="applicationFormHomeLoanCallsDao" class="com.mintstreet.loan.homeloan.dao.ApplicationFormHomeLoanCallsDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="applicationFormAutoLoanCallsDao" class="com.mintstreet.loan.autoloan.dao.ApplicationFormAutoLoanCallsDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="documentTypeDao" class="com.mintstreet.common.dao.DocumentTypeDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="carCompanyDao" class="com.mintstreet.loan.autoloan.dao.CarCompanyDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="carModelDao" class="com.mintstreet.loan.autoloan.dao.CarModelDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="carVariantDao" class="com.mintstreet.loan.autoloan.dao.CarVariantDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="applicationFormAutoLoanDao" class="com.mintstreet.loan.autoloan.dao.ApplicationFormAutoLoanDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="applicationFormAutoLoanQuoteDao" class="com.mintstreet.loan.autoloan.dao.ApplicationFormAutoLoanQuoteDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<!-- <bean id="bikeTypeDao" class="com.mintstreet.loan.autoloan.dao.BikeTypeDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="bikeCompanyDao" class="com.mintstreet.loan.autoloan.dao.BikeCompanyDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="bikeModelDao" class="com.mintstreet.loan.autoloan.dao.BikeModelDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="bikeVariantDao" class="com.mintstreet.loan.autoloan.dao.BikeVariantDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean> -->
+	<bean id="applicationFormLeadDao" class="com.mintstreet.common.dao.ApplicationFormLeadDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterInstituteDao" class="com.mintstreet.common.dao.MasterInstituteDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterGraduationDao" class="com.mintstreet.common.dao.MasterGraduationDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterCertificateDao" class="com.mintstreet.common.dao.MasterCertificateDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="residenceTypeDao" class="com.mintstreet.common.dao.ResidenceTypeDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="relationshipWithBankDao" class="com.mintstreet.common.dao.RelationshipWithBankDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="masterGenderDao" class="com.mintstreet.common.dao.MasterGenderDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterSalesTeamDao" class="com.mintstreet.common.dao.MasterSalesTeamDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterUniversityDao" class="com.mintstreet.common.dao.MasterUniversityDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterProfessionDao" class="com.mintstreet.common.dao.MasterProfessionDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterDealerDao" class="com.mintstreet.common.dao.MasterDealerDao" > 
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="bankLMSUserDao" class="com.mintstreet.common.dao.BankLMSUserDao" > 
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterCorpSalaryPackageDao" class="com.mintstreet.common.dao.MasterCorpSalaryPackageDao" > 
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<!-- <bean id="masterCorpSalaryPackageRankDao" class="com.mintstreet.common.dao.MasterCorpSalaryPackageRankDao" > 
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean> -->
+	<bean id="masterLabelTooltipDao" class="com.mintstreet.common.dao.MasterLabelTooltipDao" > 
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="applicationFormLeadCallsDao" class="com.mintstreet.common.dao.ApplicationFormLeadCallsDao" > 
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterLmsIntermediaryDao" class="com.mintstreet.common.dao.MasterLmsIntermediaryDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="intermediaryRelDao" class="com.mintstreet.common.dao.IntermediaryRelDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterProjectDao" class="com.mintstreet.loan.homeloan.dao.MasterProjectDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="bankLmsUserRoleDao" class="com.mintstreet.common.dao.BankLmsUserRoleDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterContentDao" class="com.mintstreet.common.dao.MasterContentDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+		
+	<bean id="loanStatusDao" class="com.mintstreet.common.dao.LoanStatusDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="securityChecksDao" class="com.mintstreet.common.dao.SecurityChecksDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="biometricRequestDao" class="com.mintstreet.common.dao.BiometricRequestDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="biometricResponseDao" class="com.mintstreet.common.dao.BiometricResponseDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="sbiCampaignDao" class="com.mintstreet.common.dao.SbiCampaignDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="privacyNoticeDao" class="com.mintstreet.consent.dao.PrivacyNoticeDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="lastAppRefDao" class="com.mintstreet.common.dao.LastAppRefDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="bureauLinkRequestResponseDao" class="com.mintstreet.common.dao.BureauLinkRequestResponseDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="trackMainCampaignDao" class="com.mintstreet.campaign.dao.TrackMainCampaignDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="trackCampaignDao" class="com.mintstreet.campaign.dao.TrackCampaignDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="trackCampaignPlacementSourceDao" class="com.mintstreet.campaign.dao.TrackCampaignPlacementSourceDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="trackVisitDao" class="com.mintstreet.campaign.dao.TrackVisitDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="marTechDao" class="com.mintstreet.campaign.dao.MarTechDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<!-- <bean id="vlpRequestResponseDao" class="com.mintstreet.integration.vlp.education.dao.VlpRequestResponseDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean> -->
+	
+	<bean id="apiPanLogDao" class="com.mintstreet.integration.pan.dao.PanLogDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="consentDao" class="com.mintstreet.common.dao.ConsentDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="cveProductDao" class="com.mintstreet.loan.cveloan.dao.MasterCveProductDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+	
+ 	<bean id="edmsLogDao" class="com.mintstreet.integration.edms.dao.EdmsLogDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="ccmsConfigDao" class="com.mintstreet.consent.dao.CcmsConfigDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+
+	<bean id="consentPurposeDao" class="com.mintstreet.consent.dao.ConsentPurposeDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    
+    <bean id="consentReadDao" class="com.mintstreet.consent.dao.ConsentReadDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+
+	<bean id="consentWriteDao" class="com.mintstreet.consent.dao.ConsentWriteDao" >
+	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    
+    <bean id="privacyRequestResponseDao" class="com.mintstreet.consent.dao.PrivacyRequestResponseDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+    
+	<bean id="commonService" class="com.mintstreet.common.service.CommonService">
+		<property name="masterGenderDao" ref="masterGenderDao" />
+		<property name="stateDao" ref="stateDao" />
+		<property name="cityDao" ref="cityDao" />
+		<property name="loanPurposeDao" ref="loanPurposeDao" />
+		<property name="loanCategoryDao" ref="loanCategoryDao" />
+		<property name="loanTypeDao" ref="loanTypeDao" />
+		<property name="employmentTypeDao" ref="employmentTypeDao" />
+		<property name="employeeOccupationTypeDao" ref="employeeOccupationTypeDao" />
+		<property name="countryDao" ref="countryDao" />
+		<property name="bankDao" ref="bankDao" />
+		<!-- <property name="validateFormConfigDao" ref="validateFormConfigDao" /> -->
+		<!-- <property name="validateFormListDao" ref="validateFormListDao" /> -->
+		<!-- <property name="sourceLeadDao" ref="sourceLeadDao" /> -->
+		<property name="masterDistrictDao" ref="masterDistrictDao" />
+		<property name="masterBranchDao" ref="masterBranchDao" />
+		<property name="masterBuilderDao" ref="masterBuilderDao" />
+		<property name="masterEmployerDao" ref="masterEmployerDao" />
+		<property name="localityDao" ref="localityDao" />
+		<property name="documentTypeDao" ref="documentTypeDao" />
+		<property name="templateDao" ref="templateDao" />
+		<property name="applicationFormLeadDao" ref="applicationFormLeadDao"/>
+		<property name="residenceTypeDao" ref="residenceTypeDao"/>
+		<property name="relationshipWithBankDao" ref="relationshipWithBankDao"/>
+		<property name="masterIndustryTypeDao" ref="masterIndustryTypeDao" />
+		<property name="masterCoApplicantDao" ref="masterCoApplicantDao" />	
+		<property name="masterCarDealerDao" ref="masterCarDealerDao" />
+		<property name="hlProductDao" ref="hlProductDao" />
+		<property name="alProductDao" ref="alProductDao" />
+		<property name="elProductDao" ref="elProductDao" />
+		<property name="plProductDao" ref="plProductDao" />
+		<property name="aglProductDao" ref="aglProductDao" />
+		<property name="masterSalesTeamDao" ref="masterSalesTeamDao" />
+		<property name="masterProfessionDao" ref="masterProfessionDao" />
+		<property name="masterDealerDao" ref="masterDealerDao" />
+		<property name="bankLMSUserDao" ref="bankLMSUserDao" />
+		<property name="masterCorpSalaryPackageDao" ref="masterCorpSalaryPackageDao" />
+		<!-- <property name="masterCorpSalaryPackageRankDao" ref="masterCorpSalaryPackageRankDao" /> -->
+		<property name="masterLabelTooltipDao" ref="masterLabelTooltipDao" />
+		<property name="applicationFormLeadCallsDao" ref="applicationFormLeadCallsDao" />
+		<property name="masterInstituteDao" ref="masterInstituteDao"/>
+		<property name="intermediaryRelDao" ref="intermediaryRelDao"/>
+		<property name="masterLmsIntermediaryDao" ref="masterLmsIntermediaryDao"/>
+		<property name="bankLmsUserRoleDao" ref="bankLmsUserRoleDao"/>
+		<property name="loanStatusDao" ref="loanStatusDao"/>
+		<property name="masterContentDao" ref="masterContentDao"/>
+		<property name="masterQualificationDao"  ref="masterQualificationDao"/>
+		<property name="securityChecksDao"  ref="securityChecksDao"/>
+
+		<property name="biometricRequestDao"  ref="biometricRequestDao"/>
+		<property name="biometricResponseDao"  ref="biometricResponseDao"/>
+		<property name="masterCBSResponseDao"  ref="masterCBSResponseDao"/>
+		<property name="masterCBSCallDao"  ref="masterCBSCallDao"/>
+		<property name="cbsProductMappingDao"  ref="cbsProductMappingDao"/>
+		<property name="bureauLinkRequestResponseDao"  ref="bureauLinkRequestResponseDao"/>
+		<!-- <property name="vlpRequestResponseDao"  ref="vlpRequestResponseDao"/>
+		<property name="vlpExportDao"  ref="vlpExportDao"/>
+		<property name="vlpLogInfoDao"  ref="vlpLogInfoDao"/> -->
+		<property name="sbiCampaignDao"  ref="sbiCampaignDao"/>
+		<!-- <property name="flipkartMicroDao"  ref="flipkartMicroDao"/>
+		<property name="mingleDao"  ref="mingleDao"/> -->
+		<property name="privacyNoticeDao"  ref="privacyNoticeDao"/>
+		<property name="crmNextLogDao"  ref="crmNextLogDao"/>
+		<property name="crmFetchLeadStatusDao"  ref="crmFetchLeadStatusDao"/>
+		<property name="lastAppRefDao"  ref="lastAppRefDao"/>
+		<property name="customerFeedbackDao"  ref="customerFeedbackDao"/>
+		<property name="contactCenterLeadResponseDao"  ref="contactCenterLeadResponseDao"/>
+		<property name="webServiceDao"  ref="webServiceDao"/>
+		<property name="requestACallBackDao" ref="requestACallBackDao"/>
+		<property name="trackMainCampaignDao" ref="trackMainCampaignDao" />
+		<property name="trackCampaignDao" ref="trackCampaignDao" />
+		<property name="trackCampaignPlacementSourceDao" ref="trackCampaignPlacementSourceDao" />
+		<property name="trackVisitDao" ref="trackVisitDao" />
+		<property name="applicationFormCveLoanDao" ref="applicationFormCveLoanDao"/>
+	    <property name="applicationFormCaseCveDao" ref="applicationFormCaseCveDao"/>
+	    <property name="consentDao"  ref="consentDao"/>
+	    <property name="ccmsConfigDao"  ref="ccmsConfigDao"/>
+	    <property name="privacyRequestResponseDao"  ref="privacyRequestResponseDao"/>
+	      
+	</bean>
+	
+	<bean id="campaignService" class="com.mintstreet.campaign.service.CampaignService">
+		<property name="trackMainCampaignDao" ref="trackMainCampaignDao" />
+		<property name="trackCampaignDao" ref="trackCampaignDao" />
+		<property name="trackCampaignPlacementSourceDao" ref="trackCampaignPlacementSourceDao" />
+		<property name="trackVisitDao" ref="trackVisitDao" />
+		<property name="marTechDao" ref="marTechDao" />
+	</bean>
+	
+	<bean id="validatorService" class="com.mintstreet.common.service.ValidatorService">
+		<!-- <property name="validateRequestListDao" ref="validateRequestListDao" /> -->
+		<property name="validateRequestConfigDao" ref="validateRequestConfigDao" />
+		<property name="masterQualificationDao"  ref="masterQualificationDao"/>
+	</bean>
+	
+	<bean id="processManagerImpl" class="com.mintstreet.common.bo.impl.ProcessManagerImpl"></bean>
+	<bean id="processManagerHomeImpl" class="com.mintstreet.loan.homeloan.bo.impl.HomeProcessManagerImpl"></bean>
+	<bean id="processManagerAutoImpl" class="com.mintstreet.loan.autoloan.bo.impl.AutoProcessManagerImpl"></bean>
+	<bean id="processManagerEducationImpl" class="com.mintstreet.loan.educationloan.bo.impl.EducationProcessManagerImpl"></bean>
+	<bean id="processManagerPersonalImpl" class="com.mintstreet.loan.personal.bo.impl.PersonalProcessManagerImpl"></bean>
+	<bean id="communicationManagerImpl" class="com.mintstreet.common.bo.impl.CommunicationManagerImpl"></bean>
+	<!-- <bean id="campaignManager" class="com.mintstreet.campaign.impl.CampaignManager"></bean> -->
+	
+	<bean id="homeLoanAction" class="com.mintstreet.loan.homeloan.action.HomeLoanAction" scope="prototype"></bean>
+	<bean id="homeTopupLoanAction" class="com.mintstreet.loan.homeloan.action.HomeTopupLoanAction" scope="prototype"></bean>
+	<bean id="autoLoanAction" class="com.mintstreet.loan.autoloan.action.AutoLoanAction" scope="prototype"></bean>
+	<bean id="educationLoanAction" class="com.mintstreet.loan.educationloan.action.EducationLoanAction" scope="prototype"></bean>
+	<bean id="personalLoanAction" class="com.mintstreet.loan.personal.action.PersonalLoanAction" scope="prototype"></bean>
+	<bean id="fileUploadAction" class="com.mintstreet.common.action.FileUploadAction" scope="prototype"></bean> 
+	<bean id="applicationStatusAction" class="com.mintstreet.common.action.ApplicationStatusAction" scope="prototype"></bean>
+	<bean id="commonLoanAction" class="com.mintstreet.common.action.CommonLoanAction" scope="prototype"></bean>
+	<!-- <bean id="customerFeedbackAction" class="com.mintstreet.common.action.CustomerFeedbackAction" scope="prototype"></bean> -->
+	<!-- <bean id="vidyaLakshmiLoanAction" class="com.mintstreet.integration.vlp.education.action.VidyaLakshmiLoanAction" scope="prototype"></bean> -->
+	<bean id="cronScheduleAction" class="com.mintstreet.common.action.CronScheduleAction" scope="prototype"></bean>
+	
+	<bean id="campaignAction" class="com.mintstreet.common.action.CampaignAction" scope="prototype"></bean>
+	<!-- <bean id="flipkartAction" class="com.mintstreet.common.action.FlipkartMicroAction" scope="prototype"></bean>
+	<bean id="mingleLead" class="com.mintstreet.mingleLead.action.MingleLeadAction" scope="prototype"></bean> -->
+	<bean id="uploadLead" class="com.mintstreet.uploadLead.action.UploadLead" scope="prototype"></bean>
+	<bean id="privacyNoticeAction" class="com.mintstreet.consent.action.PrivacyNoticeAction" scope="prototype"></bean>
+	<bean id="infronicsLead" class="com.mintstreet.uploadLead.action.InfronicsLead" scope="prototype"></bean>
+	<bean id="campaignCallbackAction" class="com.mintstreet.loan.campaign.action.CampaignCallbackAction" scope="prototype"></bean>
+    <bean id="cveLoanAction" class="com.mintstreet.loan.cveloan.action.CveLoanAction" scope="prototype"></bean>
+	<bean id="cveProcessManagerPersonalImpl" class="com.mintstreet.loan.cveloan.bo.impl.CveProcessManagerImpl"></bean>
+
+	<!--  Ui Beans  starts-->
+	<bean id="homeLoanService" class="com.mintstreet.loan.homeloan.service.HomeLoanService">
+		<property name="applicationFormHomeLoanQuoteDao" ref="applicationFormHomeLoanQuoteDao"/>
+		<property name="applicationFormHomeLoanDao" ref="applicationFormHomeLoanDao"/>
+		<property name="applicationFormHomeLoanCallsDao" ref="applicationFormHomeLoanCallsDao" />
+		<property name="masterProjectDao" ref="masterProjectDao" />
+		<property name="hlProductDao" ref="hlProductDao" />
+		<property name="masterCBSResponseDao"  ref="masterCBSResponseDao"/>
+		<property name="loanPurposeDao" ref="loanPurposeDao" />
+		<property name="masterCBSCallDao"  ref="masterCBSCallDao"/>
+	</bean>
+	
+	<bean id="autoLoanService" class="com.mintstreet.loan.autoloan.service.AutoLoanService">
+		<!-- <property name="bikeTypeDao" ref="bikeTypeDao" />
+		<property name="bikeCompanyDao" ref="bikeCompanyDao" />
+		<property name="bikeModelDao" ref="bikeModelDao" />
+		<property name="bikeVariantDao" ref="bikeVariantDao" /> -->
+		<property name="carCompanyDao" ref="carCompanyDao" />
+		<property name="carModelDao" ref="carModelDao" />
+		<property name="carVariantDao" ref="carVariantDao" />
+		<property name="applicationFormAutoLoanQuoteDao" ref="applicationFormAutoLoanQuoteDao"/>
+		<property name="applicationFormAutoLoanDao" ref="applicationFormAutoLoanDao"/>
+		<property name="applicationFormAutoLoanCallsDao" ref="applicationFormAutoLoanCallsDao" />
+		<property name="alProductDao" ref="alProductDao" />
+		<property name="masterCBSResponseDao"  ref="masterCBSResponseDao"/>
+		<property name="loanPurposeDao" ref="loanPurposeDao" />
+		<property name="masterCBSCallDao"  ref="masterCBSCallDao"/>
+	</bean>
+	<bean id="applicationFormEducationLoanQuoteDao" class="com.mintstreet.loan.educationloan.dao.ApplicationFormEducationLoanQuoteDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="applicationFormEducationLoanDao" class="com.mintstreet.loan.educationloan.dao.ApplicationFormEducationLoanDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+		<bean id="applicationFormEducationLoanCallsDao" class="com.mintstreet.loan.educationloan.dao.ApplicationFormEducationLoanCallsDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+		<bean id="masterCourseTypeDao" class="com.mintstreet.loan.educationloan.dao.MasterCourseTypeDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="educationLoanService" class="com.mintstreet.loan.educationloan.service.EducationLoanService">
+		<property name="applicationFormEducationLoanQuoteDao" ref="applicationFormEducationLoanQuoteDao"/>
+		<property name="applicationFormEducationLoanDao" ref="applicationFormEducationLoanDao"/>
+		<property name="applicationFormEducationLoanCallsDao" ref="applicationFormEducationLoanCallsDao" />
+		
+		<property name="masterInstituteDao" ref="masterInstituteDao"/>
+		<property name="masterCertificateDao" ref="masterCertificateDao"/>
+		<property name="masterGraduationDao" ref="masterGraduationDao"/>
+		<property name="masterUniversityDao" ref="masterUniversityDao"/>
+		<property name="masterCourseTypeDao" ref="masterCourseTypeDao"/>
+		<property name="elProductDao" ref="elProductDao" />
+		<property name="masterCBSResponseDao"  ref="masterCBSResponseDao"/>
+		<property name="loanPurposeDao" ref="loanPurposeDao" />
+		<property name="masterCBSCallDao"  ref="masterCBSCallDao"/>
+	</bean>
+	
+	<bean id="applicationFormPersonalLoanQuoteDao" class="com.mintstreet.loan.personal.dao.ApplicationFormPersonalLoanQuoteDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="applicationFormPersonalLoanDao" class="com.mintstreet.loan.personal.dao.ApplicationFormPersonalLoanDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="applicationFormPersonalLoanCallsDao" class="com.mintstreet.loan.personal.dao.ApplicationFormPersonalLoanCallsDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+        
+	
+	<bean id="personalLoanService" class="com.mintstreet.loan.personal.service.PersonalLoanService">
+		<property name="applicationFormPersonalLoanQuoteDao" ref="applicationFormPersonalLoanQuoteDao"/>
+		<property name="applicationFormPersonalLoanDao" ref="applicationFormPersonalLoanDao"/>
+		<property name="applicationFormPersonalLoanCallsDao" ref="applicationFormPersonalLoanCallsDao" />
+		<property name="masterInstituteDao" ref="masterInstituteDao"/>
+		<property name="plProductDao" ref="plProductDao" />
+		<property name="masterCBSResponseDao"  ref="masterCBSResponseDao"/>
+		<property name="loanPurposeDao" ref="loanPurposeDao" />
+		<property name="masterCBSCallDao"  ref="masterCBSCallDao"/>
+		<property name="applicationFormCveLoanDao"  ref="applicationFormCveLoanDao"/>
+	</bean>
+	
+
+	<bean id="integrationService" class="com.mintstreet.integration.common.service.IntegrationService">
+		<property name="applicationFormHomeLoanDao" ref="applicationFormHomeLoanDao" />
+		<property name="applicationFormAutoLoanDao" ref="applicationFormAutoLoanDao" />
+		<property name="applicationFormEducationLoanDao" ref="applicationFormEducationLoanDao" />
+		<property name="applicationFormPersonalLoanDao" ref="applicationFormPersonalLoanDao" />
+		<property name="applicationFormCreditCardDao" ref="applicationFormCreditCardDao" />
+		<property name="applicationFormAgriLoanDao" ref="applicationFormAgriLoanDao" />
+		<property name="apiPanLogDao" ref="apiPanLogDao" />
+	</bean>
+	
+	<bean id="cveLoanService" class="com.mintstreet.loan.cveloan.service.CveLoanService">
+		<property name="cveProductDao"  ref="cveProductDao"/>
+	</bean>
+	
+	<bean id="edmsService" class="com.mintstreet.integration.edms.service.EdmsService">
+		<property name="edmsLogDao" ref="edmsLogDao" />
+	</bean>
+	
+	<bean id="consentService" class="com.mintstreet.consent.service.ConsentService">
+		<property name="consentPurposeDao" ref="consentPurposeDao" />
+		<property name="consentWriteDao" ref="consentWriteDao" />
+		<property name="consentReadDao" ref="consentReadDao" />
+		
+	</bean>
+	
+	<!-- Action beans -->
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	  <property name="corePoolSize" value="200" />
+	  <property name="maxPoolSize" value="500" />
+	  <property name="keepAliveSeconds" value="45" />
+	  <property name="allowCoreThreadTimeOut" value="true" />
+	  <property name="queueCapacity" value="5000" />
+	</bean>
+	<!-- Service beans -->
+	<bean id="taskExecutorService" class="com.mintstreet.common.service.TaskExecutorService">
+	  	<!-- <constructor-arg ref="taskExecutor" /> -->
+	</bean>
+	<bean id="generatePDF" class="com.mintstreet.common.util.GeneratePDF"></bean>
+	<bean id="SbiUtil" class="com.mintstreet.common.util.SbiUtil"></bean>
+	<bean id="validatorManager" class="com.mintstreet.common.validation.ValidatorManager"></bean>
+	<bean id="stateManager" class="com.mintstreet.common.state.StateManager"></bean>
+	<bean id="commonEngine" class="com.mintstreet.common.engine.CommonEngine"></bean>
+	<bean id="bureauLinkUtil" class="com.mintstreet.common.util.BureauLinkUtil" />
+	<bean id="demographicUtil" class="com.mintstreet.common.util.DemographicUtil"></bean>
+	<bean id="ekycBiometricUtil" class="com.mintstreet.common.util.EKYCBiometricUtil"></bean>
+	<!-- <bean id="crmService" class="com.mintstreet.common.util.CRMService"></bean> -->
+	<bean id="crmServiceNew" class="com.mintstreet.common.util.CRMServiceNew"></bean>
+	<bean id="panServiceAction" class="com.mintstreet.integration.pan.action.PanServiceAction"></bean>
+	<bean id="edmsServiceAction" class="com.mintstreet.integration.edms.action.EdmsFinalServiceAction"></bean>
+	
+	<bean id="masterCBSResponseDao" class="com.mintstreet.common.dao.MasterCBSResponseDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="masterCBSCallDao" class="com.mintstreet.common.dao.MasterCBSCallDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<bean id="applicationFormCveLoanDao" class="com.mintstreet.loan.cveloan.dao.ApplicationFormCveLoanDao" >
+                <property name="entityManagerFactory" ref="entityManagerFactory" />
+        </bean>
+
+	<bean id="applicationFormCaseCveDao" class="com.mintstreet.loan.cveloan.dao.ApplicationFormCaseCveDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<bean id="cbsUtil" class="com.mintstreet.common.util.CbsUtil"></bean>
+	
+	<bean id="cbsProductMappingDao" class="com.mintstreet.common.dao.CbsProductMappingDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<!-- <bean id="vlpExportDao" class="com.mintstreet.integration.vlp.education.dao.VLPExportDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="vlpDupCheck" class="com.mintstreet.integration.vlp.education.dao.VlpDupCheckDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<bean id="vlpLogInfoDao" class="com.mintstreet.integration.vlp.education.dao.VLPLogInfoDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean> -->
+	<!-- <bean id="flipkartMicroDao" class="com.mintstreet.common.dao.FlipkartMicroLeadDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="mingleDao" class="com.mintstreet.mingleLead.dao.MingleDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean> -->
+	<bean id="crmNextLogDao" class="com.mintstreet.common.dao.CRMNextLogDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="crmFetchLeadStatusDao" class="com.mintstreet.common.dao.CRMFetchLeadStatusDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean id="contactCenterLeadResponseDao" class="com.mintstreet.common.dao.ContactCenterLeadResponseDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="requestACallBackDao" class="com.mintstreet.common.dao.RequestACallBackDao" >
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<!-- <bean id="vlpGetFileListScheduler" class="com.mintstreet.integration.vlp.education.action.VlpGetFileListScheduler" ></bean>
+	<bean id="vlpGetFile" class="com.mintstreet.integration.vlp.education.action.VlpGetFile" ></bean>
+	<bean id="vlpStatusUpload" class="com.mintstreet.integration.vlp.education.action.VlpStatusUpload" ></bean>
+	<bean id="vlpProcessFile" class="com.mintstreet.integration.vlp.education.action.VLPProcessFile"></bean>
+	<bean id="vlpStatusReport" class="com.mintstreet.integration.vlp.education.action.VlpStatusReport"></bean>
+	<bean id="uploadFileStatus" class="com.mintstreet.integration.vlp.education.service.UploadFileStatus"></bean>
+	<bean id="vlpFileExportInfo" class="com.mintstreet.integration.vlp.education.entity.VLPFileExportInfo"></bean>
+	<bean id="vlpLogInfo" class="com.mintstreet.integration.vlp.education.entity.VLPLogInfo"></bean>
+	<bean id="vlpGetFileListTest" class="com.mintstreet.integration.vlp.education.action.VlpGetFileListTest" ></bean> -->
+	
+	<bean id="commonLoanWebServiceAction" class="com.mintstreet.webservice.action.CommonLoanWebServiceAction" scope="prototype"></bean>
+	<bean id="ocasWebServiceUtil" class="com.mintstreet.common.util.OCASWebServiceUtil"></bean>
+	
+	<bean id="callBack" class="com.mintstreet.callback.service.CallBackService"></bean>	
+	<bean id="uploadBean" class="com.mintstreet.uploadLead.entity.UploadBean"></bean>
+	<bean id="privacyRequest" class="com.mintstreet.consent.bo.PrivacyRequest"></bean>
+	<!-- <bean id="privacyRequestResponse" class="com.mintstreet.consent.entity.PrivacyRequestResponse"></bean> -->
+	<!-- <bean id="mingleBean" class="com.mintstreet.mingleLead.entity.MingleBean"></bean> -->
+	<bean id="crmNextLogBean" class="com.mintstreet.common.entity.CRMNextLog"></bean>
+	<bean id="crmFetchLeadStatusBean" class="com.mintstreet.common.entity.CRMFetchLeadStatus"></bean>
+	<bean id="crmFetchLeadStatusApi" class="com.mintstreet.common.util.CRMFetchLeadStatusApi"></bean>
+	<bean id="requestHandler" class="com.mintstreet.common.util.RequestHandler"></bean>
+	
+	<bean id="RefGenerateUtil" class="com.mintstreet.common.util.RefGenerateUtil"></bean>
+	<bean id="refGenerateUtilHL" class="com.mintstreet.common.util.RefGenerateUtilHL"></bean>
+	<bean id="refGenerateUtilAL" class="com.mintstreet.common.util.RefGenerateUtilAL"></bean>
+	<bean id="refGenerateUtilPL" class="com.mintstreet.common.util.RefGenerateUtilPL"></bean>
+	<bean id="refGenerateUtilEL" class="com.mintstreet.common.util.RefGenerateUtilEL"></bean>
+	<bean id="refGenerateUtilAGL" class="com.mintstreet.common.util.RefGenerateUtilAGL"></bean>
+	<bean id="refGenerateUtilCC" class="com.mintstreet.common.util.RefGenerateUtilCC"></bean>
+	<bean id="requestACallBack" class="com.mintstreet.common.entity.RequestACallBack"></bean>
+	<!-- <bean id="unzipUtility" class="com.mintstreet.integration.vlp.education.util.UnzipUtility"></bean> -->
+
+ 	<bean id="edmsLog" class="com.mintstreet.integration.edms.entity.EdmsLog"></bean>
+	<bean id="edmsDocument" class="com.mintstreet.integration.edms.entity.EdmsDocument"></bean>
+		
+	<bean id="consentUtil" class="com.mintstreet.common.util.ConsentUtil"></bean>
+	<bean id="ccmsUtil" class="com.mintstreet.common.util.CcmsUtil"></bean>
+	<bean id="ccmsConfig" class="com.mintstreet.consent.entity.CCMSConfig"></bean>
+	<bean id="consentPurposeLog" class="com.mintstreet.consent.entity.ConsentPurposeLog"></bean>
+	<bean id="consentWriteLog" class="com.mintstreet.consent.entity.ConsentWriteLog"></bean>
+	<bean id="consentReadLog" class="com.mintstreet.consent.entity.ConsentReadLog"></bean>
+	
+	<import resource="webServiceContext.xml"></import>
+	<import resource="agriLoanContext.xml"></import>
+	<import resource="creditCardContext.xml"></import>
+	<!-- <import resource="instantloanContext.xml"></import> -->
+
+</beans>
