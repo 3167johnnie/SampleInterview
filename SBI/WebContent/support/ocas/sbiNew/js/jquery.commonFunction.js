@@ -1906,6 +1906,62 @@ function getRequestWithoutForm(serializedString) {
 	var txtPayload = JSON.stringify(requestObj);
 	return getEncryptedRequest(txtPayload, secretKey);
 }
+$(document).ready(function() {
+	$("#consentLanguageDropdown").change(function() {
+		var selectedLang = $(this).val();
+		loadConsentByLanguage(selectedLang);
+	});
+	$("#consentHomeLoan").on('shown.bs.modal', function () {
+		disableConsentClose();
+	});
+	$("#consentHomeLoanDiv").scroll(function() {
+		enableConsentAfterScroll();
+	});
+	$("#acceptConsentBtn").click(function() {
+		$("#infoprovide").prop("checked", true);
+		$("#infoprovideCBS").prop("checked", true);
+		$("#consentHomeLoan").modal('hide');
+	});
+});
+/*function loadConsentByLanguage(localeCode) {
+	$.ajax({
+		url : "getConsentByLocale",
+		type : "POST",
+		data : {
+			localeCode : localeCode,
+			touchPointId : "HOME_LOAN"
+		},
+		success : function(response) {
+			var json = JSON.parse(response);
+			if(json.status == "success") {
+				$("#consentHomeLoanDiv")
+					.html(json.consentText);
+				$("#consentHomeLoanDiv")
+					.scrollTop(0);
+				disableConsentClose();
+			}
+		}
+	});
+}*/
+
+function enableConsentAfterScroll() {
+	var div = $("#consentHomeLoanDiv")[0];
+	if(div.scrollTop + div.clientHeight
+		>= div.scrollHeight - 10) {
+		$("#acceptConsentBtn")
+			.prop("disabled", false);
+		$("#closeConsentBtn")
+			.prop("disabled", false);
+	}
+}
+
+function disableConsentClose() {
+	$("#acceptConsentBtn")
+		.prop("disabled", true);
+	$("#closeConsentBtn")
+		.prop("disabled", true);
+}
+
 function getSecretKey(){
 	var reuturnVal = false;
 	secretKey="";
