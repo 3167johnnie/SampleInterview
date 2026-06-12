@@ -29,7 +29,27 @@ public class CCMSConfig extends Domain<Integer> implements Serializable {
 	@Column(name="CCMS_PURPOSE_SET_ID")
 	private String purposeSetId;
 	
-
+	@Column(name="CCMS_REQUEST_TYPE")
+	private String requestType;
+	
+	@Column(name="CCMS_ACCEPT_LANGUAGE")
+	private String acceptLanguage;
+	
+	@Column(name="CCMS_API_VERSION")
+	private String apiVersion;
+	
+	@Column(name="CCMS_SOURCE_ID")
+	private String sourceId;
+	
+	@Column(name="CCMS_DESTINATION")
+	private String destination;
+	
+	@Column(name="CCMS_TRANSACTION_TYPE")
+	private String transactionType;
+	
+	@Column(name="CCMS_AUTH_Key")
+	private String authKey;
+	
 
 	public Integer getCcmsId() {
 		return ccmsId;
@@ -55,10 +75,68 @@ public class CCMSConfig extends Domain<Integer> implements Serializable {
 		this.purposeSetId = purposeSetId;
 	}
 
+	public String getRequestType() {
+		return requestType;
+	}
+
+	public void setRequestType(String requestType) {
+		this.requestType = requestType;
+	}
+
+	public String getAcceptLanguage() {
+		return acceptLanguage;
+	}
+
+	public void setAcceptLanguage(String acceptLanguage) {
+		this.acceptLanguage = acceptLanguage;
+	}
+
+	public String getApiVersion() {
+		return apiVersion;
+	}
+
+	public void setApiVersion(String apiVersion) {
+		this.apiVersion = apiVersion;
+	}
+
+	public String getSourceId() {
+		return sourceId;
+	}
+
+	public void setSourceId(String sourceId) {
+		this.sourceId = sourceId;
+	}
+
+	public String getDestination() {
+		return destination;
+	}
+
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+
+	public String getTransactionType() {
+		return transactionType;
+	}
+
+	public void setTransactionType(String transactionType) {
+		this.transactionType = transactionType;
+	}
+
+	public String getAuthKey() {
+		return authKey;
+	}
+
+	public void setAuthKey(String authKey) {
+		this.authKey = authKey;
+	}
+
 	@Override
 	public String toString() {
 		return "CCMSConfig [ccmsId=" + ccmsId + ", touchPointId=" + touchPointId + ", purposeSetId=" + purposeSetId
+				+ ", requestType=" + requestType + ", acceptLanguage=" + acceptLanguage + ", apiVersion=" + apiVersion
+				+ ", sourceId=" + sourceId + ", destination=" + destination + ", transactionType=" + transactionType
 				+ "]";
 	}
-
+	
 }
