@@ -94,6 +94,8 @@
 	<url-pattern>/getTypeOfSalaryPackageRank</url-pattern>
 	<url-pattern>/flexi-pay-emis</url-pattern>
 	<url-pattern>/campaign-lead</url-pattern>
+	<url-pattern>/privacy-notice</url-pattern>
+	<url-pattern>/privacy-encRequest</url-pattern>
 	<url-pattern>/sms-consent</url-pattern>
 	<url-pattern>/infronics-Lead</url-pattern>
 	<url-pattern>/ivrs-otp</url-pattern>
@@ -151,8 +153,8 @@
 	<url-pattern>/verifyOTPCBS</url-pattern>
 	<url-pattern>/setDeviceInfo</url-pattern>
 	<url-pattern>/encrypt</url-pattern>
-	<url-pattern>/credit-card</url-pattern>
-	<url-pattern>/credit-card-dsr</url-pattern>
+	<!-- <url-pattern>/credit-card</url-pattern>
+	<url-pattern>/credit-card-dsr</url-pattern> -->
 	<url-pattern>/generate-missing-pdf</url-pattern>
 	<url-pattern>/edvantage-loan</url-pattern>
 	<url-pattern>/scholar-loan</url-pattern>
@@ -260,9 +262,33 @@
 	<url-pattern>/quick-lead</url-pattern>
 	<url-pattern>/cve</url-pattern>
 	<url-pattern>/cve-loan-actions</url-pattern>
+	<url-pattern>/getPrivacyNoticeByLocale</url-pattern>
+	<url-pattern>/savePrivacyConsent</url-pattern>
+	<url-pattern>/getPrivacyLanguageList</url-pattern>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
+  
+  <filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>
+			org.apache.catalina.filters.SetCharacterEncodingFilter
+	</filter-class>
+	<init-param>
+		<param-name>encoding</param-name>
+		<param-value>UTF-8</param-value>
+	</init-param>
+	<init-param>
+		<param-name>ignore</param-name>
+		<param-value>false</param-value>
+	</init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  
   <listener>
     <listener-class>
 			com.mintstreet.common.session.SessionSendMailListener
