@@ -22,13 +22,13 @@ public class CcmsUtil {
 	private String plainRequestCcms = null;
 	private String eisFinalRequest = null;
 	private String eisEncryptedResponseStr = null;  
-
-	public JSONObject callingEISServiceForCcms(String plainRequest, String engineUrl) throws JSONException {
+	private String engineUrl = "https://eissiuat.sbi.co.in/gen6/gateway/misc/thirdParty/wrapper/services";  //TODO get from DB
+	
+	public JSONObject callingEISServiceForCcms(String plainRequest) throws JSONException {
+		logger.info("callingEISServiceForCcms start...");
 		JSONObject json= new JSONObject();
 		
 		try {
-			
-			engineUrl = "https://eissiuat.sbi.co.in/gen6/gateway/misc/thirdParty/wrapper/services";
 			
 			PanApiAESEncryption panApiAESEncryption = new PanApiAESEncryption();
 			PanApiRSAEncryption panApiRSAEncryption = new PanApiRSAEncryption();
@@ -53,23 +53,12 @@ public class CcmsUtil {
 			//step 5
 			String referenceNumber = SbiUtil.getRandomAlphaNumericReferenceNumber();
 			
-			
-			logger.info("encryptedRequestCcms "+encryptedRequestCcms);
-			logger.info("plainRequest "+plainRequest);
-			logger.info("digiSignature "+digiSignature);
-			logger.info("referenceNumber "+referenceNumber);
-			logger.info("headerSecretKey "+headerSecretKey);
-			logger.info("randomAesKey "+randomAesKey);
-			
 			JSONObject apiRequest = new JSONObject();
 			apiRequest.put("REQUEST_REFERENCE_NUMBER", referenceNumber);
 			apiRequest.put("REQUEST", encryptedRequestCcms);
 			apiRequest.put("DIGI_SIGN", digiSignature);
 			
 			eisFinalRequest = apiRequest.toString();
-			logger.info("eisFinalRequest "+eisFinalRequest);
-			logger.info("engineUrl "+engineUrl);
-			
 			URL url = new URL(engineUrl);
 			
 			HttpURLConnection con = (HttpURLConnection)url.openConnection();
@@ -88,11 +77,21 @@ public class CcmsUtil {
 			wr.close();
 			
 			int responseCode = con.getResponseCode();
-			logger.info("CCMS Read Consent Purpose: " + plainRequestCcms);
-			logger.info("Response Code : " + responseCode);
+			logger.info("CCMS request: " + plainRequestCcms);
+			logger.info("Connection Response Code : " + responseCode);
 			BufferedReader in = null;
-			boolean status = true;
+//			boolean status = true;
 
+			StringBuffer errorResponse = new StringBuffer(3000);
+			if (con.getErrorStream() != null) {
+				in = new BufferedReader(new InputStreamReader(con.getErrorStream()),3000);
+				String inputLine;
+				while ((inputLine = in.readLine()) != null) {
+					errorResponse.append(inputLine);
+				}
+				logger.info("errorResponse : " + errorResponse.toString());
+			}
+			
 			StringBuffer apiResponse = new StringBuffer(3000);      
 
 			//step 10
@@ -112,34 +111,33 @@ public class CcmsUtil {
 			
 			String ccmsEncryptedResponseStr = eisEncryptedResponseJson.optString("RESPONSE");
 			
-			String ccmsDecryptedResponseStr =  panApiAESEncryption.AESDecryptGCM(ccmsEncryptedResponseStr, randomAesKey);
+			String ccmsDecryptedResponseStr = panApiAESEncryption.AESDecryptGCM(ccmsEncryptedResponseStr, randomAesKey);
 			JSONObject ccmsDecryptedResponseJson = JSONUtil.getJONObjctFromJSONString(ccmsDecryptedResponseStr);      
 			
 			json = JSONUtil.getJONObjctFromJSONString(ccmsDecryptedResponseJson.toString());
 			
 			String errorDescription = ccmsDecryptedResponseJson.optString("ERROR_DESCRIPTION");
 			logger.info("ERROR_DESCRIPTION: " + errorDescription);
-			if(errorDescription.length()>1){ 
-				status=false;
-			}
+//			if(errorDescription.length()>1){
+//				status=false;
+//			}
 
 			in.close();
 			con.disconnect();
     
-			if (status){
-				json.put("error_status", 1);        
-			}else{   
-				json.put("error_status", 0);
-			}
-			json.put("REQUEST_REFERENCE_NUMBER",eisEncryptedResponseJson.optString("REQUEST_REFERENCE_NUMBER"));
-			logger.info("Response received json from CustomerEnquiry :: "+EncryptDecryptUtil.encrypt(json.toString()));
+//			if (status){
+//				json.put("error_status", 1);        
+//			}else{   
+//				json.put("error_status", 0);
+//			}
+//			json.put("REQUEST_REFERENCE_NUMBER",eisEncryptedResponseJson.optString("REQUEST_REFERENCE_NUMBER"));
 
 		}catch(MalformedURLException e){
-			logger.info("CcmsUtil.java LNo: 126 ::", e);
-			json.put("error_status", "0");
+			logger.info("CcmsUtil.java LNo: 136 ::", e);
+			//json.put("error_status", "0");
 		}catch (Exception e) {
-			logger.info("CcmsUtil.java LNo: 130::", e);
-			json.put("error_status", "0");
+			logger.info("CcmsUtil.java LNo: 139::", e);
+			//json.put("error_status", "0");
 		}  
 
 		return json;
