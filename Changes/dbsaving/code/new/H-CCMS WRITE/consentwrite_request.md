@@ -1,0 +1,42 @@
+
+{
+	"SOURCE_ID":"OC",
+	"EIS_PAYLOAD":{
+		"HEADERS":{
+			"Accept-Language":"eng",
+			"X-Correlation-Id":"f2bcebd5-9058-4d04-95ad-b9f9f76b5d58",
+			"X-API-Version":"1"
+		},
+		"BODY":{
+			"touchPointId":"SBIOCAS",
+			"purposeSetId":"TESTEISPS1",
+			"dpData":{
+				"ntbId":"12345678901234568",
+				"dpMobile":"9898989898",
+				"dpEmail":"a@b.c",
+				"dpIPAddress":"122.10.34.123",
+				"locale":"eng",
+				"timestamp":"2025-04-15T14:30:00+05:30"
+			},
+			"consents":[
+				{
+					"purposeCode":"PURP-DEMOPURP-000068",
+					"purposeVersion":1,
+					"consented":true
+				},
+				{
+					"purposeCode":"PURP-DEMOPURP-000071",
+					"purposeVersion":1,
+					"consented":true,
+					"consentedProducts":[
+						"HOME_LOAN"
+					],
+					"notConsentedProducts":[]
+				}
+			]
+		}
+	},
+	"DESTINATION":"CRM",
+	"TXN_TYPE":"CCMS",
+	"TXN_SUB_TYPE":"UPDATE_CONSENTS"
+}
