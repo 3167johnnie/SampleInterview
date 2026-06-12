@@ -1,7 +1,6 @@
 package com.mintstreet.common.util;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mintstreet.consent.entity.ConsentPurposeLog;
@@ -18,24 +17,23 @@ public class ConsentUtil {
 	public void callCCMSPurposeEnquiryAPI() {
 		try {
 			// generate plain request
-		
 			ConsentPurposeLog purpose = consentService.generatePurposeRequest();
+
 			// send request and read purpose from CCMS
 			consentService.readPurposeFromCCMS(purpose);
-		
 		} catch (JSONException e) {
 			e.printStackTrace();//TODO add loggers
 		}
 
 	}
 
-	public void consentReadFromCCMS() {
+	public void callCCMSConsentReadAPI() {
         
-		// generate plain request
-		ConsentReadLog consentRead = consentService.generateConsentReadRequest();
-
-		// send request and consent read from CCMS
 		try {
+			// generate plain request
+			ConsentReadLog consentRead = consentService.generateConsentReadRequest();
+	
+			// send request and consent read from CCMS
 			consentService.consentReadFromCCMS(consentRead);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -52,7 +50,6 @@ public class ConsentUtil {
 			
 			// send request and read purpose from CCMS
 			consentService.writeConsentToCCMS(consentWrite);
-			
 		} catch (JSONException e) {
 			e.printStackTrace();// TODO add loggers
 		}
