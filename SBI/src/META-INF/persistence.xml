@@ -105,14 +105,14 @@
 			<!-- <class>com.mintstreet.webservice.entity.MobileDeviceInformation</class>
 			<class>com.mintstreet.webservice.entity.MobileSocialMedia</class> -->
 			
-			<class>com.mintstreet.loan.card.entity.MasterCardType</class>
+			<!-- <class>com.mintstreet.loan.card.entity.MasterCardType</class>
 			<class>com.mintstreet.loan.card.entity.MasterCardIncome</class>
 			<class>com.mintstreet.loan.card.entity.MasterNatureBusiness</class>
 			<class>com.mintstreet.loan.card.entity.ApplicationFormCreditCard</class>
 			<class>com.mintstreet.loan.card.entity.MasterCardPromoCode</class>
 			<class>com.mintstreet.loan.card.entity.ApplicationFormCreditCardCalls</class>
-			<class>com.mintstreet.loan.card.entity.ApplicationFormCreditCardQuote</class>
-			<class>com.mintstreet.loan.card.entity.MasterCardLoyalityChannel</class>
+			<class>com.mintstreet.loan.card.entity.ApplicationFormCreditCardQuote</class> 
+			<class>com.mintstreet.loan.card.entity.MasterCardLoyalityChannel</class>-->
 			<class>com.mintstreet.common.entity.SbiCampaignMaster</class>
 			<class>com.mintstreet.common.entity.SbiCampProject</class>
 			<class>com.mintstreet.common.entity.MicroLeadEntity</class>
@@ -120,7 +120,7 @@
 			<class>com.mintstreet.common.entity.CRMFetchLeadStatus</class>
 			<class>com.mintstreet.common.entity.LastAppRefNumber</class>
 			<class>com.mintstreet.common.entity.CustomerFeedback</class>
-			<class>com.mintstreet.loan.card.entity.MasterCardEmployerName</class>
+			<!-- <class>com.mintstreet.loan.card.entity.MasterCardEmployerName</class> -->
 			<!-- <class>com.mintstreet.common.entity.MasterCorpSalaryPackageRank</class> -->
 			<!-- <class>com.mintstreet.loan.homeloan.entity.PaymentProcessingFee</class> -->
 			<!-- <class>com.mintstreet.loan.homeloan.entity.SalesTeamLead</class> -->
@@ -141,6 +141,7 @@
             <class>com.mintstreet.consent.entity.ConsentPurposeLog</class>
             <class>com.mintstreet.consent.entity.ConsentWriteLog</class>
             <class>com.mintstreet.consent.entity.ConsentReadLog</class>
+            <class>com.mintstreet.consent.entity.MasterLanguage</class>
 		<exclude-unlisted-classes/>
 	</persistence-unit>
 </persistence>
