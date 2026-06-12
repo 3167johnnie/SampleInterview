@@ -131,10 +131,4 @@ public class ConsentReadLog extends Domain<Integer> implements Serializable {
 				+ responseEntryTime + "]";
 	}
 	
-	
-	
-	
-	
-	
-	
 }
