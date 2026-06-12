@@ -46,13 +46,13 @@
 	<bean id="masterQualificationDao" class="com.mintstreet.common.dao.MasterQualificationDao" >
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
-	<bean id="masterCardIncomeDao" class="com.mintstreet.loan.card.dao.MasterCardIncomeDao" >
+	<!-- <bean id="masterCardIncomeDao" class="com.mintstreet.loan.card.dao.MasterCardIncomeDao" >
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 	
 	<bean id="masterNatureBusinessDao" class="com.mintstreet.loan.card.dao.MasterNatureBusinessDao" >
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
-	</bean>
+	</bean> -->
 	
 	<bean id="masterCarDealerDao" class="com.mintstreet.common.dao.MasterCarDealerDao" >
 	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
@@ -337,7 +337,15 @@
 	<bean id="consentWriteDao" class="com.mintstreet.consent.dao.ConsentWriteDao" >
 	   	<property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
-
+    
+    <bean id="privacyRequestResponseDao" class="com.mintstreet.consent.dao.PrivacyRequestResponseDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="masterLanguageDao" class="com.mintstreet.consent.dao.MasterLanguageDao">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+    
 	<bean id="commonService" class="com.mintstreet.common.service.CommonService">
 		<property name="masterGenderDao" ref="masterGenderDao" />
 		<property name="stateDao" ref="stateDao" />
@@ -415,6 +423,8 @@
 	    <property name="applicationFormCaseCveDao" ref="applicationFormCaseCveDao"/>
 	    <property name="consentDao"  ref="consentDao"/>
 	    <property name="ccmsConfigDao"  ref="ccmsConfigDao"/>
+	    <property name="privacyRequestResponseDao"  ref="privacyRequestResponseDao"/>
+	    <property name="masterLanguageDao" ref="masterLanguageDao" />
 	      
 	</bean>
 	
@@ -457,6 +467,7 @@
 	<bean id="mingleLead" class="com.mintstreet.mingleLead.action.MingleLeadAction" scope="prototype"></bean> -->
 	<bean id="uploadLead" class="com.mintstreet.uploadLead.action.UploadLead" scope="prototype"></bean>
 	<bean id="privacyNoticeAction" class="com.mintstreet.consent.action.PrivacyNoticeAction" scope="prototype"></bean>
+	<bean id="privacyNoticeActionEncrypt" class="com.mintstreet.consent.action.PrivacyNoticeActionEncrypt" scope="prototype"></bean>
 	<bean id="infronicsLead" class="com.mintstreet.uploadLead.action.InfronicsLead" scope="prototype"></bean>
 	<bean id="campaignCallbackAction" class="com.mintstreet.loan.campaign.action.CampaignCallbackAction" scope="prototype"></bean>
     <bean id="cveLoanAction" class="com.mintstreet.loan.cveloan.action.CveLoanAction" scope="prototype"></bean>
@@ -548,7 +559,7 @@
 		<property name="applicationFormAutoLoanDao" ref="applicationFormAutoLoanDao" />
 		<property name="applicationFormEducationLoanDao" ref="applicationFormEducationLoanDao" />
 		<property name="applicationFormPersonalLoanDao" ref="applicationFormPersonalLoanDao" />
-		<property name="applicationFormCreditCardDao" ref="applicationFormCreditCardDao" />
+		<!-- <property name="applicationFormCreditCardDao" ref="applicationFormCreditCardDao" /> -->
 		<property name="applicationFormAgriLoanDao" ref="applicationFormAgriLoanDao" />
 		<property name="apiPanLogDao" ref="apiPanLogDao" />
 	</bean>
@@ -673,7 +684,7 @@
 	<bean id="refGenerateUtilPL" class="com.mintstreet.common.util.RefGenerateUtilPL"></bean>
 	<bean id="refGenerateUtilEL" class="com.mintstreet.common.util.RefGenerateUtilEL"></bean>
 	<bean id="refGenerateUtilAGL" class="com.mintstreet.common.util.RefGenerateUtilAGL"></bean>
-	<bean id="refGenerateUtilCC" class="com.mintstreet.common.util.RefGenerateUtilCC"></bean>
+	<!-- <bean id="refGenerateUtilCC" class="com.mintstreet.common.util.RefGenerateUtilCC"></bean> -->
 	<bean id="requestACallBack" class="com.mintstreet.common.entity.RequestACallBack"></bean>
 	<!-- <bean id="unzipUtility" class="com.mintstreet.integration.vlp.education.util.UnzipUtility"></bean> -->
 
@@ -689,7 +700,7 @@
 	
 	<import resource="webServiceContext.xml"></import>
 	<import resource="agriLoanContext.xml"></import>
-	<import resource="creditCardContext.xml"></import>
+	<!-- <import resource="creditCardContext.xml"></import> -->
 	<!-- <import resource="instantloanContext.xml"></import> -->
 
 </beans>
