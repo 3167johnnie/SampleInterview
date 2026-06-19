@@ -499,3 +499,67 @@ Add action method mapping if not already common:
 Done. Minimal flow:
 
 `AutoFirstPageSession.jsp → popup → hidden quote fields → submit_first_page_bind validation → processGetQuotes validation → AutoLoanHelper.insertAppLoan save in RUPEEPOWER_OCAS_T_00063`.
+
+
+
+
+
+
+
+
+
+Yes, it can work like HomeLoan **if these 4 things match**:
+
+1. AutoLoan page has same IDs:
+
+```js
+#mobile
+#date_of_birth
+#infoprovide
+```
+
+2. AutoLoan action loads:
+
+```java
+languages = commonService.getAllActiveLanguages();
+```
+
+3. AutoLoan action has AJAX method:
+
+```java
+getPrivacyNoticeByLocale()
+```
+
+4. AutoLoan submit posts hidden fields:
+
+```jsp
+quote.privacyConsentFlag
+quote.ntbId
+quote.privacyLocale
+```
+
+And yes, you can use the same popup for other loans also. Best reusable design:
+
+```text
+/appNew/common/PrivacyConsentPopup.jsp
+/appNew/common/PrivacyConsent.js
+```
+
+Only change per loan:
+
+```jsp
+<input type="hidden" id="privacyLoanTypeId" value="AUTO_LOAN_ID / HOME_LOAN_ID / PERSONAL_LOAN_ID" />
+<input type="hidden" name="quote.privacyConsentFlag" id="quotePrivacyConsentFlag" />
+<input type="hidden" name="quote.ntbId" id="quoteNtbId" />
+<input type="hidden" name="quote.privacyLocale" id="quotePrivacyLocale" />
+```
+
+For each loan backend, only save in its own app table:
+
+```java
+application.setAppPrivacyConsentFlag("Y");
+application.setAppNtbId(quote.getNtbId());
+```
+
+Important: make popup id common like `privacyConsentModal`, not `consentHomeLoan`. Then same JSP works for AutoLoan, HomeLoan, PersonalLoan, etc.
+
