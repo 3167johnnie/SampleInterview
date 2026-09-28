@@ -35,6 +35,8 @@
 					</div>
 					<div id="consentHomeLoanDiv" class="privacy-consent-pop-content">Loading
 						Privacy Notice...</div>
+						 <!-- ✅ Download button -->
+    						<button onclick="downloadPDF()">Download PDF</button>
 					<div style="margin-top: 15px; text-align: center;">
 						<button type="button" id="acceptConsentBtn"
 							class="btn btn-primary" disabled="disabled"
@@ -244,6 +246,21 @@
 						loadPrivacyByLocale("eng");
 					}
 				});
+	}
+	
+	function downloadPDF() {
+	    var element = document.getElementById('consentHomeLoanDiv');
+
+	    var opt = {
+	        margin:      [10, 10, 10, 10],
+	        filename:    'SBI_Privacy_Consent.pdf',
+	        image:       { type: 'jpeg', quality: 0.98 },
+	        html2canvas: { scale: 2, useCORS: true },
+	        jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' },
+	        pagebreak:   { mode: ['avoid-all', 'css', 'legacy'] }
+	    };
+
+	    html2pdf().set(opt).from(element).save();
 	}
 </script>
 
