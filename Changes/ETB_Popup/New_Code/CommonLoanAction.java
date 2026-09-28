@@ -344,6 +344,11 @@ public class CommonLoanAction extends BaseAction {
 
 			if (privacyText != null) {
 				beanList.setConsentHomeLoan(privacyText);
+				beanList.setConsentAutoLoanEtb(privacyText);
+				beanList.setConsentPersonalLoanEtb(privacyText);
+				beanList.setConsentEducationLoanEtb(privacyText);
+				beanList.setConsentGoldLoanEtb(privacyText);
+				
 			} else {
 				beanList.setConsentHomeLoan("Privacy Notice Not Available");
 			}
@@ -767,7 +772,70 @@ public class CommonLoanAction extends BaseAction {
 		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
 	}
 	
-	public StreamResult getPrivacyNoticeByLocale() {
+//	public StreamResult getPrivacyNoticeByLocaleCom() {
+//		JSONObject json = new JSONObject();
+//		try {
+//			/*
+//			 * Default English
+//			 */
+//			if (privacyLocale == null || "".equals(privacyLocale)) {
+//				privacyLocale = "eng";
+//			}
+//
+//			//PrivacyRequestResponse privacyObj = commonService.getPrivacyByLocale(privacyLocale);
+//
+//			Integer privacyId = commonService.getPrivacyIdByLocale(privacyLocale);
+//			String privacyText = commonService.getNClobdata("RUPEEPOWER_OCAS_T_13703", "PRIVACY_NOTICE", "PRIVACY_ID", privacyId);
+//
+//			if (privacyText != null) {
+//				json.put("status", "success");
+//				json.put("privacyNotice", privacyText);
+//			} else {
+//				json.put("status", "fail");
+//				json.put("privacyNotice", "Privacy Notice Not Found");
+//			}
+//		} catch (JSONException | JsonParseException e) {
+//			try {
+//				json.put("status", "fail");
+//				json.put("privacyNotice", "Unable To Load Privacy Notice");
+//			} catch (JSONException e1) {
+//				logger.info("Exception caught during Loading Privacy Notice" + e1);
+//			}
+//		}
+//		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+//	}
+//
+//	public StreamResult getPrivacyLanguageListCom() {
+//		JSONObject json = new JSONObject();
+//		JSONArray array = new JSONArray();
+//		try {
+//			List<MasterLanguage> langList = commonService.getAllActiveLanguages();
+//			if (langList != null && !langList.isEmpty()) {
+//				for (MasterLanguage lang : langList) {
+//					JSONObject langObj = new JSONObject();
+//					langObj.put("locale", lang.getLannguageCode());
+//					langObj.put("languageName", lang.getLanguageName());
+//					array.put(langObj);
+//				}
+//				json.put("status", "success");
+//				json.put("languageList", array);
+//			} else {
+//				json.put("status", "fail");
+//				json.put("languageList", array);
+//			}
+//		} catch (JSONException | JsonParseException e) {
+//			logger.info("Exception in getPrivacyLanguageList", e);
+//			try {
+//				json.put("status", "fail");
+//				json.put("languageList", array);
+//			} catch (JSONException je) {
+//				logger.info("JSONException in getPrivacyLanguageList", je);
+//			}
+//		}
+//		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+//	}
+	
+	public StreamResult getPrivacyNoticeByLocaleCom() {
 		JSONObject json = new JSONObject();
 		try {
 			/*
@@ -800,7 +868,7 @@ public class CommonLoanAction extends BaseAction {
 		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
 	}
 
-	public StreamResult getPrivacyLanguageList() {
+	public StreamResult getPrivacyLanguageListCom() {
 		JSONObject json = new JSONObject();
 		JSONArray array = new JSONArray();
 		try {
