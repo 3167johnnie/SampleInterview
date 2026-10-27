@@ -1,0 +1,20 @@
+
+
+
+Please find attached the UAT Gen 7 URLs, for replacement of the existing Gen 5 URLs ,
+
+https://eissiuat.sbi.co.in/uat/gen7/gateway/customers/customerInfo_bh/enquiry
+https://eissiuat.sbi.co.in/uat/gen7/gateway/accounts/accountInfo_bh/enquiry
+https://eissiuat.sbi.co.in/uat/gen7/gateway/loanShort_bh/enquiry
+https://eissiuat.sbi.co.in/uat/gen7/gateway/accounts/educationLoan_bh/enquiry
+https://eissiuat.sbi.co.in/uat/gen7/gateway/misc/PANMatching/Details
+
+
+
+Kindly provide UAT Gen7 API URLs for below mentioned Gen5 APIs in OCAS and subscribe also Gen7 APIs for Org-ITRL-OCAS in EIS UAT.
+
+https://eissiuat.sbi.co.in/gen5/gateway/customerInfo_bh/enquiry
+https://eissiuat.sbi.co.in/gen5/gateway/accountInfo_bh/enquiry
+https://eissiuat.sbi.co.in/gen5/gateway/loanShort_bh/enquiry
+https://eissiuat.sbi.co.in/gen5/gateway/educationLoan_bh/enquiry
+https://eissiuat.sbi.co.in/gen5/gateway/misc/PANMatching/Details
