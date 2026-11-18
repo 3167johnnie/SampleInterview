@@ -1,0 +1,1983 @@
+/JS/ocas/sbiNew/js/homesbi.js
+	var allLanguages = [{'key':0, 'value':'Select Preferred Language'},{'key':1, 'value':'Hindi'},{'key':2, 'value':'English'}];
+
+var activeLanguages = [{'key':0, 'value':'Select Preferred Language'},{'key':1, 'value':'Hindi'},{'key':2, 'value':'English'}];
+
+var error_msg = "";
+var globalMobile ="";
+var isValidForHomePageOTP=true;
+
+//context path changes
+var ctxPath = window.location.pathname;
+if (ctxPath != '/personal-banking') {
+	ctxPath = ctxPath.substring(0, window.location.pathname.indexOf("/",2));
+}
+
+function  validateWantUstoCallyou(src, typeOfValidation){
+	var flag = 0;
+	var willPost=1;
+	if(typeOfValidation ==1 || typeOfValidation == 2){
+		if(M.byId('mobile') != undefined) {
+			if(M.byId('mobile').value == 0 || M.byId('mobile').value == ''|| validationForMobile(M.byId('mobile').value)) {
+				M.byId('mobile').style.borderColor=C[5];
+				willPost=0;;
+				showPOPMsg('errorOTPMsg',"Please enter the valid mobile number", false);
+	        }else{
+	        	M.byId('mobile').style.borderColor=C[8];
+	        }
+		}
+		if(M.byId('email') != undefined) {
+			if(M.byId('email').value == 0 || M.byId('email').value == ''|| !ValidateEmail(M.byId('email').value)) {
+				M.byId('email').style.borderColor=C[5];
+				willPost=0;;
+				showPOPMsg('errorOTPMsg',"Please enter the valid email", false);
+			}else{
+				M.byId('email').style.borderColor=C[8];
+			}
+	    }
+		if(M.byId('inputOtpWantUs') != undefined) {
+			if(M.byId('inputOtpWantUs').value == 0 || M.byId('inputOtpWantUs').value == '' || M.byId('inputOtpWantUs').value.length!=6) {
+				M.byId('inputOtpWantUs').style.borderColor=C[5];
+				willPost=0;;
+				showPOPMsg('errorOTPMsg',"Please enter the correct otp", false);
+	        }else{
+	        	M.byId('inputOtpWantUs').style.borderColor=C[8];
+	        }
+		}
+	}
+	if(typeOfValidation == 3){
+		if(M.byId('inputOtpWantUs') != undefined) {
+			if(M.byId('inputOtpWantUs').value == 0 || M.byId('inputOtpWantUs').value == '' || M.byId('inputOtpWantUs').value.length!=6) {
+				M.byId('inputOtpWantUs').style.borderColor=C[5];
+				willPost=0;;
+				showPOPMsg('errorOTPMsg',"Please enter OTP", false);
+	        }else{
+	        	 M.byId('inputOtpWantUs').style.borderColor=C[8];
+	        }
+	    }
+		if(willPost==1 && M.byId('otpHomecaptcha') != undefined) {
+			if(M.byId('otpHomecaptcha').value == 0 || M.byId('otpHomecaptcha').value == '' || M.byId('otpHomecaptcha').value.length!=6) {
+				M.byId('otpHomecaptcha').style.borderColor=C[5];
+				willPost=0;;
+				showPOPMsg('errorOTPMsg',"Please enter Captcha", false);
+	        }else{
+	        	M.byId('otpHomecaptcha').style.borderColor=C[8];
+	        }
+	    }
+	}
+	if(willPost){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function submit_first_page_bind(){
+	jsonObject = fetch_validation_object(3,0);
+	addValidationsRules(document.homePageCallback, jsonObject);
+    if(jQuery("form#homePageCallback").valid()){
+    	if(jQuery("#leadApplyingFromIndiaWantUsNo").is(":checked")){
+    		validateNriMobileNo('appNRIMobileNo');
+		}else if(jQuery("#leadApplyingFromIndiaWantUsYes").is(":checked")){
+			validateIndianMobileNo('mobile');
+		}else{
+			isValidForHomePageOTP=false;
+		}
+    	/*if(!isValidForHomePageOTP){
+    		return false;
+    	}*/
+    	hidePOPMsg('errorOTPMsg');
+		jQuery("#resendOtpWantUs").show();
+		/*var formdata = "params="+getRequest('homePageCallback', 1);
+		formdata +="&requestIndex=3&requestType=2";*/
+		var paramData= getRequest('homePageCallback', 1);
+		if(!paramData){
+			var errorMsg = "Sorry for the inconvenience, please try again later.";
+			showPOPMsg('errorOTPMsg',errorMsg, false);
+			return false;
+		}
+		var formdata = "params="+paramData;
+		formdata +="&requestIndex=3&requestType=2";
+		if(uiType!=undefined && uiType!=""){
+			formdata += "&uiType="+uiType;
+		}
+		jQuery.ajax({
+	        type:'post',
+	        url: ctxPath + "/" + ajaxPostUrl,
+	        data: formdata,
+	        //headers : {"Accept-Encoding" : "gzip"},
+	        beforeSend:function(){
+	        	removeDynamicLoader('callBankSubmit');
+				showDynamicLoader('callBankSubmit');//show loader
+			},
+			complete:function(){
+				removeDynamicLoader('callBankSubmit'); //remove loader
+			},
+	        success:function(htmlContent){
+	        	if(htmlContent!=""){
+	            	var stringMessage = [];
+					
+					isEncrypted(htmlContent).then(function(result) {
+						
+						if (result) {
+							getDecryptedResponse(htmlContent).then(function(decryptedResponse) {
+								stringMessage = decryptedResponse.split("|");
+								
+								if(stringMessage[0] == "error"){
+				        			showPOPMsg('errorOTPMsg','<b>Error: </b><em>'+stringMessage[1]+'</em>', false);
+				        	        return false;
+				            	}else if(stringMessage[0] != "success"){
+				            		showPOPMsg('errorOTPMsg','<b>Error: </b><em>Something went wrong!</em>', false);
+				            	}else{
+				            		//secretKey=getSecretKey();
+				            		$("#beforeGetACallBack").hide();
+				            		$("#afterGetACallBack").show();
+				            		
+				            		if(window.matchMedia("only screen and (max-width: 768px)").matches) {
+				            			document.getElementsByClassName("otp-right-section")[0].style.height = "330px";
+				            		}
+				            		
+				            		
+				            		jQuery("#callbackBody").removeClass("form-tab");
+				            		var resendHtml='';
+				            		if(jQuery("#leadApplyingFromIndiaWantUsNo").is(":checked")){
+				            			globalMobile = $("#appNRIMobileNo").val();
+				            			resendHtml = globalMobile+' not your number? <a id="changeMobileNumberNRI" href="javascript:void(0);">Click here</a> to change.';
+				            			
+				            		}else if(jQuery("#leadApplyingFromIndiaWantUsYes").is(":checked")){
+				            			globalMobile = $("#mobile").val().replace(/^(\d{6})(\d{4})$/, function() {
+				            			  return arguments[1].replace(/./g, '*') + arguments[2];
+				            			});
+				            			resendHtml = globalMobile + ' not your number? <a id="changeMobileNumber" href="javascript:void(0);">Click here</a> to change.';
+				            		}else{
+				            			return false;
+				            		}
+				            		jQuery("#resend_box").html(resendHtml);
+				            		jQuery("#resend_box").show();
+					            	jQuery("#inputOtpWantUs").val('');
+					            	jQuery("#captcha").val('');
+					            	jQuery("#otpHomecaptcha").val('');
+					            	refreshCaptcha('HomePopcapImage');
+					            	jQuery("#wantus_row_confirm").show();
+					            	return false;
+				            	}
+								
+							});
+						} else {
+							stringMessage[0] == "error"
+							stringMessage[1] == "Something went wrong!"
+							stringMessage[2] == "captcha"
+						}
+						
+					});
+					
+	        	}
+	        	return false;
+	        },
+	        error:function(data){
+	        	showPOPMsg('errorOTPMsg','<b>Error: </b><em>Sorry for the inconvenience, Please click <a href='/'>here</a> to start again</em>', false);
+		        return false;
+	        }
+	    });
+	}
+	return false;
+}
+
+jQuery(document).ready(function(){
+	//secretKey=getSecretKey();
+	jQuery("#call_back").validate({
+		rules: {
+			name: {
+				required: true
+		    },
+		    mobileWantUsToCallYou: {
+				required: true
+		    },
+		    email: {
+				required: true,
+				email:true
+		    }
+		}
+	});
+
+	jQuery("form#homePageCallback").validate({
+		onkeyup: false,
+		onfocusout: function (element) {
+	        jQuery(element).valid();
+	    },
+	    onblur:function (element) {
+	        jQuery(element).valid();
+	    },
+	    focusInvalid: false,
+	    invalidHandler: function(event, validator) {
+	    	var errors = validator.numberOfInvalids();
+	        if (errors) {
+	          var message = errors == 1
+	            ? 'You missed 1 field. It has been highlighted'
+	            : 'You missed ' + errors + ' fields. They have been highlighted';
+	          showPOPMsg('errorOTPMsg',message, false);
+	        }
+	    },
+	    errorElement: "span",
+		errorPlacement: function(error, element) {
+			if(element.attr("type")=="checkbox"){
+				$('.colorAuto').css({ 'outline':'solid','outline-width': '2px', 'outline-color': '#e96e57'});
+				return true;
+			}else {
+				error.insertAfter(element);
+			}
+		}
+	});
+
+	jQuery(document).on("click", "#resendOtpWantUs", function(){
+		removeDynamicLoader('resendOtpWantUs');
+		showDynamicLoader('resendOtpWantUs');
+		$("#resendOtpWantUs").removeAttr('disabled');
+	/*	var formdata = "params="+getRequest('call_back', 0)+"&requestIndex=4&requestType=2";*/
+		
+		var paramData= getRequest('call_back', 0);
+		if(!paramData){
+			var errorMsg = "Sorry for the inconvenience, please try again later.";
+			showPOPMsg('errorOTPMsg',errorMsg, false);
+			return false;
+		}
+		var formdata = "params="+paramData;
+		formdata +="&requestIndex=4&requestType=2";
+		if(uiType!=undefined && uiType!=""){
+			formdata += "&uiType="+uiType;
+		}
+		jQuery.ajax({
+		    type: "POST",
+		    url: ctxPath + "/" + ajaxPostUrl,
+			data: formdata,
+			//headers : {"Accept-Encoding" : "gzip"},
+		    success:function(htmlContent){
+		    	removeDynamicLoader('resendOtpWantUs');
+		    	if(htmlContent==null || htmlContent ==undefined){
+		    		removeDynamicLoader('resendOtpWantUs');
+		    		showPOPMsg('errorOTPMsg',SORRY_FOR_INCONVENIENCE, false);
+	        		return false;
+	        	}
+		    	var stringMessage = [];
+	        	stringMessage = htmlContent.split("|");
+				
+				
+	        	if(stringMessage[0]=="success"){
+	        		//secretKey=getSecretKey();
+	        		showPOPMsg('errorOTPMsg',stringMessage[1], true);
+		    		show_hide_toggle("#wantus_row_confirm", 1);
+			    	show_hide_toggle("#wantus_overlay-row_otp", 0);
+			    	refreshCaptcha('HomePopcapImage');
+		    	}else if(stringMessage[0]=="error"){
+		    		refreshCaptcha('HomePopcapImage');
+		    		showPOPMsg('errorOTPMsg',stringMessage[1], false);
+		    	}
+	        	if(stringMessage[2]!=undefined && stringMessage[2]!=null){
+	        		refreshCaptcha('HomePopcapImage');
+	        		if(stringMessage[2]>4){
+	        			showPOPMsg('errorOTPMsg',"You have reached maximum number of OTP resend count", false);
+	        		}
+	        	}
+		    },
+		    error:function(jqXHR, textStatus){
+		    	removeDynamicLoader('resendOtpWantUs');
+		    	showPOPMsg('errorOTPMsg',SORRY_FOR_INCONVENIENCE, false);
+		    }
+		});
+		return false;
+	});
+	jQuery(document).on("click", "#resendOtp", function(){
+		removeDynamicLoader('resendOtp');
+		showDynamicLoader('resendOtp');
+		$("#resendOtp").removeAttr('disabled');
+		var mobile = jQuery("#resendMobile").val();
+		if(mobile != undefined && mobile != null && mobile!='') {
+			if(jQuery("#leadApplyingFromIndiaWantUsYes").is(":checked")){
+				if(!M.isMobile(mobile)){
+					M.byId('resendMobile').style.borderColor=C[5];
+					removeDynamicLoader('resendOtp');
+					showPOPMsg('errorOTPMsg','Please enter the valid mobile number', false);
+	        		return false;
+				}
+			}else{
+				if(!M.isNRIMobile(mobile)){
+					M.byId('resendMobile').style.borderColor=C[5];
+					removeDynamicLoader('resendOtp');
+					showPOPMsg('errorOTPMsg','Please enter the valid mobile number', false);
+					return false;
+				}
+			}
+	    }
+		if(mobile!=undefined && mobile!=null && mobile!=''){
+			globalMobile = mobile;
+		}
+		//var formdata = "params="+getRequest('call_back', 0)+"&requestIndex=4&requestType=2";
+		var paramData= getRequest('call_back', 0);
+		if(!paramData){
+			var errorMsg = "Sorry for the inconvenience, please try again later.";
+			showPOPMsg('errorOTPMsg',errorMsg, false);
+			return false;
+		}
+		var formdata = "params="+paramData;
+		formdata +="&requestIndex=4&requestType=2";
+		if(uiType!=undefined && uiType!=""){
+			formdata += "&uiType="+uiType;
+		}
+		jQuery.ajax({
+		    type: "POST",
+		    url: ctxPath + "/" + ajaxPostUrl,
+			data: formdata,
+			//headers : {"Accept-Encoding" : "gzip"},
+		    success:function(htmlContent){
+		    	removeDynamicLoader('resendOtpWantUs');
+		    	if(htmlContent==null || htmlContent ==undefined){
+		    		removeDynamicLoader('resendOtpWantUs');
+		    		showPOPMsg('errorOTPMsg',SORRY_FOR_INCONVENIENCE, false);
+	        		return false;
+	        	}
+				
+				var stringMessage = [];
+	        	//stringMessage = htmlContent.split("|");
+				if (isEncrypted(htmlContent)) {
+					//decryptedResponse = window.atob(htmlContent);
+					decryptedResponse = getDecryptedResponse(htmlContent);
+					stringMessage = decryptedResponse.split("|");
+					
+				} else {
+					
+					stringMessage = htmlContent.split("|");
+				}
+			//	stringMessage = htmlContent.split("|");
+	        	if(stringMessage[0]=="success"){
+	        		//secretKey=getSecretKey();
+	        		showPOPMsg('errorOTPMsg',stringMessage[1], true);
+		    		show_hide_toggle("#wantus_row_confirm", 1);
+			    	show_hide_toggle("#wantus_overlay-row_otp", 0);
+			    	refreshCaptcha('HomePopcapImage');
+		    	}else if(stringMessage[0]=="error"){
+		    		refreshCaptcha('HomePopcapImage');
+		    		showPOPMsg('errorOTPMsg',stringMessage[1], false);
+		    	}
+	        	if(stringMessage[2]!=undefined && stringMessage[2]!=null){
+	        		if(stringMessage[2]>4){
+	        			jQuery("#resendOtpWantUs").remove();
+	        		}
+	        	}
+		    },
+		    error:function(jqXHR, textStatus){
+		    	removeDynamicLoader('resendOtpWantUs');
+		    	showPOPMsg('errorOTPMsg',SORRY_FOR_INCONVENIENCE, false);
+		    	return false;
+		    }
+		});
+		return false;
+	});
+	
+	jQuery("#confirmOtpWantUs").unbind("click").bind("click",function(){
+        
+		event.preventDefault();  
+		//removeDynamicLoader('confirmOtpWantUs');
+		showDynamicLoader('confirmOtpWantUs');
+		$("#confirmOtpWantUs").removeAttr('disabled');
+		hidePOPMsg('errorOTPMsg');
+		if(!validateWantUstoCallyou(this, 3)){
+			removeDynamicLoader('confirmOtpWantUs')
+			return false;
+		}
+		//var formdata = "params="+getRequest('call_back', 1)+"&requestIndex=5&requestType=2";
+		var inputOtp=document.getElementById('inputOtpWantUs').value;
+		 if(inputOtp!="" || inputOtp !=''){
+			 
+			 getEncryptedString(inputOtp).then(function(encryptedOtp) {
+				 document.getElementById('inputOtpWantUs1').value = encryptedOtp;
+				 
+			 });
+				 
+				 
+				 var paramData= getRequest('call_back', 1);
+					if(!paramData){
+						var errorMsg = "Sorry for the inconvenience, please try again later.";
+						showPOPMsg('errorOTPMsg',errorMsg, false);
+						return false;
+					}
+					var formdata = "params="+paramData;
+					formdata +="&requestIndex=5&requestType=2";
+					if(uiType!=undefined && uiType!=""){
+						formdata += "&uiType="+uiType;
+					}
+					jQuery.ajax({
+					    type: "POST",
+					    url: ctxPath + "/" + ajaxPostUrl,
+						data: formdata,
+						//headers : {"Accept-Encoding" : "gzip"},
+					    success:function(htmlContent){
+					    	removeDynamicLoader('confirmOtpWantUs');
+					    	if(htmlContent==null || htmlContent ==undefined){
+					    		removeDynamicLoader('confirmOtpWantUs');
+					    		showPOPMsg('errorOTPMsg',SORRY_FOR_INCONVENIENCE, false);
+				        		return false;
+				        	}
+					    	var stringMessage = [];
+							var decryptedResponse = "";
+							
+							isEncrypted(htmlContent).then(function(result) {
+								
+								if (result) {
+									
+									
+									getDecryptedResponse(htmlContent).then(function(decryptedResponse) {
+										stringMessage = decryptedResponse.split("|");
+										
+										if(stringMessage[0]=="success"){
+							        		//secretKey=getSecretKey();
+							        		if(jQuery("#leadLoanPurposeId").val()==1){
+							        			if(DEPLOYMENT_MODE!='local' && DEPLOYMENT_MODE!='uat_rp'){
+							        				M.byId('go2CloudforcallBack').innerHTML='<img src="https://poly.go2cloud.org/aff_l?offer_id=442&adv_sub=HOME" width="1" height="1" />';
+							        			}
+							        		}else if(jQuery("#leadLoanPurposeId").val()==3){
+							        			if(DEPLOYMENT_MODE!='local' && DEPLOYMENT_MODE!='uat_rp'){
+							        				M.byId('go2CloudforcallBack').innerHTML='<img src="https://poly.go2cloud.org/aff_l?offer_id=442&adv_sub=AUTO" width="1" height="1" />';
+							        			}
+							        		}
+							        		jQuery("#wantus_row_confirm").hide();
+							        		//showPOPMsg('errorOTPMsg','<img src="'+BANK_IMAGE_FOLDER+'/tick.png">'+stringMessage[1], true);
+							        		$("#afterGetACallBack").hide();
+							        		var successMsg='<div class="thnk-msg">'
+											+'<h2><span class="smile-icon"></span><br>Thank you </h2>'
+											+'<p>Thank You for your interest. Our representative will contact you shortly.</p>'
+											+'</div>';
+							        		$("#errorOTPMsg").removeClass('error-msg-cbs')
+							        		$("#errorOTPMsg").html(successMsg).show();
+							        		jQuery("#resend_box").hide();
+						   	        		setTimeout(function(){
+						   	        			jQuery(".close").trigger("click");
+							        			reinitiateCallback();
+							        		}, 2000);
+						   	        		if(DEPLOYMENT_MODE!='local' && DEPLOYMENT_MODE!='uat_rp'){
+							        			fbq('track', 'Lead', { loan : 'Callback' });
+							        		}
+							        	}else if(stringMessage[0]=="error"){
+							        		showPOPMsg('errorOTPMsg',stringMessage[1], false);
+							        	}
+										
+									});
+									
+								} else {
+									
+									showPOPMsg('errorOTPMsg', 'Something went wrong', false);
+								    removeDynamicLoader('confirmOtpWantUs');
+
+									//stringMessage[0] = "error";
+									//stringMessage[1] = "Something went wrong";
+								}
+							});
+										
+				        	return false;
+					    },
+					    error:function(jqXHR, textStatus){
+					    	removeDynamicLoader('confirmOtpWantUs');
+					    	showPOPMsg('errorOTPMsg',SORRY_FOR_INCONVENIENCE, false);
+					    	return false;
+					    }
+					});
+					return false;
+		 }
+		
+	});
+	
+	jQuery(document).on("click","#leadApplyingFromIndiaWantUsNo", function() {
+		var nrimobilediv='<input type="text" placeholder="Mobile no. without ISD code" onkeydown="return M.digit(event);" class="w167 valid" id="appNRIMobileNo" value="" maxlength="12" name="lead.leadMobileNo" onfocus="M.toolTip_TM(\'Enter mobile no. without ISD code or &#8216;0&#8217; in prefix.\', event, this, 130, -30, 5);">';
+		jQuery("#mobileDetails").html(nrimobilediv);
+		jQuery("#leadCountryId").val(0);
+		jQuery("#country-div").show();
+		jQuery("#city-div").hide();
+	});
+
+	jQuery(document).on("click","#leadApplyingFromIndiaWantUsYes", function(){
+		var mobilediv='<input type="text" placeholder="Mobile no." onkeydown="return M.digit(event);" class="w167 valid" id="mobile" value="" maxlength="10" name="lead.leadMobileNo">';
+		jQuery("#mobileDetails").html(mobilediv);
+		jQuery("#leadCityId").val(0);
+		jQuery("#country-div").hide();
+		jQuery("#city-div").show();
+		jQuery("#cardCityGroup1").val(0);
+		
+	});
+	
+	jQuery(document).on("click","#cancelResend", function(){
+		refreshCaptcha('HomePopcapImage');
+		globalMobile = globalMobile.replace(/^(\d{6})(\d{4})$/, function() {
+			return arguments[1].replace(/./g, '*') + arguments[2];
+		});
+		var html = globalMobile + ' not your number? <a id="changeMobileNumber" href="javascript:void(0);">Click here</a> to change.';
+		jQuery("#resend_box").html(html);
+	});
+	jQuery(document).on("click", "#changeMobileNumber", function(){
+		refreshCaptcha('HomePopcapImage');
+		$("#resendOtpWantUs").removeAttr('disabled');
+		var html =
+			'<li>'+
+				'<label>Enter your Mobile No.<b class="req">*</b></label>'+
+				'<input id="resendMobile" name="mobile" class="form-control" maxlength="10" onkeydown="return M.digit(event);" type="text">'+
+			'</li>'+
+			'<li>'+
+				'<button class="track-btn conf-track-btn" id="resendOtp" name="resendOtp" type="submit">send</button>'+
+				'<button class="resend-btn" id="cancelResend" name="cancelResend" type="submit">Cancel</button>'+
+			'</li>';
+		jQuery("#resend_box").html(html);
+	});
+
+
+	//jQuery("#cancelResendNRI").unbind("click").bind("click",function(){
+	jQuery(document).on("click","#cancelResendNRI", function(){
+		refreshCaptcha('HomePopcapImage');
+		var html = globalMobile+' not your number? <a id="changeMobileNumberNRI" href="javascript:void(0);">Click here</a> to change.';
+		jQuery("#resend_box").html(html);
+	});
+
+	//jQuery("#changeMobileNumberNRI").unbind("click").bind("click",function(){
+	jQuery(document).on("click","#changeMobileNumberNRI", function(){
+		refreshCaptcha('HomePopcapImage');
+		var html =
+			'<li>'+
+				'<label>Enter your Mobile No.<b class="req">*</b></label>'+
+				'<input id="resendMobile" name="nriMobileNo" class="form-control" maxlength="10" onkeydown="return M.digit(event);" type="text">'+
+			'</li>'+
+			'<li>'+
+				'<button class="track-btn conf-track-btn" id="resendOtp" name="resendOtp" type="submit">Resend</button>'+
+				'<button class="resend-btn" id="cancelResendNRI" name="cancelResendNRI" type="submit">Cancel</button>'+
+			'</li>';
+		jQuery("#resend_box").html(html);
+	});
+	jQuery(document).on("change","#leadCityId", function(){
+		//jQuery(".otpCodeSend").remove();
+		jQuery("#mobile").val("");
+	});
+	jQuery(document).on("change","#leadCountryId", function(){
+		//jQuery(".otpCodeSend").remove();
+		jQuery("#appNRIMobileNo").val("");
+	});
+	jQuery(document).on("change","#cardCityGroup1", function(){
+		//jQuery(".otpCodeSend").remove();
+		jQuery("#mobile").val("");
+	});
+	
+	jQuery(document).on("click","#retailLoanListing", function(){
+		$(".mobile-landing").hide();
+		$(".mobile-slider").hide();
+		$(".retail-loan-listing").show();
+		$('#footer').addClass('sticky-footer');
+	});
+
+	jQuery(document).on("click","#homeBack", function(){
+		$(".mobile-landing").show();
+		$(".mobile-slider").show();
+		$(".retail-loan-listing").hide();
+		$('#footer').removeClass('sticky-footer');
+	});
+});
+jQuery(document).on("change","#leadLoanPurposeId", function(){
+	if(this==undefined)return false;
+	var selVal=this.value;
+	
+	if(selVal!=undefined){
+		if(selVal>0){
+			/*if(selVal==10){
+				$("#citiesLeads").html($("#cardCities").html());
+			}else{*/
+				$("#citiesLeads").html($("#loanCities").html());
+			/*}*/
+		}
+		return false;
+	}
+});
+
+function getEncryptedString(str) {
+	
+	return jQuery.ajax({
+        type: 'post',
+        url: ctxPath + "/" + "getCryptoConfig",
+        dataType: 'json'
+    }).then(function(json) {
+        var aesUtil = new AesUtil(json.keySize, json.iterationCount);
+        var enc1 = aesUtil.encrypt(json.salt, json.iv, json.passPhrase, str);
+		return enc1;
+    
+    }).catch(function() {
+        return false;
+    });
+		
+}
+
+function isEncrypted(str) {
+    
+	if (str === '' || str.trim() === '') return Promise.resolve(false);
+    return jQuery.ajax({
+        type: 'post',
+        url: ctxPath + "/" + "getCryptoConfig",
+        dataType: 'json'
+    }).then(function(json) {
+        var aesUtil = new AesUtil(json.keySize, json.iterationCount);
+        var dec1 = aesUtil.decrypt(json.salt, json.iv, json.passPhrase, str);
+        var enc1 = aesUtil.encrypt(json.salt, json.iv, json.passPhrase, dec1);
+        return enc1 == str;
+    }).catch(function() {
+        return false;
+    });
+}
+
+function getDecryptedResponse(htmlContent) {
+
+	return jQuery.ajax({
+        type: 'post',
+        url: ctxPath + "/" + "getCryptoConfig",
+        dataType: 'json'
+    }).then(function(json) {
+        var aesUtil = new AesUtil(json.keySize, json.iterationCount);
+        return aesUtil.decrypt(json.salt, json.iv, json.passPhrase, htmlContent);
+    
+    }).catch(function() {
+        return false;
+    });
+	
+}
+
+
+function validateIndianMobileNo(indianMobileId){
+	isValidForHomePageOTP=true;
+	jQuery(".otpCodeSend").remove();
+	var leadLoanPurposeId="";
+	if(BANK_ID==BANK_ID_SBI){
+		leadLoanPurposeId = $("#leadLoanPurposeId").val();
+	}else{
+		leadLoanPurposeId = $("#leadProductTypeId").val();
+	}
+	if(leadLoanPurposeId==null || leadLoanPurposeId==undefined || leadLoanPurposeId=="" || leadLoanPurposeId==0){
+		if(BANK_ID==BANK_ID_SBI){
+			jQuery("#mobile").after("<div class=''><span class='otpCodeSend'><img src='"+BANK_IMAGE_FOLDER+"/cross.png'>Select loan purpose.</span>");
+		}
+		else{
+			jQuery("#mobile").after("<div class=''><span class='otpCodeSend'><img src='"+BANK_IMAGE_FOLDER+"/cross.png'>Select product type.</span>");
+		}
+		isValidForHomePageOTP=false;
+		return false;
+	}
+	var mobile = jQuery('#'+indianMobileId).val();
+	globalMobile = mobile;
+	if(mobile == '' || mobile == null || mobile == undefined ){
+		jQuery("#mobile").after("<div class=''><span class='otpCodeSend'><img src='"+BANK_IMAGE_FOLDER+"/cross.png'>Mobile no should not blank.</span>");
+    	isValidForHomePageOTP=false;
+		return false;
+	}
+	if(M.isMobile(mobile) && !jQuery('#'+indianMobileId).hasClass('fade')) {
+		isMobileValidate=true;
+		return true;
+	}else{
+		isMobileValidate=false;
+		if(!M.isMobile(mobile)){
+			jQuery(".otpCodeSend").remove();
+			jQuery("#mobile").after("<span class='otpCodeSend'><img src='"+BANK_IMAGE_FOLDER+"/cross.png'> Invalid Mobile No.</span>");
+			isValidForHomePageOTP=false;
+			return false;
+		}
+		isMobileValidate=true;
+		return true;
+	}
+}
+function validateNriMobileNo(nriMobieId){
+	isValidForHomePageOTP=true;
+	jQuery(".otpCodeSend").remove();
+	var mobile = jQuery('#'+nriMobieId).val();
+	$(".otpCodeSend").remove();
+	var leadLoanPurposeId="";
+	if(BANK_ID==BANK_ID_SBI){
+		leadLoanPurposeId = $("#leadLoanPurposeId").val();
+	}else{
+		leadLoanPurposeId = $("#leadProductTypeId").val();
+	}
+	if(leadLoanPurposeId==null || leadLoanPurposeId==undefined || leadLoanPurposeId=="" || leadLoanPurposeId==0){
+		if(BANK_ID==BANK_ID_SBI){
+			jQuery("#appNRIMobileNo").after("<div class=''><span class='otpCodeSend'><img src='"+BANK_IMAGE_FOLDER+"/cross.png'>Select loan purpose.</span>");
+		}
+		else{
+			jQuery("#appNRIMobileNo").after("<div class=''><span class='otpCodeSend'><img src='"+BANK_IMAGE_FOLDER+"/cross.png'>Select product type.</span>");
+		}
+    	isValidForHomePageOTP=false;
+		return false;
+	}
+	var countryRegion = $("#leadCountryId").val();
+	if(countryRegion==null || countryRegion==undefined || countryRegion=="" || countryRegion==0){
+		jQuery("#appNRIMobileNo").after("<div class=''><span class='otpCodeSend'><img src='"+BANK_IMAGE_FOLDER+"/cross.png'>Select country code.</span>");
+    	isValidForHomePageOTP=false;
+		return false;
+	}
+	globalMobile = mobile;
+	if(mobile == '' || mobile == null || mobile == undefined ){
+		jQuery("#appNRIMobileNo").after("<div class=''><span class='otpCodeSend'><img src='"+BANK_IMAGE_FOLDER+"/cross.png'>Mobile no should not blank.</span>");
+    	isValidForHomePageOTP=false;
+		return false;
+	}
+	if(M.isNRIMobile(mobile) && !jQuery('#'+nriMobieId).hasClass('fade')) {
+		isMobileValidate=true;
+		return true;
+	}else{
+		isMobileValidate=false;
+		if(!M.isNRIMobile(mobile)){
+			jQuery(".otpCodeSend").remove();
+			jQuery("#appNRIMobileNo").after("<span class='otpCodeSend'><img src='"+BANK_IMAGE_FOLDER+"/cross.png'> Invalid Mobile No.</span>");
+			isValidForHomePageOTP=false;
+			return false;
+		}
+		isMobileValidate=true;
+		return true;
+	}
+}
+
+$(document).on("change","#leadLoanPurposeId", function(){
+	src=this;
+	if(src==undefined||src.options==undefined||!src.options.length)return false;
+	
+	var productTypeId=src.value;
+	if(productTypeId==10){
+		populateLanguageData(activeLanguages, 1, "leadLanguageId", "")
+	}else{
+		populateLanguageData(allLanguages, 1, "leadLanguageId", "")
+	}
+});
+
+function populateLanguageData(data, selectedId, elementId){
+	jQuery( '#'+elementId ).empty();
+	var option= "";
+	var selected="";
+	for(var index=0; index<data.length;index++){
+		var elementdata = data[index];
+		option = '<option value="'+elementdata.key+'" '+selected+' >'+elementdata.value+'</option>';
+		jQuery('#'+elementId).append(option);
+	}
+	disableById(elementId, false);
+}
+function openCallBackFormDiv(){
+	jQuery("#tabSticker").addClass("hide-sticker");
+	jQuery("#callbackBody").addClass("form-tab");
+	jQuery(".home_middle_right_bottom").show();
+	jQuery(".mobile-landing").hide();
+	jQuery(".mobile-slider").hide();
+}
+function closeCallBackFormDiv(){
+	jQuery("#tabSticker").removeClass("hide-sticker");
+	jQuery("#callbackBody").removeClass("form-tab");
+	jQuery("#callbackBody").removeClass("form-tab");
+	jQuery(".home_middle_right_bottom").hide();
+	jQuery(".mobile-landing").show();
+	jQuery(".mobile-slider").show();
+}
+
+
+
+/SBI/WebContent/appNew/common/HomePopups.jsp
+	
+	<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<s:include value="/app/common/version.jsp"></s:include>
+<div class="modal fade otp-box" id="getACallBack" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true"><img src="<s:property value="%{@com.mintstreet.common.util.Constants@BANK_IMAGE_FOLDER_NEWUI}"/>/closelight.png" alt="" /></span>
+				</button>
+				<div class="otp-left-section">
+				<br>
+					<h2><span>Get a</span> Callback</h2> 
+					
+					<p>(Please enter your contact details that we will revert back to you )</p>
+				</div>
+				<div class="otp-right-section" style="height: 825px;">
+				<br>
+					<div id="beforeGetACallBack" style="display: block;">
+					
+						<form name='homePageCallback' id='homePageCallback' method='post'  action='javascript:void(0);' enctype='application/x-www-form-urlencoded'  autocomplete="off">
+							<ul class="otp-form" id="homeCallBack">
+								<li>
+									<label>Loan<b class="req">*</b></label>
+									<div class="flat-field">
+										<s:select id="leadLoanPurposeId" name="lead.leadLoanPurposeId" value="" 
+										list="#{3:'Auto Loan',11:'EL Takeover',9:'Global Ed-vantage',1:'Home Loan',2:'Home Top Up Loan',7:'Loan against Immovable property',4:'Personal Loan: Salary account with SBI',12:'Phone Banking',8:'Scholar Loan'}" 
+										headerKey="0" headerValue="Select loan purpose" cssClass="form-select modal-select " autocomplete="off" /> 
+									</div>
+								</li>
+								<li>
+									<label>Name<b class="req">*</b></label>
+<%-- 									<s:textfield id="leadFirstName" name="lead.leadFirstName" value="" cssClass="form-control" placeholder="Name" maxlength="32" autocomplete="off" onkeydown="return M.isChars(event);"/>
+ --%>									<s:textfield id="leadFirstName" name="lead.leadFirstName" value="" cssClass="form-control" placeholder="Name" maxlength="32" autocomplete="off" />
+								</li>
+								
+								<div id="applying-from" style="display: none;">
+									<%-- <li>
+										<label>Applying from?<span class="mandatory">*</span></label>
+										<div class="col-xs-12 mrgt-10-10">
+											<div class="blue-radio blue-radio-danger">
+												<input type="radio" name="lead.leadApplyingFrom" id="leadApplyingFromIndiaWantUsYes" value="1" checked="checked" >
+												<label for="leadApplyingFromIndiaWantUsYes">India</label>
+											</div>	
+											<div class="blue-radio blue-radio-danger">
+												<input type="radio" name="lead.leadApplyingFrom" id="leadApplyingFromIndiaWantUsNo" value="2" <s:property value="%{(lead!=null && lead.leadApplyingFrom == 1)?'checked=\"checked\"':''}"/> >
+												<label for="leadApplyingFromIndiaWantUsNo">Abroad</label>
+											</div>
+										</div>
+									</li> --%>
+									<input type="radio" name="lead.leadApplyingFrom" id="leadApplyingFromIndiaWantUsYes" value="1" checked="checked" >
+								</div>
+								<%-- <div id="country-div" style="display:<s:property value="%{(lead!=null && lead.leadApplyingFrom == 2)?'block':'none'}"/>;" >
+									<li>
+										<label>Country<span class="mandatory">*</span></label>
+										<div class="flat-field">
+											<s:select list="%{#countries}" id="leadCountryId" name="lead.leadCountryId" value="%{lead.leadCountryId>0?lead.leadCountryId:91}" 
+												headerKey="0" headerValue="Select country" cssClass="form-control"/>
+										</div>
+									</li>
+								</div> --%>
+								<div id="city-div" style="display:<s:property value="%{(lead==null || lead.leadApplyingFrom == 1)?'block':'none'}"/>;" >
+									<li>
+										<label>City<b class="req">*</b></label>
+										<div class="flat-field">
+											<s:select list="%{#citiesOtp1==null?'':#citiesOtp1}" id="leadCityId" name="lead.leadCityId" value="" headerKey="0" headerValue="Select city" cssClass="form-select modal-select"/>
+										</div>
+									</li>
+								</div>
+								<li>
+									<label>Preferred Language<b class="req">*</b></label>
+									<div class="flat-field">
+										<s:select id="leadLanguageId" name="lead.leadLanguageId" value="" list="#{1:'Hindi', 2:'English'}" 
+											headerKey="0" headerValue="Select Preferred Language" cssClass="form-select modal-select" autocomplete="off"/>
+									</div>
+								</li>
+								<li>
+									<label>Mobile<b class="req">*</b></label>
+									<%-- <s:if test="%{lead!=null && lead.leadApplyingFrom == 2}">
+										<s:textfield id="appNRIMobileNo" name="lead.leadMobileNo" value="" cssClass="form-control" autocomplete="off" maxlength="12" placeholder="Mobile no. without ISD code" onkeydown="return M.digit(event);"/>
+									 <div class="custom-tooltip">Enter mobile no. without ISD code or &#8216;0&#8217.</div>
+									</s:if>
+									<s:else>
+										<s:textfield id="mobile" name="lead.leadMobileNo" value="" cssClass="form-control" autocomplete="off" maxlength="10" placeholder="Mobile No." onkeydown="return M.digit(event);"/>
+									</s:else> --%>
+									<s:textfield id="mobile" name="lead.leadMobileNo" value="" cssClass="form-control" autocomplete="off" maxlength="10" placeholder="Mobile No." />
+								</li>
+								<li>
+									<label>Email</label>
+									<s:textfield id="leadWorkEmail" name="lead.leadWorkEmail" value="" placeholder="Email" cssClass="form-control" autocomplete="off" maxlength="40" />
+								</li>
+									<li class="pp-captcha">
+										<label>IDENTIFY YOURSELF<b class="req">*</b>
+                                          <span>Copy text into input box</span></label>								
+ 											<img id="HOMEPocapImage" name="HOMEPocapImage" src="Captcha.jpg"><a class="refresh-link" href="javascript:void(0);" title="Refresh" onclick="return refreshCaptcha('HOMEPocapImage');">
+											<img src="<s:property value="%{@com.mintstreet.common.util.Constants@BANK_IMAGE_FOLDER_NEWUI}"/>/refresh.jpg"></a>
+											<input type="text" class="form-control captcha-inpt" id="captcha" name="captcha" value="" maxlength="6" placeholder="enter captcha" >												
+									</li>
+									</br>
+								<li class="extra-margin-a">
+									<div class="">
+										<input type="checkbox" id="infoprovide" name="infoprovide" class="blue-css-checkbox colorAuto" style="left:auto!important;" required>
+										
+										<div id="consentCallForAllLoan" class="consentCallForAllLoan">
+											<label class="label-content" for="infoprovide" style="margin-left:20px!important;">
+												<s:property escapeHtml="false" value="%{@com.mintstreet.common.bo.UIBeanListStatic@consentCallback}" />
+												&nbsp;<b class="req">*</b>
+											</label>
+										</div>
+
+
+										<div id="consentCallForAutoLoan" class="consentCallForAutoLoan" style="display:none;">
+										<label for="infoprovide" class="label-content consentScrollForAutoCallback" style="margin-left:20px!important;">
+										I/We hereby agree and authorize the Bank to share, transmit, disclose, exchange, or use in any manner whatsoever, without any further specific consent or authorization from me/us, the information/data provided by/related to me/us including details of my/our account(s) to the Group Companies/Associates/Subsidiaries/Affiliates/Joint Ventures of <s:property value="%{@com.mintstreet.common.util.Constants@BANK_FULL_NAME}"/> /any person or third party agencies/service providers whether located in India or overseas with whom the Bank has entered/propose to enter  into contracts/arrangements for provision of 'services/products' for the purpose of marketing/offering/selling any product/services and/or availing support services of any nature by the Bank.
+										I/We hereby agree and consent to receive marketing communications through telephone calls/E-mail/SMS/WhatsApp	messages	on	various products / features / promotion offers provided by the Bank and its Group Companies/Associates/Subsidiaries/Affiliates/Joint Ventures. 
+										I/We also acknowledge and agree that the consent hereby provided by me/us shall be legally binding on me/us irrespective of my/our registration with DNDINCPR registries and shall override such registrations.
+										Notwithstanding the above, I/We acknowledge and agree that the Bank may at its absolute discretion disclose any of my/our information, if required or permitted by any law, rule or regulation or at the request/direction of any statutory or regulatory authority or court of law or if such disclosure is required for the purposes of preventing any fraud, without any further specific consent or authorization from me/us.
+								&nbsp;<b class="req">*</b>
+										</label>
+										</div>
+									</div>
+								</li>
+								</br>
+                                <br> </br>
+                                <br> 
+								<li>
+									<button type="submit" id="callBankSubmit" class="track-btn conf-track-btn" >SUBMIT</button>
+								</li>
+							</ul>
+						</form>
+					</div>
+					<div id="afterGetACallBack" style="display: none;">
+						<form  name="call_back" id="call_back" method="post" autocomplete="off">
+							<ul class="otp-form" id ="bigGetAcallBcak">
+			    				<div id="resend_box" style="display:none;">
+									
+								</div>
+					    		<div id="wantus_row_confirm" style="display:block;">
+					    			<li>
+						    			<label><span id="otpLabel">Enter code sent by SMS<b class="req"> *</b></span></label>
+						    			<input type="text" id="inputOtpWantUs" name="inputOtpWantUs" class="form-control secure-otp"  maxlength="6" "/>
+						    			<input type="hidden" id="inputOtpWantUs1" name="inputOtpWantUs" class="form-control secure-otp" />
+					    			</li>
+					    			  <li class="pp-captcha" id="captchaDiv">
+										<label>IDENTIFY YOURSELF<b class="req">*</b>
+                                          <span>Copy text into input box</span></label>								
+											<img id="HomePopcapImage" name="HomePopcapImage" src="Captcha.jpg">
+											<a class="refresh-link" id="refresh_link_Captche" href="javascript:void(0);" title="Refresh" ">
+											<img src="<s:property value="%{@com.mintstreet.common.util.Constants@BANK_IMAGE_FOLDER_NEWUI}"/>/refresh.jpg"></a>
+											<input type="text" class="form-control captcha-inpt" id="otpHomecaptcha" name="captcha" value="" maxlength="6" placeholder="enter captcha" aria-required="true" aria-invalid="true">																							
+									</li>
+					    			<li>
+						    			<button  class="track-btn conf-track-btn" id="confirmOtpWantUs" name="confirmOtpWantUs" type="submit">Confirm</button>
+				    					<button  class="resend-btn" id="resendOtpWantUs" name="resendOtpWantUs" type="submit">Resend</button>
+					    			</li>
+					    		</div>
+							</ul>
+						</form>
+					</div>
+			    	<div class="clear"></div>
+    				<li id="errorOTPMsg" class="error-msg-cbs" style="display:none;"></li>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="loanCities" class="hide">
+	<s:select list="%{#citiesOtp1==null?'':#citiesOtp1}" id="leadCityIdHidden" name="lead.leadCityId" value="%{lead.leadCityId}" headerKey="0" headerValue="Select city" cssClass="form-select"/>
+</div>	
+<%-- <div id="cardCities" class="hide">
+	<s:select list="%{@com.mintstreet.common.bo.UIBeanListStatic@cardCityGroup1==null?'':@com.mintstreet.common.bo.UIBeanListStatic@cardCityGroup1}" 
+	id="cardCityGroup1" name="lead.leadCityId" value="%{lead.leadCityId}" headerKey="0" headerValue="Select city" cssClass="form-select ">
+		<s:optgroup list="%{@com.mintstreet.common.bo.UIBeanListStatic@citiesCard==null?'':@com.mintstreet.common.bo.UIBeanListStatic@citiesCard}" label="--------------"></s:optgroup> 
+	</s:select>
+</div> --%>	
+<%-- <script type="text/javascript">
+	function fetchJsonData(){
+		jsonJSArray = '<s:property value="%{jsonJSArray}"/>';
+		jsonJSArray = jsonJSArray.replace(/%27/g, "\'");
+		jsonJSArray = jsonJSArray.replace(/&quot;/g, "\"");
+		jsonObject = jQuery.parseJSON(jsonJSArray);
+		return jsonObject;
+	}
+	min_age_year = 18;
+	max_age_year = 70;
+	
+	$("#getACallBack").modal({
+		show:false,
+		backdrop:"static",
+		keyboard:false
+	});
+	function getACallBackId(){
+		$("#captcha").val('');
+		refreshCaptcha('HOMEPocapImage');
+		reinitiateCallback();
+		$("#getACallBack").modal();
+	}
+
+	function reinitiateCallback(){
+		$("#leadLoanPurposeId").val(0).removeClass('error').next('span').remove();
+		$("#leadFirstName").val('').removeClass('error').next('span').remove();
+		$("#leadApplyingFromIndiaWantUsYes").trigger("click");
+		$("#leadCityId").val(0).removeClass('error').next('span').remove();
+		$("#leadLanguageId").val(0).removeClass('error').next('span').remove();
+		$("#mobile").val('').removeClass('error').next('span').remove();
+		$("#mobile").removeAttr('readonly');
+		$("#leadWorkEmail").val('').removeClass('error').next('span').remove();
+		$("#infoprovide").removeClass('error');
+		$("#infoprovide").attr('checked', false);
+		$("#beforeGetACallBack").show();
+		$("#afterGetACallBack").hide();
+		hidePOPMsg('errorOTPMsg');
+	}
+</script> --%>
+		<script type="text/javascript" src="<s:property value="@com.mintstreet.common.util.Constants@BANK_JS_FOLDER_NEWUI"/>/jquery.HomePopups.js?v=<s:property value="%{#SCRIPT_VERSION}"/>"></script>
+
+<script type="text/javascript" src="<s:property value="@com.mintstreet.common.util.Constants@BANK_JS_FOLDER_NEWUI"/>/homesbi.js?v=<s:property value="%{#SCRIPT_VERSION}"/>"></script>
+
+/JS/ocas/sbiNew/js/jquery.HomePopups.js
+
+
+
+$(document).ready(function(){
+	
+	jQuery("#refresh_link_Captche").on("click", function(){
+		//	console('application status 2');
+			
+	    return refreshCaptcha('HomePopcapImage');
+		});
+	jQuery("#HOMEPocapImage").on("click", function(){
+		//	console('application status 2');
+		
+		return refreshCaptcha('HomePopcapImage');
+	});
+	jQuery("#leadLoanPurposeId").on("change", function(){
+		//	console('application status 2');
+		
+		onchange="consentCallForAutoLoan()"
+	});
+	jQuery("#homePageCallback").on("submit", function(){
+		//	console('application status 2');
+		
+		return submit_first_page_bind();
+	});
+	jQuery("#leadFirstName").on("keydown", function(){
+		//	console('application status 2');
+		
+	   return M.isChars(event);
+	});
+	jQuery("#mobile").on("keydown", function(){
+		//	console('application status 2');
+		
+		return M.digit(event);
+	});
+	jQuery("#inputOtpWantUs").on("keydown", function(){
+		//	console('application status 2');
+		
+		return M.digit(event);
+	});
+	
+	
+
+	function fetchJsonData(){
+		jsonJSArray = '<s:property value="%{jsonJSArray}"/>';
+		jsonJSArray = jsonJSArray.replace(/%27/g, "\'");
+		jsonJSArray = jsonJSArray.replace(/&quot;/g, "\"");
+		jsonObject = jQuery.parseJSON(jsonJSArray);
+		return jsonObject;
+	}
+	min_age_year = 18;
+	max_age_year = 70;
+	
+	$("#getACallBack").modal({
+		show:false,
+		backdrop:"static",
+		keyboard:false
+	});
+	function getACallBackId(){
+		$("#captcha").val('');
+		refreshCaptcha('HOMEPocapImage');
+		reinitiateCallback();
+		$("#getACallBack").modal();
+	}
+
+	function reinitiateCallback(){
+		$("#leadLoanPurposeId").val(0).removeClass('error').next('span').remove();
+		$("#leadFirstName").val('').removeClass('error').next('span').remove();
+		$("#leadApplyingFromIndiaWantUsYes").trigger("click");
+		$("#leadCityId").val(0).removeClass('error').next('span').remove();
+		$("#leadLanguageId").val(0).removeClass('error').next('span').remove();
+		$("#mobile").val('').removeClass('error').next('span').remove();
+		$("#mobile").removeAttr('readonly');
+		$("#leadWorkEmail").val('').removeClass('error').next('span').remove();
+		$("#infoprovide").removeClass('error');
+		$("#infoprovide").attr('checked', false);
+		$("#beforeGetACallBack").show();
+		$("#afterGetACallBack").hide();
+		hidePOPMsg('errorOTPMsg');
+	}
+
+	
+
+	
+	
+	function consentCallForAutoLoan(){
+		var autoLoan  = $("#leadLoanPurposeId").val();
+
+		if (autoLoan == 3) {
+			$('#consentCallForAllLoan').hide();
+			$('#consentCallForAutoLoan').show();
+	   }
+	   else {
+		  $('#consentCallForAllLoan').show();
+		  $('#consentCallForAutoLoan').hide(); 
+	   }
+	}
+	
+});
+
+
+
+/SBI/src/com/mintstreet/common/action/CommonLoanAction.java
+	
+	package com.mintstreet.common.action;
+import java.io.ByteArrayInputStream;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.struts2.result.StreamResult;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.mintstreet.common.bo.OtherRequest;
+import com.mintstreet.common.bo.UIBeanListStatic;
+import com.mintstreet.common.bo.impl.ProcessManagerImpl;
+import com.mintstreet.common.entity.MasterBranch;
+import com.mintstreet.common.entity.MasterInstitute;
+import com.mintstreet.common.session.SessionUtil;
+import com.mintstreet.common.state.StateManagerBean;
+import com.mintstreet.common.util.CommonUtilites;
+import com.mintstreet.common.util.ConstantUtil;
+import com.mintstreet.common.util.Constants;
+import com.mintstreet.common.util.EncryptDecryptUtil;
+import com.mintstreet.common.util.RequestUtil;
+import com.mintstreet.common.util.Security;
+import com.mintstreet.common.validation.ValidatorUtil;
+import com.mintstreet.uploadLead.entity.UploadBean;
+
+public class CommonLoanAction extends BaseAction {
+	private static final Logger logger = LogManager.getLogger(CommonLoanAction.class.getName());
+	private static final long serialVersionUID = 1L;
+	@Autowired
+	private ProcessManagerImpl processManagerImpl;
+	
+	
+	private Integer stateId;
+	private Integer residentType;
+	private Integer districtId;
+	private Integer cityId;
+	private Integer keyValue;
+	private String keyId;
+	private String elementId;
+	private Integer lpParentId;
+	private String name;
+	private String mobile;
+	private String token;
+	
+	private Integer loanPurposeId;
+	private Integer isRACPC;
+	private Integer isScholar;
+	private String institutdeName;
+	private Integer preferredLocation;
+	private Integer preferredLoanLocation;
+	private Integer pensionPayingLocation;
+	private String instituteName;
+
+	private Integer onChangeValue;
+	private Integer isNRI;
+	private Integer isEdvantage;
+	private Integer isBidyaLakhmi;
+
+	protected ArrayList<UploadBean> quickLead;
+	private String isXpressCreditIT;
+	protected String sms_campaign;
+	
+	public String execute() {
+		isForFaqAndContactUs=1;
+		return SUCCESS+(uiType==null?"":uiType);
+	}
+	public String homeAboutUs() {
+		isForFaqAndContactUs=1;
+		return SUCCESS+(uiType==null?"":uiType);
+	}
+	public String homeFaq() {
+		isForFaqAndContactUs=1;
+		return SUCCESS+(uiType==null?"":uiType);
+	}
+	public String contactUs() {
+		isForFaqAndContactUs=1;
+		return SUCCESS+(uiType==null?"":uiType);
+	}
+	
+	public String privacyStatement() {
+		isForFaqAndContactUs=1;
+		return SUCCESS+(uiType==null?"":uiType);
+	}
+	public String disclosure() {
+		isForFaqAndContactUs=1;
+		return SUCCESS+(uiType==null?"":uiType);
+	}
+	public String termAndCondition() {
+		isForFaqAndContactUs=1;
+		return SUCCESS+(uiType==null?"":uiType);
+	}
+	public String underMaintainance() throws SQLException {
+
+		SessionUtil.setBankLMSUser(null);
+		
+		if(!UIBeanListStatic.isDataSet){
+			setStaticData();
+		}
+		request=RequestUtil.getServletRequest();
+		if(!ValidatorUtil.isValid(sourceId)){
+			sourceId=1;
+		}
+		StateManagerBean stateManagerBean= stateManager.getState(request, Constants.HOME_ID);
+		if(stateManagerBean.getState()==-1){
+			jsonJSArray = SbiUtil.populateJSValidation(1, Constants.HOME_ID).toString();
+			Map<Integer, String> mapCity =new LinkedHashMap<Integer, String>();
+			mapCity = commonService.getStateCityDistrictBranchWithoutLoanType(2, null, null, null, null, null, null, null, null, null);
+			mapCity.put(Constants.OTHER_ID_INTEGER, Constants.OTHER_VALUE);
+			beanList.setCitiesoptgrp1(mapCity);
+			//UIBeanListStatic.setCitiesCard(commonService.getCititesSCC(Constants.CREDIT_CARD_ID));
+			//UIBeanListStatic.setCardCityGroup1(commonService.getcitiesSCCMetro(Constants.CREDIT_CARD_ID));
+			
+			campaignManager.getCampaignId(null, source, se, cp, ag, sourceId, Constants.HOME_ID );
+		}
+		return SUCCESS+(uiType==null?"":uiType);
+	}
+	
+	public String home() throws SQLException {
+   
+		if(ValidatorUtil.isValid(uiType)){SessionUtil.setUiType(uiType);}else{SessionUtil.setUiType(null);}
+		request=RequestUtil.getServletRequest();
+		if(iPAddressForAppAndDBServerPass!=1){
+			isValidIpAddressForAppAndDBServer();
+		}
+		if(iPAddressForAppAndDBServerPass==0){
+			return "under-maintainance"+(uiType==null?"":uiType);
+		}
+		SessionUtil.setBankLMSUser(null);
+		
+		if(!UIBeanListStatic.isDataSet){
+			setStaticData();
+		}
+		JSONObject json = new JSONObject();
+		
+		if(!ValidatorUtil.isValid(sourceId)){
+			sourceId=1;
+		}
+		
+		ajaxPostUrl="home";
+		stateManagerBean = stateManager.getState(request, Constants.HOME_ID);
+		
+		if(SessionUtil.getVisitIdHomePage()!=null){
+			visitId = SessionUtil.getVisitIdHomePage();
+		}else{
+			if(stateManagerBean.getState()==-1){
+				visitId = campaignManager.getCampaignId(null, source, se, cp, ag, sourceId, Constants.HOME_ID );
+				if(ValidatorUtil.isValid(visitId)){
+					SessionUtil.setVisitIdHomePage(visitId);
+				}else{
+					logger.info("CommonLoanAction.java LN 132 unable to insert into visit entity.");
+					responseMessage = "error|"+Constants.SORRY_FOR_INCONVENIENCE;
+					return "jsonResponsePage";
+				}
+			}
+		}
+		if(stateManagerBean.getState()==3 || stateManagerBean.getState()==4 || stateManagerBean.getState()==5){
+			try{
+				
+				if(stateManagerBean.getValidatorResponse().isStatus()){
+					String inputOtp = null;
+					if(stateManagerBean.getState()==3){    
+						lead = stateManagerBean.getLead();
+						responseMessage = SbiUtil.checkCaptcha(lead.getCaptcha() != null ? lead.getCaptcha() : "");
+						if (responseMessage!=null) {
+							return "jsonResponsePage";
+						}
+					}else if(stateManagerBean.getState()==5){
+						OtherRequest otherRequest = stateManagerBean.getOtherRequest();
+						responseMessage = SbiUtil.checkCaptcha(otherRequest.getCaptcha() != null ? otherRequest.getCaptcha() : "");
+						if (responseMessage!=null) {
+							return "jsonResponsePage";
+						}
+						inputOtp=stateManagerBean.getOtherRequest().getInputOtpWantUs();
+						lead = commonService.getLeadById(SessionUtil.getLeadId());
+					} else if(stateManagerBean.getState() == 4){
+						lead = commonService.getLeadById(SessionUtil.getLeadId());
+						OtherRequest otherRequest = stateManagerBean.getOtherRequest();
+						if(otherRequest!=null && otherRequest.getMobileNo()==null){
+							if(otherRequest!=null && otherRequest.getMobile()!=null){
+								otherRequest.setMobileNo(otherRequest.getMobile());
+							}
+						}
+						if(otherRequest!=null && otherRequest.getMobileNo()!=null){
+							if(lead.getLeadApplyingFrom()==2){
+								if(!ValidatorUtil.isValidNRIMobile(otherRequest.getMobileNo())){
+									responseMessage = "error|Invalid mobile number|1";
+									return "jsonResponsePage"; 
+								}
+							}else{
+								lead.setLeadApplyingFrom(1);
+								lead.setLeadCountryId(null);
+								lead.setLeadIsdCode(Constants.COUNTRY_CODE_INDIA);
+								if(!ValidatorUtil.isValidMobile(otherRequest.getMobileNo())){
+									responseMessage = "error|Invalid mobile number|1";
+									return "jsonResponsePage"; 
+								}
+							}
+							lead.setLeadMobileNo(otherRequest.getMobileNo());
+						}
+					}
+					json = processManagerImpl.processWantUsToCallYou(SessionUtil.getLeadId(), stateManagerBean.getState(), lead, visitId, Constants.OTHER_ID_INTEGER, inputOtp);
+					if(json.get("status").toString().equalsIgnoreCase("success")){
+
+//						String mobileNo = lead.getLeadMobileNo();
+//						int leadProdId = lead.getLeadProductTypeId();    
+//						
+//						StringBuilder captcha = new StringBuilder(SessionUtil.getCaptch());
+//						StringBuilder response = new StringBuilder(mobileNo);   
+//						response = response.reverse() ; 
+//						response = response.append(leadProdId);
+//						response = response.append(captcha.reverse());        
+
+						responseMessage = "success|"+json.getString("message");
+						if(json.getString("alertCount")!=null){      
+							responseMessage =responseMessage+"|"+json.getString("alertCount");
+						}
+//						else {
+//							responseMessage =responseMessage+"|"+"0";
+//						}   
+//						responseMessage = responseMessage+"|"+Base64.getEncoder().encodeToString(response.toString().getBytes());
+						logger.info("stateManagerBean.getState() 232"+stateManagerBean.getState());
+						if(stateManagerBean.getState()!=4) {
+							responseMessage = SbiUtil.getEncryptedResponse(responseMessage);
+						}
+						SessionUtil.setCaptch(null);         
+					}else{
+						logger.info("stateManagerBean.getState() 239"+stateManagerBean.getState());
+						responseMessage = "error|"+json.getString("message");
+						if(json.getString("alertCount")!=null){
+							responseMessage =responseMessage+"|"+json.getString("alertCount");
+						}
+						if(stateManagerBean.getState()!=4) {
+							responseMessage = SbiUtil.getEncryptedResponse(responseMessage);
+						}
+					}            
+					
+					return "jsonResponsePage";
+				}else{
+					String msg=CommonUtilites.serchingValuesFromMaps(stateManagerBean.getValidatorResponse().getErrorMessage());
+					responseMessage = "error|"+msg;
+					return "jsonResponsePage";
+				}
+			} catch (NullPointerException e) {
+				logger.info("CommonLoanAction.java LN 135 stateManagerBean.getState()==3, 4, 5  ::"+stateManagerBean.getState()+" :: ", e);
+				responseMessage = "error|"+Constants.SORRY_FOR_INCONVENIENCE;
+				return "jsonResponsePage";
+			} catch (Exception e) {
+				logger.info("CommonLoanAction.java LN 135 stateManagerBean.getState()==3, 4, 5  ::"+stateManagerBean.getState()+" :: ", e);
+				responseMessage = "error|"+Constants.SORRY_FOR_INCONVENIENCE;
+				return "jsonResponsePage";
+			}
+		}
+		if(stateManagerBean.getState()==-1){
+			jsonJSArray = SbiUtil.populateJSValidation(3, Constants.HOME_ID).toString();
+			if(uiType!=null){
+				jsonJSArrayApplicationTrack = SbiUtil.populateJSValidation(1, Constants.APP_LOAN_TRACK_ID).toString();
+			}
+			if(SessionUtil.getLeadId()!=null){
+				lead = commonService.getLeadById(SessionUtil.getLeadId());
+			}
+			Map<Integer, String> mapCity =new LinkedHashMap<Integer, String>();
+			mapCity = commonService.getStateCityDistrictBranchWithoutLoanType(2, null, null, null, null, null, null, null, null, null);
+			mapCity.put(Constants.OTHER_ID_INTEGER, Constants.OTHER_VALUE);
+			beanList.setCitiesoptgrp1(mapCity);
+			//UIBeanListStatic.setCitiesCard(commonService.getCititesSCC(Constants.CREDIT_CARD_ID));
+			//UIBeanListStatic.setCardCityGroup1(commonService.getcitiesSCCMetro(Constants.CREDIT_CARD_ID));
+			
+		}
+		return SUCCESS+(uiType==null?"":uiType);
+	}
+	
+	public StreamResult changeLanguage() {
+		JSONObject json = new JSONObject();
+		if(ValidatorUtil.isValid(selectedLanguage)){
+			SessionUtil.setSelectedLanguage(selectedLanguage);
+		}
+		selectedLanguage = SessionUtil.getSelectedLanguage();
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+	}
+	
+	
+	
+
+	
+	public StreamResult cityByStateId() throws JSONException {
+		JSONObject json = new JSONObject();
+		json.put("cities", SbiUtil.getCities(loanTypeId, stateId, isRACPC, isScholar, isNRI, isEdvantage, isXpressCreditIT));
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+		
+	}
+	
+	public StreamResult getCitiesForHomeLoan() throws JSONException {
+		JSONObject json = new JSONObject();
+		json.put("cities", SbiUtil.getCitiesForHomeLoan(stateId));
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+		
+	}
+
+	public StreamResult cityByHomeStateId() throws JSONException {
+		JSONObject json = new JSONObject();
+		isScholar = 0;
+		json.put("cities", SbiUtil.getCities(loanTypeId, stateId, isRACPC ,isScholar, isNRI, isEdvantage, isXpressCreditIT));
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+	}
+	
+	public StreamResult getDistrictByStateId() throws JSONException {
+		JSONObject json = new JSONObject();
+		json.put("cities", SbiUtil.getDistrictByStateId(loanTypeId, stateId, isRACPC,isScholar, isNRI, isEdvantage ));
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+		
+	}
+	
+	
+	
+	
+	public StreamResult localityByStateId() throws JSONException {
+		JSONObject json = new JSONObject();
+		json.put("cities", SbiUtil.getLocalites( stateId, cityId));
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+		
+	}
+	public StreamResult localityOrDistrictByStateandCityId() {
+		JSONObject json = new JSONObject();
+		try {
+			if(ValidatorUtil.isValid(cityId)){
+				json.put("status", "success");
+				if(cityId==Constants.OTHER_ID_INTEGER.intValue()){
+					if(ValidatorUtil.isValid(isEdvantage)){
+						json.put("districts", SbiUtil.getDistrictByStateId(loanTypeId, stateId, isRACPC, isScholar, isNRI, isEdvantage));
+					}else{
+						json.put("districts", SbiUtil.getDistrictByStateId(loanTypeId, stateId, isRACPC, isScholar, isNRI, isEdvantage));
+					}
+					json.put("populate", "district");
+					
+				}else{
+
+
+
+
+					Map<Integer, String> branchMap = new LinkedHashMap<Integer, String>();
+					if(isRACPC!=null && isRACPC>0){
+						branchMap = commonService.getStateCityDistrictBranch(4, loanTypeId, null, cityId, null, isRACPC, null, null, null, null);
+
+					}else if(isScholar!=null && isScholar>0){
+						if((ValidatorUtil.isValid(preferredLocation) && ValidatorUtil.isValid(instituteName))&& preferredLocation == 2 ){
+							MasterInstitute masterInsti = commonService.getInstituteByInstituteName(instituteName);
+							if(masterInsti !=null ){
+								MasterBranch scholarBranch = commonService.getBranchById(masterInsti.getInstituteDefaultBranch());
+								branchMap.put(scholarBranch.getBranchId(), scholarBranch.getBranchName());
+							}
+						}else{
+							branchMap = commonService.getStateCityDistrictBranch(4, loanTypeId, null, cityId, null, null, isScholar, null, null, null);
+						}
+						
+					}else if(isNRI!=null && isNRI>0){
+						branchMap = commonService.getStateCityDistrictBranch(4, loanTypeId, null, cityId, null, null, null, isNRI, null, null);
+					}else if(isEdvantage != null && isEdvantage == 1){
+						branchMap = commonService.getStateCityDistrictBranch(4, loanTypeId, null, cityId, null, null, null, null, isEdvantage, null);
+					}else{
+						branchMap = commonService.getStateCityDistrictBranch(4, loanTypeId, stateId, cityId, null, null, null, null, null, null);
+					}
+					
+					if(branchMap!=null && !branchMap.isEmpty()){
+						JSONArray jsonArray = new JSONArray();
+						for(Map.Entry<Integer, String> entry : branchMap.entrySet()){
+							JSONObject jsonInner = new JSONObject();
+							jsonInner.put("key", entry.getKey());
+							jsonInner.put("value",  entry.getValue());
+							jsonInner.put("cityDefaultDisplay", 2);
+							jsonArray.put(jsonInner);
+						}
+						
+						json.put("branches", jsonArray);
+						json.put("populate", "branch");
+					}
+				}
+			}else{
+				json.put("status", "error");
+			}
+		} catch (JSONException e) {
+			logger.info("CommonLoanAction.java LNo 325 :: localityOrDistrictByStateandCityId() ", e);
+		} catch (Exception e) {
+			logger.info("CommonLoanAction.java LNo 325 :: localityOrDistrictByStateandCityId() ", e);
+		}
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+		
+	}
+	public StreamResult districtByStateid() throws JSONException {
+		JSONObject json = new JSONObject();
+		json.put("cities", SbiUtil.getDistrictByStateId(loanTypeId, stateId, isRACPC,isScholar, isNRI, isEdvantage));
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+		
+	}
+	
+	public StreamResult branchByStateId() throws JSONException {
+		JSONObject json = new JSONObject();
+			if(institutdeName != null && institutdeName != ""){
+				json.put("cities", SbiUtil.getBranchByInstitute( institutdeName));
+			}else{
+				if(isBidyaLakhmi!=null && isBidyaLakhmi>0){
+					json.put("cities", SbiUtil.getBranchByDistrictIdBidya(loanTypeId, stateId, cityId, districtId, isRACPC, isScholar,isNRI,isEdvantage, isBidyaLakhmi));
+				}else if(ValidatorUtil.isValid(isEdvantage)){
+					json.put("cities", SbiUtil.getBranchByDistrictId( loanTypeId, stateId, cityId, districtId, isRACPC, isScholar, isNRI,isEdvantage));
+				}else{
+					json.put("cities", SbiUtil.getBranchByDistrictId( loanTypeId, stateId, cityId, districtId, isRACPC, isScholar, isNRI,null));
+				}
+			}
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+	}
+	
+	public StreamResult branchByDistrictId() throws JSONException {
+		JSONObject json = new JSONObject();
+		json.put("branches", SbiUtil.getBranchByDistrictId( loanTypeId, null, null, districtId, null, null , isNRI ,isEdvantage));
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+		
+	}
+	public StreamResult branchByCityId() throws JSONException {
+		JSONObject json = new JSONObject();
+		json.put("branches", SbiUtil.getBranchByDistrictId( loanTypeId, null, cityId, null, null, null , isNRI ,null));
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+		
+	}
+	
+	public StreamResult loanPurposeByParentId() throws JSONException {
+		JSONObject json = new JSONObject();
+		json.put("elementData", SbiUtil.getLoanCatogory( loanTypeId, lpParentId));
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+		
+	}
+	
+	public StreamResult employerlist() throws JSONException {
+		JSONObject json = new JSONObject();
+		json.put("elementData", SbiUtil.getLoanCatogory( loanTypeId, 1));
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+		
+	}
+	
+	
+	public StreamResult getAllBank() throws JSONException {
+		JSONObject json = new JSONObject();
+		json.put("banks", SbiUtil.getAllBank( Constants.HOME_LOAN_ID));
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+	}
+	
+	public StreamResult getAllEmployer() {
+		JSONObject json = new JSONObject();
+		json=SbiUtil.getAllEmployer( query, false,null);
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+	}
+	
+	public StreamResult getAllBranchName() {
+		JSONObject json = new JSONObject();
+		json=SbiUtil.getAllBranchName( query);
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+	}
+
+	public StreamResult getAllEmployerForPL() {
+		JSONObject json = new JSONObject();
+		json=SbiUtil.getAllEmployer( query, true,null);
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+	}
+	
+	public StreamResult getAllEmployerForXpressCreditIT() {
+		JSONObject json = new JSONObject();
+		json=SbiUtil.getAllEmployer( query, false,isNasscom);
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+	}
+	
+	public StreamResult getAllBuilder() {
+		JSONObject json = new JSONObject();
+		json=SbiUtil.getAllBuilder( query);
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+	}
+	
+	public StreamResult getPreownedCarDealer() {
+		JSONObject json = new JSONObject();
+		json=SbiUtil.getPreownedCarDealer( query);
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+	}
+	
+	
+	public StreamResult getRequestConfigByLoanType() {
+		jsonJSArray= SbiUtil.populateJSValidation(requestIndex, loanTypeId).toString();
+		return new StreamResult(new ByteArrayInputStream(jsonJSArray.getBytes()));
+	}
+	
+	
+	
+	
+	public StreamResult getTypeOfSalaryPackage() throws JSONException {
+		JSONObject json = new JSONObject();
+		json.put("status", "success");
+		if(!ValidatorUtil.isValid(loanTypeId) || !ValidatorUtil.isValid(industryTypeId)){
+			json.put("status", "error");
+		}else{
+			json.put("salaryPackages",SbiUtil.getAllSalaryPackageByLoanType( loanTypeId, industryTypeId));
+		}
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+	}
+	
+
+	public void getSmsCallBackUrlResponse() throws JSONException{
+		HttpServletRequest request = RequestUtil.getServletRequest();
+		if(request.getParameter("mobileno")!=null && request.getParameter("msgtext")!=null){
+			String appMobileNo = request.getParameter("mobileno").trim();
+
+			String msgtext = request.getParameter("msgtext");
+			String[] msg =  msgtext.split(" ");
+			Integer otp = Integer.valueOf(msg[1]);
+
+			
+			
+			String keyword = request.getParameter("keyword");
+			if (keyword!=null && !keyword.equals("")){
+				if(keyword.trim().equals(Constants.OCAS_KEYWORD))
+				{
+					String mobile = null;
+					if (appMobileNo.length()>=12){
+						mobile= appMobileNo.substring(2);
+					}else{
+						mobile = appMobileNo;
+					}
+					processManagerImpl.getSmsVerified(mobile, otp);
+				}	
+			}else{
+				logger.info("Keyword is blank");
+			}
+		}
+	}
+	
+	public StreamResult getIvrsOtpCallBackUrlResponse() throws JSONException {
+		HttpServletRequest request = RequestUtil.getServletRequest();
+		JSONObject json = new JSONObject();
+		String loanType= request.getParameter("loanType");
+		String mobile = request.getParameter("mobileNumber");
+		String otp = request.getParameter("otp");
+		String checkSum = request.getParameter("checkSum");
+		String checkSumCalculated="";
+		try {
+			checkSumCalculated = Security.get_SHA_256_SecurePassword(loanType+"|"+mobile+"|"+otp, EncryptDecryptUtil.decrypt(Constants.IVRS_SALT));
+		} catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException
+				| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
+			logger.info("CommonLoanAction.java LNo 564 :: Exception in getIvrsOtpCallBackUrlResponse() ", e);
+		}
+		logger.info("CheckSum calculate mobileWithOtp============="+checkSumCalculated);
+		
+		boolean error = false;
+		json.put("mobileNumber", mobile);
+		if(!ValidatorUtil.isValid(checkSum) || !checkSumCalculated.equalsIgnoreCase(checkSum)){
+			//logger.info("Inside validating checkSum");
+			json.put("status", "FAIL");
+			json.put("error", "Invalid checksum");
+			error =true;
+		}else if(!ValidatorUtil.isValid(loanType)){
+			//logger.info("Inside validating loanType");
+			json.put("status", "FAIL");
+			json.put("error", "Invalid loanType");
+			error =true;
+		}else if(!ValidatorUtil.isValidMobile(mobile)){
+			//logger.info("Inside validating mobile");
+			json.put("status", "FAIL");
+			json.put("error", "Invalid mobile number");
+			error =true;
+		}else if(!ValidatorUtil.isValid(otp)){
+			//logger.info("Inside validating otp");
+			json.put("status", "FAIL");
+			json.put("error", "Invalid otp");
+			error =true;
+		}
+		
+		if( !error ){
+			logger.info("no error found");
+			json = processManagerImpl.getOTPVerified(loanType, mobile, Integer.parseInt(otp));
+		}
+		
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+	}
+	
+	
+	
+	public String fileProcess() throws JSONException {
+		JSONObject json = new JSONObject();
+		json.put("status", "success");
+		return SUCCESS+(uiType==null?"":uiType);
+
+		
+	}
+	
+	public StreamResult getCryptoConfig() {
+		JSONObject json = new JSONObject();
+		try {
+			logger.info("inside getCryptoConfig method");
+			json.put("salt", "F3D46A54E1A2E81068AFCFE13A579711");
+			json.put("iv", "F3D46A54E1A2E81068AFCFE13A579711");
+			json.put("passPhrase", "The quick brown fox jumps over the lazy dog");
+			json.put("keySize", "256");
+			json.put("iterationCount", "100000");
+		} catch (JSONException e) {
+			logger.info("AutoLoanAction.java LNo.2220 :: carModelByCompanyId() ", e);
+		}
+		return new StreamResult(new ByteArrayInputStream(json.toString().getBytes()));
+	}
+	
+	public String logout(){
+		SessionUtil.setEmail(null);
+		SessionUtil.setCaptch(null);
+		SessionUtil.setMobile(null);
+		SessionUtil.setISDCode(null);
+		SessionUtil.setApplicantName(null);
+		SessionUtil.setLeadId(null);
+		SessionUtil.setBankLMSUser(null);
+		SessionUtil.setEkycApplication(false);
+		SessionUtil.setUiType(null);
+		SessionUtil.setHomeLoanTopupApplicationSequenceId(null);
+		SessionUtil.setHomeTopUpLoanCbsCallId(null);
+		SessionUtil.setHomeLoanApplicationSequenceId(null);
+		SessionUtil.setHomeLoanCbsCallId(null);
+		SessionUtil.setAutoLoanApplicationSequenceId(null);
+		SessionUtil.setAutoLoanCbsCallId(null);
+		SessionUtil.setPersonalLoanTypeSequenceId(null);
+		SessionUtil.setPersonalLoanApplicationSequenceId(null);
+		SessionUtil.setPensionLoanApplicationSequenceId(null);
+		SessionUtil.setPersonalTypeId(null);
+		SessionUtil.setPersonalLoanCbsCallId(null);
+		SessionUtil.setEducationLoanApplicationSequenceId(null);
+		SessionUtil.setEducationScholarLoanSequenceId(null);
+		SessionUtil.setEducationGlobalEdvantageSequenceId(null);
+		SessionUtil.setEducationTakeOverLoanApplicationSequenceId(null);
+		SessionUtil.setEducationBidyaLakshmiLoanSequenceId(null);
+		SessionUtil.setEducationLoanCbsCallId(null);
+		SessionUtil.setEducationTypeId(null);
+		SessionUtil.setApplicationType(null);
+		SessionUtil.setVisitIdHomePage(null);
+		SessionUtil.setVisitIdHL(null);
+		SessionUtil.setVisitIdAL(null);
+		SessionUtil.setVisitIdPL(null);
+		SessionUtil.setVisitIdEL(null);
+		SessionUtil.setLMSIntermediaryRelation(null);
+		SessionUtil.setLMSIntermediaryCatagories(null);
+		SessionUtil.setCbsExistingRelationshipWithBank(null);
+		SessionUtil.setApplicationCRMLeadId(null);
+		SessionUtil.setFlipkartLeadId(null);
+		return null;
+	}
+	
+	public String updateConstants(){
+		responseMessage = ConstantUtil.updateConstants();
+		return "jsonResponsePage";
+	}
+	
+	public String getSaltKey(){
+		responseMessage=requestHandler.getUniqueRandom();
+		SessionUtil.setSecretKey(responseMessage);
+		return "jsonResponsePage";
+	}
+
+
+
+
+
+
+
+
+
+
+
+	
+	public Integer getResidentType() {
+		return residentType;
+	}
+
+	public void setResidentType(Integer residentType) {
+		this.residentType = residentType;
+	}
+	public Integer getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Integer stateId) {
+		this.stateId = stateId;
+	}
+
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public Integer getKeyValue() {
+		return keyValue;
+	}
+
+	public void setKeyValue(Integer keyValue) {
+		this.keyValue = keyValue;
+	}
+
+	public String getElementId() {
+		return elementId;
+	}
+
+	public void setElementId(String elementId) {
+		this.elementId = elementId;
+	}
+	public Integer getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(Integer cityId) {
+		this.cityId = cityId;
+	}
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public Integer getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Integer districtId) {
+		this.districtId = districtId;
+	}
+
+	public Integer getLpParentId() {
+		return lpParentId;
+	}
+
+	public void setLpParentId(Integer lpParentId) {
+		this.lpParentId = lpParentId;
+	}
+
+	public Integer getOnChangeValue() {
+		return onChangeValue;
+	}
+
+	public void setOnChangeValue(Integer onChangeValue) {
+		this.onChangeValue = onChangeValue;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
+	
+	
+	public Integer getLoanPurposeId() {
+		return loanPurposeId;
+	}
+	public void setLoanPurposeId(Integer loanPurposeId) {
+		this.loanPurposeId = loanPurposeId;
+	}
+	public Integer getIsRACPC() {
+		return isRACPC;
+	}
+	public void setIsRACPC(Integer isRACPC) {
+		this.isRACPC = isRACPC;
+	}
+	public Integer getIsScholar() {
+		return isScholar;
+	}
+	public void setIsScholar(Integer isScholar) {
+		this.isScholar = isScholar;
+	}
+	public String getInstitutdeName() {
+		return institutdeName;
+	}
+	public void setInstitutdeName(String institutdeName) {
+		this.institutdeName = institutdeName;
+	}
+	public Integer getPreferredLocation() {
+		return preferredLocation;
+	}
+	public void setPreferredLocation(Integer preferredLocation) {
+		this.preferredLocation = preferredLocation;
+	}
+	public String getInstituteName() {
+		return instituteName;
+	}
+	public void setInstituteName(String instituteName) {
+		this.instituteName = instituteName;
+	}
+
+	public Integer getIsNRI() {
+		return isNRI;
+	}
+
+	public void setIsNRI(Integer isNRI) {
+		this.isNRI = isNRI;
+	}
+
+	public ArrayList<UploadBean> getQuickLead() {
+		return quickLead;
+	}
+
+	public void setQuickLead(ArrayList<UploadBean> quickLead) {
+		this.quickLead = quickLead;
+	}
+
+
+	public String getIsXpressCreditIT() {
+		return isXpressCreditIT;
+	}
+
+	public void setIsXpressCreditIT(String isXpressCreditIT) {
+		this.isXpressCreditIT = isXpressCreditIT;
+	}
+	public String getSms_campaign() {
+		return sms_campaign;
+	}
+	public void setSms_campaign(String sms_campaign) {
+		this.sms_campaign = sms_campaign;
+	}
+
+	public Integer getPreferredLoanLocation() {
+		return preferredLoanLocation;
+	}
+
+	public void setPreferredLoanLocation(Integer preferredLoanLocation) {
+		this.preferredLoanLocation = preferredLoanLocation;
+	}
+
+	public Integer getPensionPayingLocation() {
+		return pensionPayingLocation;
+	}
+
+	public void setPensionPayingLocation(Integer pensionPayingLocation) {
+		this.pensionPayingLocation = pensionPayingLocation;
+	}
+
+	
+	public Integer getIsEdvantage() {
+		return isEdvantage;
+	}
+
+	public void setIsEdvantage(Integer isEdvantage) {
+		this.isEdvantage = isEdvantage;
+	}
+	public Integer getIsBidyaLakhmi() {
+		return isBidyaLakhmi;
+	}
+	public void setIsBidyaLakhmi(Integer isBidyaLakhmi) {
+		this.isBidyaLakhmi = isBidyaLakhmi;
+	}
+
+}
+
+
+
+
+the above code is a working code which works otp get verfiry successfull need to keep the code same but need changes for when getcryptoconfig is called 
+	it data is static as well it visible in browser i.e {"iterationCount":"100000","salt":"F3D46A54E1A2E81068AFCFE13A579711","keySize":"256","iv":"F3D46A54E1A2E81068AFCFE13A579711","passPhrase":"The quick brown fox jumps over the lazy dog"}
+	
+	need to hide it so make changes for it so that attacker may not get  give changes in existing code and flow minimally 
